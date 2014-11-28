@@ -3,3 +3,6 @@
 !dataStructure/
 dataStructure/dataStructure*
 dataStructure/Debug
+dataStructure/main.cpp
+dataStructure/test.cpp
+dataStructure/test.h
