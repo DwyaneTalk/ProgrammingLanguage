@@ -63,60 +63,65 @@ function basic_process()
 %     subplot(5,2,10);
 %     imshow(im_otsu);
 %     title('Otsu方法阈值二值化图像')
-%% 群运算
-%   群运算是利用分组处理，利用像素周围的点通过卷积操作计算新的像素值。
-%   不同的群运算使用不同的卷积模版，卷积过程相当于滤波，所以不同的卷积模版会有不同的滤波效果
-%   对于原图像边缘处像素点，由于无法通过卷积计算获得新的像素值，所以可以按照下面方式处理（具体问题具体处理）：
-%       1、缩小图像，将边缘像素从新图像中去除，那么图像分辨率将变小；
-%       2、设为固定值（如边缘设为黑色0或白色255）；
-%       3、保持原始像素值；
-%       4、根据图像内部卷积得到的效新像素值，进行水平和竖直扩展
-%   常见的群运算有：均值滤波、高斯滤波、中值滤波、截断中值滤波、自适应加权中值滤波等
-    figure(2);
-    subplot(2,3,1);
-    imshow(im_gray);
-    title('原始图像');
-    
-    subplot(2,3,2);
-    im_noise = imnoise(im_gray, 'salt & pepper', 0.1);  %添加椒盐噪声
-%     im_noise = imnoise(im_noise, 'gaussian', 0, 0.01);%添加高斯白噪声
-    imshow(im_noise);
-    title('噪声图像');
-    
-%   均值滤波是通过低通滤波器，保留空间低频部分，抑制高频分量。
-%   所以均值滤波能够去除图像中的噪声，但是也会损失图像的细节，使图像变模糊
-%   均值滤波的模版窗口越大，效果越明显，窗口大小与低通滤波器的带宽反相关
-    subplot(2,3,3);
-    ave_template = average_template(5);                 %生成窗口为5的均值模版
-    im_ave = im_convolve(im_noise, ave_template);       %卷积滤波
-    imshow(im_ave);
-    title('均值滤波');
-    
-%   高斯滤波是通过二维高斯关系式（均值为0）确定高斯模版，然后进行卷积滤波
-%   高斯滤波相比均值滤波，是更优的图像平滑操作，能够更好地去除造成的同时保证了更好的细节保留
-%   高斯滤波关系式的均值为0，所以通过不同的模版窗口大小和不同的方差大小确定高斯滤波的效果
-    subplot(2,3,4);
-    gaus_template = gaussian_template(3, 1);            %生成窗口3，标准差1的高斯模版
-    im_gaus = im_convolve(im_noise, gaus_template);     %卷积滤波
-    imshow(im_gaus);
-    title('高斯滤波');
-    
-%   中值滤波是用滤波窗口中所有像素的中值作为新的像素值
-%   中值滤波对于椒盐噪声有很好的效果，在抑制噪声的同时能保留图像的边界
-%   另外中值滤波还可以实现图像的旋转、找出连续图像中不变的背景部分，在去噪和保留细节方面也优于均值和高斯
-    subplot(2,3,5);
-    im_med = median_filter(im_noise, 3);                %窗口为3的中值滤波
-    imshow(im_med);
-    title('中值滤波');
-    
-%   截断中值滤波是根据窗口中像素的中值和均值的大小关系，确定窗口中有效像素值的范围，
-%       然后用窗口中像素值在有效像素范围内的像素点的中值作为新的像素值
-%   和中值滤波相比，截断中值滤波可以抑制滤波后的结果过亮或过暗，
-%       但是一般阶段一般要求更大的滤波窗口
-    subplot(2,3,6);
-    im_cut_med = cut_median_filter(im_noise, 3);        %窗口为3的截断中指滤波
-    imshow(im_cut_med);
-    title('截断中值滤波');
+% %% 群运算
+% %   群运算是利用分组处理，利用像素周围的点通过卷积操作计算新的像素值。
+% %   不同的群运算使用不同的卷积模版，卷积过程相当于滤波，所以不同的卷积模版会有不同的滤波效果
+% %   对于原图像边缘处像素点，由于无法通过卷积计算获得新的像素值，所以可以按照下面方式处理（具体问题具体处理）：
+% %       1、缩小图像，将边缘像素从新图像中去除，那么图像分辨率将变小；
+% %       2、设为固定值（如边缘设为黑色0或白色255）；
+% %       3、保持原始像素值；
+% %       4、根据图像内部卷积得到的效新像素值，进行水平和竖直扩展
+% %   常见的群运算有：均值滤波、高斯滤波、中值滤波、截断中值滤波、自适应加权中值滤波等
+%     figure(2);
+%     subplot(2,3,1);
+%     imshow(im_gray);
+%     title('原始图像');
+%     
+%     subplot(2,3,2);
+%     im_noise = imnoise(im_gray, 'salt & pepper', 0.1);  %添加椒盐噪声
+% %     im_noise = imnoise(im_noise, 'gaussian', 0, 0.01);%添加高斯白噪声
+%     imshow(im_noise);
+%     title('噪声图像');
+%     
+% %   均值滤波是通过低通滤波器，保留空间低频部分，抑制高频分量。
+% %   所以均值滤波能够去除图像中的噪声，但是也会损失图像的细节，使图像变模糊
+% %   均值滤波的模版窗口越大，效果越明显，窗口大小与低通滤波器的带宽反相关
+%     subplot(2,3,3);
+%     ave_template = average_template(5);                 %生成窗口为5的均值模版
+%     im_ave = im_convolve(im_noise, ave_template);       %卷积滤波
+%     imshow(im_ave);
+%     title('均值滤波');
+%     
+% %   高斯滤波是通过二维高斯关系式（均值为0）确定高斯模版，然后进行卷积滤波
+% %   高斯滤波相比均值滤波，是更优的图像平滑操作，能够更好地去除造成的同时保证了更好的细节保留，但是同样难以保留边界
+% %   高斯滤波关系式的均值为0，所以通过不同的模版窗口大小和不同的方差大小确定高斯滤波的效果
+%     subplot(2,3,4);
+%     gaus_template = gaussian_template(3, 1);            %生成窗口3，标准差1的高斯模版
+%     im_gaus = im_convolve(im_noise, gaus_template);     %卷积滤波
+%     imshow(im_gaus);
+%     title('高斯滤波');
+%     
+% %   中值滤波是用滤波窗口中所有像素的中值作为新的像素值
+% %   中值滤波对于椒盐噪声有很好的效果，在抑制噪声的同时能保留图像的边界
+% %   另外中值滤波还可以实现图像的旋转、找出连续图像中不变的背景部分，在去噪和保留细节方面也优于均值和高斯
+%     subplot(2,3,5);
+%     im_med = median_filter(im_noise, 3);                %窗口为3的中值滤波
+%     imshow(im_med);
+%     title('中值滤波');
+%     
+% %   截断中值滤波是根据窗口中像素的中值和均值的大小关系，确定窗口中有效像素值的范围，
+% %       然后用窗口中像素值在有效像素范围内的像素点的中值作为新的像素值
+% %   和中值滤波相比，截断中值滤波可以抑制滤波后的结果过亮或过暗，
+% %       但是一般阶段一般要求更大的滤波窗口
+%     subplot(2,3,6);
+%     im_cut_med = cut_median_filter(im_noise, 3);        %窗口为3的截断中指滤波
+%     imshow(im_cut_med);
+%     title('截断中值滤波');
+
+%% 数学形态学
+
+    figure(3);
+
 end
 
 
@@ -135,9 +140,9 @@ end
 %  获取直方图
 function [hist] = imhist_t(im_gray)
     hist = zeros(256,1);
-    [width, height] = size(im_gray);
-    for x = 1 : width
-        for y = 1 :height
+    [row, col] = size(im_gray);
+    for x = 1 : row
+        for y = 1 :col
             hist(im_gray(x, y) + 1) = hist(im_gray(x, y) + 1) + 1;
         end
     end
@@ -145,10 +150,10 @@ end
 
 %   线性变换
 function [im_out] = im_line_process(im_in, k, l)
-    [width, height] = size(im_in);
-    im_out = uint8(zeros(width, height));
-    for x = 1 : width
-        for y  = 1 : height
+    [row, col] = size(im_in);
+    im_out = uint8(zeros(row, col));
+    for x = 1 : row
+        for y  = 1 : col
             pix_value = im_in(x,y) * k + l;
             im_out(x, y) = clip(pix_value, 0, 255);
         end
@@ -159,10 +164,10 @@ end
 function [im_out, hist_out] = hist_norm(im_in, new_min, new_max)
     old_min = double(min(min(im_in)));
     old_max = double(max(max(im_in)));
-    [width, height] = size(im_in);
-    im_out = uint8(zeros(width, height));
-    for x = 1 : width
-        for y = 1 : height
+    [row, col] = size(im_in);
+    im_out = uint8(zeros(row, col));
+    for x = 1 : row
+        for y = 1 : col
             im_out(x, y) = (new_max - new_min) * (double(im_in(x, y)) - old_min) / (old_max - old_min) + new_min;
         end
     end
@@ -171,21 +176,21 @@ end
 
 %   直方图均衡化
 function [im_out, hist_out] = hist_equa(im_in)
-    [width, height] = size(im_in);
-    im_out = uint8(zeros(width, height));
+    [row, col] = size(im_in);
+    im_out = uint8(zeros(row, col));
     lookup = uint8(zeros(256,1));
     hist = imhist_t(im_in);
     sum = 0;
     range = 255 - 0;
-    total_num = width * height;
+    total_num = row * col;
     
     for level = 1 : 256
         sum = sum + hist(level);
         lookup(level) = uint8(range * sum / total_num);
     end
     
-    for x = 1 : width
-        for y = 1 :height
+    for x = 1 : row
+        for y = 1 :col
             im_out(x, y) = lookup(im_in(x, y) + 1);
         end
     end
@@ -227,12 +232,12 @@ end
 
 %   图像和模版进行卷积，边缘保持不变
 function [im_out] = im_convolve(im_in, template)
-    [width, height] = size(template);
+    [row, col] = size(template);
     im_out = im_in;
-    pad_x = floor(width / 2);
-    pad_y = floor(height / 2);
-    for x = pad_x + 1 : width - pad_x
-        for y = pad_y + 1 : height - pad_y
+    pad_x = floor(row / 2);
+    pad_y = floor(col / 2);
+    for x = pad_x + 1 : row - pad_x
+        for y = pad_y + 1 : col - pad_y
             im_out(x, y) = sum(sum(double(im_in(x - pad_x : x + pad_x, y - pad_y : y + pad_y)) .* template));
         end
     end
@@ -263,11 +268,11 @@ function [im_out] = median_filter(im_in, win_size)
     if ~mod(win_size, 2)
         return
     end
-    [width, height] = size(im_in);
+    [row, col] = size(im_in);
     pad = floor(win_size / 2);
     im_out = im_in;
-    for x = 1 + pad : width - pad
-        for y = 1 + pad : height - pad
+    for x = 1 + pad : row - pad
+        for y = 1 + pad : col - pad
 %   对于3x3的窗口，求中指快速方法：http://www.cnblogs.com/BYTEMAN/archive/2012/07/21/2602181.html  
             im_win = im_in(x - pad : x + pad, y - pad : y + pad);
             im_out(x, y) = median(im_win(:));
@@ -280,11 +285,11 @@ function [im_out] = cut_median_filter(im_in, win_size)
     if ~mod(win_size,2)
         return;
     end
-    [width, height] = size(im_in);
+    [row, col] = size(im_in);
     im_out = im_in;
     pad = floor(win_size / 2);
-    for x = 1 + pad : width - pad
-        for y = 1 + pad : height - pad
+    for x = 1 + pad : row - pad
+        for y = 1 + pad : col - pad
             im_win = im_in(x - pad : x + pad, y - pad : y + pad);
             ave = mean(im_win(:));
             med = median(im_win(:));
