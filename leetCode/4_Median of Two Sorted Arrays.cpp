@@ -5,7 +5,9 @@
 
 #include<stdio.h>
 
-
+// 这是O(m+n)的复杂度
+// 这里有O(log(min(m,n)))的复杂度 ：
+// https://leetcode.com/discuss/15790/share-my-o-log-min-m-n-solution-with-explanation
 double findMedianSortedArrays(int A[], int m, int B[], int n) {
     int C[m + n];
     int im=0, in=0, ic=0;
