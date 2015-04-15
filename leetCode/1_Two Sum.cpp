@@ -18,6 +18,7 @@ int bi_search(int numbers[], int b_n, int e_n, int val) {
     if (numbers[mid] == val) {
         return 1;
     }
+    // 这里二分查找明显不是最优，因为numbers已经排好序，所以下面只需要查找一侧即可
     if (bi_search(numbers, b_n, mid-1, val) || bi_search(numbers, mid+1, e_n, val)) {
         return 1;
     }
