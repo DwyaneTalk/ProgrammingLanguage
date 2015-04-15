@@ -1,6 +1,7 @@
 /*   DwyaneTalk@gmail.com
  *   by lutao
  *   leetCode : Longest Palindromic Substring
+ *            : https://leetcode.com/problems/longest-palindromic-substring/
 */
 
 #include<stdio.h>

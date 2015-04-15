@@ -1,6 +1,7 @@
 /*   DwyaneTalk@gmail.com
  *   by lutao
  *   leetCode : Median of Two Sorted Arrays
+ *            : https://leetcode.com/problems/median-of-two-sorted-arrays/
 */
 
 #include<stdio.h>

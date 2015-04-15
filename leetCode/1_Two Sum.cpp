@@ -1,6 +1,7 @@
 /*   DwyaneTalk@gmail.com
  *   by lutao
  *   leetCode : Two Sum
+ *            : https://leetcode.com/problems/two-sum/
 */
 
 #include<stdio.h>

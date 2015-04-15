@@ -1,6 +1,7 @@
 /*   DwyaneTalk@gmail.com
  *   by lutao
  *   leetCode : Longest Substring Without Repeating Characters
+ *            : https://leetcode.com/problems/longest-substring-without-repeating-characters/
 */
 
 #include<stdio.h>
