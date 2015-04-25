@@ -105,7 +105,7 @@ void buildBmGs(char *s, int bmGs[]){
         if (suffix[i] == i + 1) {       //表示是前缀
             for (; j < len - 1 - i; j++) {
                 if (bmGs[j] == len) {   //说明之前没有找到前缀（如果找到，则之前的一定的最大前缀，不需要重新赋值）
-                    bmGs[j] == len - 1 - i;
+                    bmGs[j] = len - 1 - i;
                 }
             }
         }
