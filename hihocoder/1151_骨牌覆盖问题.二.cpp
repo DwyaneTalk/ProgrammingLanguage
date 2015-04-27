@@ -81,11 +81,6 @@ int solution2(int n) {
     return ans;
 }
 
-int solution3(int n) {
-
-}
-
-
 int main() {
     int n = 6;
 //    scanf("%d", &n);
