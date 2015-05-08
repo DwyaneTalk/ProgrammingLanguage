@@ -72,6 +72,9 @@ char* multiply(char* num1, char* num2) {
     } else {
         ans[1] = '\0';
     }
+    for (i = 0; i <= 9; ++i) {
+        if (tmp[i]) free(tmp[i]);
+    }
     return ans;
 }
 
