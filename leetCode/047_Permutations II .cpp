@@ -1,7 +1,7 @@
 /*   DwyaneTalk@gmail.com
  *   by lutao
- *   hihocoder : Wildcard Matching
- *             : https://leetcode.com/problems/wildcard-matching/
+ *   hihocoder : Permutations II
+ *             : https://leetcode.com/problems/permutations-ii/
 */
 
 
