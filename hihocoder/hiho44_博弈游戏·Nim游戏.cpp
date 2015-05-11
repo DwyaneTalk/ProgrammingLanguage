@@ -1,6 +1,6 @@
 /*   DwyaneTalk@gmail.com
 *   by lutao
-*   hihocoder : 博弈游戏·Nim游戏
+*   hihocoder : 鍗氬紙娓告垙路Nim娓告垙
 *             : http://hihocoder.com/contest/hiho44/problem/1
 */
 
