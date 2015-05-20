@@ -1,7 +1,7 @@
 ﻿/*   DwyaneTalk@gmail.com
  *   by lutao
- *   hihocoder : Maximum Subarray
- *             : https://leetcode.com/problems/maximum-subarray/
+ *   hihocoder : Spiral Matrix 
+ *             : https://leetcode.com/problems/spiral-matrix/
 */
 
 
