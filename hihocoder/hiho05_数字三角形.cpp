@@ -33,6 +33,11 @@ void input(publicData *data) {
     }
 }
 
+// 递推式：
+//      f(i,0) = f(i-1, 0) + prize(i, 0)
+//      f(i,j) = MAX{f(i-1,j), f(i-1,j-1)} + prize(i,j)
+//      f(i,i) = f(i-1,i-1) + prize(i,i)
+//空间：2*N的数组，可以进一步优化为N的数组
 int solution(publicData *data) {
     int i, j, ans = 0;
     data->val1[1] = data->prize[1][1];
@@ -68,6 +73,6 @@ int main() {
     input(&data);
     int ans = solution(&data);
     printf("%d\n", ans);
-    system("pause");
+    //system("pause");
     return 0;
 }
