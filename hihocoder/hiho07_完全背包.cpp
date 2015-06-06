@@ -1,7 +1,7 @@
 /*   DwyaneTalk@gmail.com
 *   by lutao
-*   hihocoder : 01背包
-*             : http://hihocoder.com/contest/hiho6/problem/1
+*   hihocoder : 完全背包
+*             : http://hihocoder.com/contest/hiho7/problem/1
 */
 
 #include <stdio.h>
@@ -33,14 +33,14 @@ void input(publicData *data) {
 }
 
 //  递推关系式：
-//  j >= need(i)时： f(i,j) = MAX{f(i-1, j), f(i-1, j-need(i)) + value(i)}
+//  j >= need(i)时： f(i,j) = MAX{f(i-1, j), f(i, j-need(i)) + value(i)}  //要不要继续选择物品i
 //  j <  need(i)时： f(i,j) = f(i-1, j)
 int solution(publicData *data) {
     int i, j;
     for (i = 0; i <= data->m; ++i)
         data->ans[i] = 0;
     for (i = 0; i < data->n; ++i) {
-        for (j = data->m; j >= data->need[i]; --j) {
+        for (j = data->need[i]; j <= data->m; ++j) {
             data->ans[j] = MAX(data->ans[j], data->ans[j - data->need[i]] + data->value[i]);
         }
     }
