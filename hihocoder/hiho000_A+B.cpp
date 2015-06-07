@@ -1,7 +1,7 @@
 /*   DwyaneTalk@gmail.com
  *   by lutao
- *   hihocoder : #1000 : A + B
- *             : http://hihocoder.com/problemset/problem/1000
+ *   hihocoder : A + B
+ *             : http://hihocoder.com/contest/hiho0/problem/1
 */
 
 #include<stdio.h>
