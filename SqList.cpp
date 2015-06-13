@@ -1,14 +1,10 @@
-#include <iostream>
-#include "stdlib.h"
 
 #include "SqList.h"
-using namespace std;
 
 
 SqList::SqList(){
-//	elem = new ElemType[LIST_INIT_SIZE];
-	elem = (ElemType*)malloc(sizeof(ElemType)*LIST_INIT_SIZE);
-	if (!elem)	exit(OVERFLOW);
+	elem = new ElemType[LIST_INIT_SIZE];
+	if (!elem)	exit(OVER);
 	listSize = LIST_INIT_SIZE;
 	length = 0;
 }
@@ -16,8 +12,21 @@ SqList::SqList(){
 SqList::~SqList(){
 	listSize = 0;
 	length = 0;
-//	delete[] elem;
-	free(elem);
+	delete[] elem;
+}
+
+void SqList::Init() {
+    delete[] elem;
+    elem = new ElemType[LIST_INIT_SIZE];
+    if (!elem)	exit(OVER);
+    listSize = LIST_INIT_SIZE;
+    length = 0;
+}
+
+void SqList::Destroy() {
+    listSize = 0;
+    length = 0;
+    delete[] elem;
 }
 
 void SqList::clear(){
@@ -25,7 +34,7 @@ void SqList::clear(){
 }
 
 bool SqList::isEmpty(){
-	return !bool(length);
+	return !length;
 }
 
 int SqList::getLength(){
@@ -68,8 +77,26 @@ ElemType SqList::deleleElem(int i){
 	return delElem;
 }
 
+ElemType SqList::replaceElem(ElemType e, int i) {
+    if (i < 0 || i >= length) {
+        cout << "不合法的替换元素位置" << endl;
+        exit(ERROR);
+    }
+    ElemType ans = elem[i];
+    elem[i] = e;
+    return ans;
+}
+
 void SqList::traverse(void(*visit)(ElemType& e)){
 	for (int i = 0; i < length; i++){
 		visit(elem[i]);
 	}
+}
+
+void SqList::show() {
+    printf("%d个顺序表元素如下：", length);
+    for (int i = 0; i < length; ++i) {
+        printf("%d ", elem[i]);
+    }
+    printf("\n");
 }
