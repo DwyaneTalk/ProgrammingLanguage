@@ -1,4 +1,3 @@
-
 #include "SqList.h"
 
 

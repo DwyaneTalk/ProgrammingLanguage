@@ -1,9 +1,10 @@
 #ifndef SQLIST
 #define SQLIST
 
-#include "util.h"
+#include "Util.h"
 
 typedef int ElemType;
+
 
 class SqList{
 private:
