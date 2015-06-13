@@ -27,13 +27,10 @@ public:
     void insertHeadElem(ElemType e);
     void insertTailElem(ElemType e);
     void insertElem(ElemType e, int i);
-    void insertPreElem(ElemType e, ElemType data);
-    void insertNextElem(ElemType e, ElemType data);
     ElemType deleteHeadElem();
     ElemType deleteTailElem();
     ElemType deleteElem(int i);
     ElemType replaceElem(ElemType e, int i);
-    ElemType replaceDataElem(ElemType e, ElemType data);
     void traverse(void(*visit) (ElemType &e));
     void show();
 };

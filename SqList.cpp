@@ -93,9 +93,9 @@ void SqList::traverse(void(*visit)(ElemType& e)){
 }
 
 void SqList::show() {
-    printf("%d个顺序表元素如下：", length);
+    cout << length << "个顺序表元素为：";
     for (int i = 0; i < length; ++i) {
-        printf("%d ", elem[i]);
+        cout << elem[i] << " ";
     }
-    printf("\n");
+    cout << endl;
 }

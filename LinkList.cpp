@@ -98,7 +98,10 @@ void LinkList::insertTailElem(ElemType e) {
 void LinkList::insertElem(ElemType e, int i) {
     int cnt = 1;
     LinkNode *node = head;
-    if (i == 0) insertHeadElem(e);
+    if (i == 0) {
+        insertHeadElem(e);
+        return;
+    }
     while (cnt < i && node) {
         ++cnt;
         node = node->next;
@@ -110,49 +113,9 @@ void LinkList::insertElem(ElemType e, int i) {
         node->next = newNode;
         if (node == tail)
             tail = newNode;
+        size += 1;
     } else {
         cout << "不合法的元素下标" << endl;
-        exit(ERROR);
-    }
-}
-
-void LinkList::insertPreElem(ElemType e, ElemType data){
-    LinkNode *preNode = NULL, *curNode = head;
-    while (curNode && curNode->data != data) {
-        preNode = curNode;
-        curNode = curNode->next;
-    }
-    if (!curNode) {
-        cout << "无有效的插入元素位置" << endl;
-        exit(ERROR);
-    }
-    if (preNode) {
-        LinkNode *node = new LinkNode;
-        node->data = e;
-        node->next = curNode;
-        preNode->next = node;
-    } else {
-        LinkNode *node = new LinkNode;
-        node->data = e;
-        node->next = curNode;
-        head = node;
-    }
-}
-
-void LinkList::insertNextElem(ElemType e, ElemType data) {
-    LinkNode *node = head;
-    while (node && node->data != data) {
-        node = node->next;
-    }
-    if (node) {
-        LinkNode *newNode = new LinkNode;
-        newNode->data = e;
-        newNode->next = node->next;
-        node->next = newNode;
-        if (node == tail)
-            tail = newNode;
-    } else {
-        cout << "无有效的插入元素位置" << endl;
         exit(ERROR);
     }
 }
@@ -176,18 +139,21 @@ ElemType LinkList::deleteTailElem() {
         cout << "不合法的删除元素" << endl;
         exit(ERROR);
     }
+    ElemType ans;
     if (size == 1) {
+        ans = head->data;
         delete head;
         head = tail = NULL;
+    } else {
+        LinkNode *node = head;
+        ans = tail->data;
+        while (node->next != tail) {
+            node = node->next;
+        }
+        node->next = NULL;
+        delete tail;
+        tail = node;
     }
-    LinkNode *node = head;
-    ElemType ans = tail->data;
-    while (node->next != tail) {
-        node = node->next;
-    }
-    node->next = NULL;
-    delete tail;
-    tail = node;
     size -= 1;
     return ans;
 }
@@ -197,21 +163,62 @@ ElemType LinkList::deleteElem(int i) {
         cout << "不合法的删除元素" << endl;
         exit(ERROR);
     }
-    int cnt = 0;
+    ElemType ans;
+    if (size == 1) {
+        ans = head->data;
+        delete head;
+        head = tail = NULL;
+        size -= 1;
+    } else {
+        if (i == 0) return deleteHeadElem();
+        else if (i == size - 1) return deleteTailElem();
+        else {
+            int cnt = 1;
+            LinkNode *preNode = head, *curNode = head->next;
+            while (cnt < i && curNode) {
+                preNode = curNode;
+                curNode = curNode->next;
+                ++cnt;
+            }
+            ans = curNode->data;
+            preNode->next = curNode->next;
+            size -= 1;
+            delete curNode;
+        }
+    }
+    return ans;
 }
 
 ElemType LinkList::replaceElem(ElemType e, int i) {
-
-}
-
-ElemType LinkList::replaceDataElem(ElemType e, ElemType data) {
-
+    if (i < 0 || i >= size) {
+        cout << "不合法的删除元素" << endl;
+        exit(ERROR);
+    }
+    ElemType ans;
+    int cnt = 0;
+    LinkNode *node = head;
+    while (cnt++ < i) {
+        node = node->next;
+    }
+    ans = node->data;
+    node->data = e;
+    return ans;
 }
 
 void LinkList::traverse(void(*visit)(ElemType& e)){
-
+    LinkNode *node = head;
+    while (node) {
+        visit(node->data);
+        node = node->next;
+    }
 }
 
 void LinkList::show() {
-
+    LinkNode *node = head;
+    cout << size << "个顺序表元素为：";
+    while (node) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+    cout << endl;
 }
