@@ -3,11 +3,9 @@
 int main() {
     Test test;
 
-    SqList sqList;
-    test.testSqList(&sqList);
+    test.testSqList();
 
-    LinkList linkList;
-    test.testLinkList(&linkList);
+    test.testLinkList();
 
     system("pause");
     return 0;

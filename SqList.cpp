@@ -2,9 +2,9 @@
 
 
 SqList::SqList(){
-	elem = new ElemType[LIST_INIT_SIZE];
+	elem = new ElemType[INIT_SIZE];
 	if (!elem)	exit(OVER);
-	listSize = LIST_INIT_SIZE;
+	listSize = INIT_SIZE;
 	length = 0;
 }
 
@@ -16,9 +16,9 @@ SqList::~SqList(){
 
 void SqList::Init() {
     delete[] elem;
-    elem = new ElemType[LIST_INIT_SIZE];
+    elem = new ElemType[INIT_SIZE];
     if (!elem)	exit(OVER);
-    listSize = LIST_INIT_SIZE;
+    listSize = INIT_SIZE;
     length = 0;
 }
 
@@ -54,7 +54,7 @@ int SqList::insertElem(ElemType e, int i){
 		exit(ERROR);
 	}
 	if (length >= listSize){
-		elem = (ElemType*)realloc(elem, sizeof(ElemType)* (listSize + LISTINCREMENT));
+		elem = (ElemType*)realloc(elem, sizeof(ElemType)* (listSize + INCREMENT));
 	}
 	for (int p = length; p > i; p--){
 		elem[p] = elem[p - 1];

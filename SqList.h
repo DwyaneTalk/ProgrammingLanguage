@@ -1,5 +1,5 @@
-#ifndef SQLIST
-#define SQLIST
+#ifndef SQLIST_H
+#define SQLIST_H
 
 #include "Util.h"
 

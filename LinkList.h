@@ -1,5 +1,5 @@
-#ifndef LINKLIST
-#define LINKLIST
+#ifndef LINKLIST_H
+#define LINKLIST_H
 
 #include "Util.h"
 
