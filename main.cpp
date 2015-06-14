@@ -7,6 +7,10 @@ int main() {
 
     test.testLinkList();
 
+    test.testStack();
+
+    test.testQueue();
+
     system("pause");
     return 0;
 }

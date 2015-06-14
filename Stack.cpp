@@ -46,6 +46,17 @@ ElemType Stack::pop() {
 }
 
 void Stack::push(ElemType e) {
+    if (top >= max_size) {
+        ElemType *newBase = new ElemType[max_size + INCREMENT];
+        if (!newBase) {
+            cout << "ÉêÇëÄÚ´æÊ§°Ü" << endl;
+            exit(OVER);
+        }
+        memcpy(newBase, base, sizeof(ElemType)* max_size);
+        delete base;
+        base = newBase;
+        max_size += INCREMENT;
+    }
     base[top++] = e;
 }
 

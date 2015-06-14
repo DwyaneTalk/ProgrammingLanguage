@@ -5,8 +5,7 @@
 
 typedef int ElemType;
 
-class Stack
-{
+class Stack {
 private:
     ElemType *base;
     int top;

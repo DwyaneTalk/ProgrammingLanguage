@@ -62,5 +62,36 @@ void Test::testLinkList() {
 }
 
 void  Test::testStack() {
+    cout << "栈测试开始……" << endl;
+    ElemType list[3] = { 1, 2, 3 };
+    int size = sizeof(list) / sizeof(ElemType);
+    stack.push(1);
+    stack.show();
+    cout << "栈顶元素：" << stack.getTop() << endl;
+    stack.pop();
+    stack.show();
+    for (int i = 0; i < size; ++i)
+        stack.push(list[i]);
+    stack.show();
+    stack.pop();
+    stack.traverse(visit);
+    stack.show();
+    cout << endl;
+}
 
+void Test::testQueue() {
+    cout << "队列测试开始……" << endl;
+    ElemType list[3] = { 1, 2, 3 };
+    int size = sizeof(list) / sizeof(ElemType);
+    queue.enQueue(1);
+    queue.show();
+    cout << "队首元素：" << queue.getHead() << endl;
+    queue.deQueue();
+    queue.show();
+    for (int i = 0; i < size; ++i)
+        queue.enQueue(list[i]);
+    queue.show();
+    queue.deQueue();
+    stack.traverse(visit);
+    queue.show();
 }
