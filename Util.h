@@ -8,4 +8,9 @@
 
 using namespace std;
 
+enum LR {
+    LEFT  = 0,
+    RIGHT = 1
+};
+
 #endif 
