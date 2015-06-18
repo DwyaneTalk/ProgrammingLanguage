@@ -3,13 +3,13 @@
 int main() {
     Test test;
 
-    test.testSqList();
+//    test.testSqList();
 
-    test.testLinkList();
+//    test.testLinkList();
 
-    test.testStack();
+//    test.testStack();
 
-    test.testQueue();
+//    test.testQueue();
 
     system("pause");
     return 0;

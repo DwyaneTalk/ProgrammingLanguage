@@ -3,7 +3,11 @@
 /*
 	define the type
 */
-typedef		int		ElemType;
+typedef		int		SqListElemType;
+typedef		int		LinkListElemType;
+typedef     int     StackElemType;
+typedef     int     QueueElemType;
+typedef     int     BiTreeElemType;
 
 /*
 	define the MACRO

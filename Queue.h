@@ -3,10 +3,9 @@
 
 #include "Util.h"
 
-typedef int ElemType;
 
 typedef struct QueueNode{
-    ElemType data;
+    QueueElemType data;
     struct QueueNode* next;
 } QueueNode;
 
@@ -21,11 +20,12 @@ public:
     void init();
     bool isEmpty();
     int getLength();
-    ElemType getHead();
-    ElemType deQueue();
-    void enQueue(ElemType e);
-    void traverse(void(*visit)(ElemType &e));
+    QueueElemType getHead();
+    QueueElemType deQueue();
+    void enQueue(QueueElemType e);
+    void traverse(void(*visit)(QueueElemType &e));
     void show();
+    void static visit(QueueElemType &e);
 };
 
 #endif

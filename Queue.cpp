@@ -33,7 +33,7 @@ int Queue::getLength(){
     return size;
 }
 
-ElemType Queue::getHead(){
+QueueElemType Queue::getHead(){
     if (size < 1) {
         cout << "队列为空，操作非法" << endl;
         exit(ERROR);
@@ -41,12 +41,12 @@ ElemType Queue::getHead(){
     return head->data;
 }
 
-ElemType Queue::deQueue() {
+QueueElemType Queue::deQueue() {
     if (size < 1) {
         cout << "队列为空，操作非法" << endl;
         exit(ERROR);
     }
-    ElemType ans;
+    QueueElemType ans;
     if (size == 1) {
         ans = head->data;
         delete head;
@@ -61,7 +61,7 @@ ElemType Queue::deQueue() {
     return ans;
 }
 
-void Queue::enQueue(ElemType e) {
+void Queue::enQueue(QueueElemType e) {
     QueueNode *node = new QueueNode;
     node->data = e;
     node->next = NULL;
@@ -74,7 +74,7 @@ void Queue::enQueue(ElemType e) {
     size += 1;
 }
 
-void Queue::traverse(void(*visit)(ElemType &e)) {
+void Queue::traverse(void(*visit)(QueueElemType &e)) {
     QueueNode *node = head;
     while (node) {
         visit(node->data);
@@ -90,4 +90,8 @@ void Queue::show() {
         node = node->next;
     }
     cout << endl;
+}
+
+void Queue::visit(QueueElemType &e) {
+    e = e + 1;
 }

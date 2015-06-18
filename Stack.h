@@ -3,11 +3,9 @@
 
 #include "Util.h"
 
-typedef int ElemType;
-
 class Stack {
 private:
-    ElemType *base;
+    StackElemType *base;
     int top;
     int max_size;
 public:
@@ -16,10 +14,11 @@ public:
     void init();
     bool isEmpty();
     int getLength();
-    ElemType getTop();
-    ElemType pop();
-    void push(ElemType e);
-    void traverse(void(*visit)(ElemType &e));
+    StackElemType getTop();
+    StackElemType pop();
+    void push(StackElemType e);
+    void traverse(void(*visit)(StackElemType &e));
     void show();
+    void static visit(StackElemType &e);
 };
 #endif

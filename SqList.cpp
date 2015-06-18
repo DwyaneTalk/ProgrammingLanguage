@@ -2,7 +2,7 @@
 
 
 SqList::SqList(){
-	elem = new ElemType[INIT_SIZE];
+	elem = new SqListElemType[INIT_SIZE];
 	if (!elem)	exit(OVER);
 	listSize = INIT_SIZE;
 	length = 0;
@@ -16,7 +16,7 @@ SqList::~SqList(){
 
 void SqList::Init() {
     delete[] elem;
-    elem = new ElemType[INIT_SIZE];
+    elem = new SqListElemType[INIT_SIZE];
     if (!elem)	exit(OVER);
     listSize = INIT_SIZE;
     length = 0;
@@ -40,7 +40,7 @@ int SqList::getLength(){
 	return length;
 }
 
-ElemType SqList::getElem(int i){
+SqListElemType SqList::getElem(int i){
 	if (i < 0) {
 		cout << "不合法的获取元素位置" << endl;
 		exit(ERROR);
@@ -48,13 +48,13 @@ ElemType SqList::getElem(int i){
 	return elem[i];
 }
 
-int SqList::insertElem(ElemType e, int i){
+int SqList::insertElem(SqListElemType e, int i){
 	if (i < 0 || i > length){
 		cout << "不合法的插入元素位置" << endl;
 		exit(ERROR);
 	}
 	if (length >= listSize){
-		elem = (ElemType*)realloc(elem, sizeof(ElemType)* (listSize + INCREMENT));
+		elem = (SqListElemType*)realloc(elem, sizeof(SqListElemType)* (listSize + INCREMENT));
 	}
 	for (int p = length; p > i; p--){
 		elem[p] = elem[p - 1];
@@ -63,12 +63,12 @@ int SqList::insertElem(ElemType e, int i){
 	return ++length;
 }
 
-ElemType SqList::deleleElem(int i){
+SqListElemType SqList::deleleElem(int i){
 	if (i < 0 || i >= length){
 		cout << "不合法的删除元素位置" << endl;
 		exit(ERROR);
 	}
-	ElemType delElem = elem[i];
+	SqListElemType delElem = elem[i];
 	for (int p = i; i < length - 1; i++){
 		elem[i] = elem[i + 1];
 	}
@@ -76,17 +76,17 @@ ElemType SqList::deleleElem(int i){
 	return delElem;
 }
 
-ElemType SqList::replaceElem(ElemType e, int i) {
+SqListElemType SqList::replaceElem(SqListElemType e, int i) {
     if (i < 0 || i >= length) {
         cout << "不合法的替换元素位置" << endl;
         exit(ERROR);
     }
-    ElemType ans = elem[i];
+    SqListElemType ans = elem[i];
     elem[i] = e;
     return ans;
 }
 
-void SqList::traverse(void(*visit)(ElemType& e)){
+void SqList::traverse(void(*visit)(SqListElemType& e)){
 	for (int i = 0; i < length; i++){
 		visit(elem[i]);
 	}
@@ -98,4 +98,8 @@ void SqList::show() {
         cout << elem[i] << " ";
     }
     cout << endl;
+}
+
+void SqList::visit(QueueElemType &e) {
+    e = e + 1;
 }

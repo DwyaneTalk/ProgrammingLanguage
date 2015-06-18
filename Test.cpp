@@ -1,12 +1,10 @@
 #include "Test.h"
 
-void visit(ElemType &e) {
-    e = e + 1;
-}
+
 
 void Test::testSqList() {
     cout << "顺序表测试开始……" << endl;
-    ElemType list[] = { 1, 2, 3, 4 };
+    SqListElemType list[] = { 1, 2, 3, 4 };
     int size = sizeof(list) / sizeof(int);
     for (int i = 0; i < size; ++i)
         sqList.insertElem(list[i], i);
@@ -17,15 +15,15 @@ void Test::testSqList() {
     sqList.show();
     sqList.replaceElem(3, 1);
     sqList.show();
-    sqList.traverse(visit);
+    sqList.traverse(SqList::visit);
     sqList.show();
     cout << endl;
 }
 
 void Test::testLinkList() {
     cout << "链表测试开始……" << endl;
-    ElemType list[] = { 1, 2, 3 };
-    int size = sizeof(list) / sizeof(ElemType);
+    LinkListElemType list[] = { 1, 2, 3 };
+    int size = sizeof(list) / sizeof(LinkListElemType);
     for (int i = 0; i < size; ++i)
         linkList.insertTailElem(list[i]);
     linkList.show();
@@ -56,15 +54,15 @@ void Test::testLinkList() {
     linkList.replaceElem(9, 1);
     linkList.show();
     cout << "index :" << linkList.getIndex(9) << "   data: " << linkList.getElem(linkList.getIndex(9)) << endl;
-    linkList.traverse(visit);
+    linkList.traverse(LinkList::visit);
     linkList.show();
     cout << endl;
 }
 
 void  Test::testStack() {
     cout << "栈测试开始……" << endl;
-    ElemType list[3] = { 1, 2, 3 };
-    int size = sizeof(list) / sizeof(ElemType);
+    StackElemType list[3] = { 1, 2, 3 };
+    int size = sizeof(list) / sizeof(StackElemType);
     stack.push(1);
     stack.show();
     cout << "栈顶元素：" << stack.getTop() << endl;
@@ -74,15 +72,15 @@ void  Test::testStack() {
         stack.push(list[i]);
     stack.show();
     stack.pop();
-    stack.traverse(visit);
+    stack.traverse(Stack::visit);
     stack.show();
     cout << endl;
 }
 
 void Test::testQueue() {
     cout << "队列测试开始……" << endl;
-    ElemType list[3] = { 1, 2, 3 };
-    int size = sizeof(list) / sizeof(ElemType);
+    QueueElemType list[3] = { 1, 2, 3 };
+    int size = sizeof(list) / sizeof(QueueElemType);
     queue.enQueue(1);
     queue.show();
     cout << "队首元素：" << queue.getHead() << endl;
@@ -92,6 +90,6 @@ void Test::testQueue() {
         queue.enQueue(list[i]);
     queue.show();
     queue.deQueue();
-    stack.traverse(visit);
+    stack.traverse(Queue::visit);
     queue.show();
 }
