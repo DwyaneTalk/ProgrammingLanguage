@@ -36,6 +36,7 @@ bool BinaryTree::isEmpty() {
 
 void BinaryTree::getNodeInfo(int& depth, int& allNodeNums, int& leafNodeNums) {
 
+
 }
 
 BiNode* BinaryTree::getRoot() {
@@ -66,7 +67,7 @@ BiTreeElemType BinaryTree::getNodeData(BiNode *node) {
 }
 
 void BinaryTree::setNodeData(BiNode *node, BiTreeElemType data) {
-
+    node->data = data;
 }
 
 BinaryTree* BinaryTree::getChildTree( LR lr) {
@@ -109,7 +110,25 @@ BiNode* BinaryTree::getNodeSibling(BiNode *node, LR &lr) {
 
 
 void BinaryTree::insertChildNode(BiNode *node, LR lr, BiTreeElemType data){
-
+    if (!node) {
+        cout << "无效的二叉树插入节点" << endl;
+        exit(ERROR);
+    }
+    if (lr == LEFT) {
+        if (node->lchild) {
+            node->lchild->data = data;
+        } else {
+            node->lchild = new BiNode(data);
+            node->lchild->parent = node;
+        }
+    } else {
+        if (node->rchild) {
+            node->rchild->data = data;
+        } else {
+            node->rchild = new BiNode(data);
+            node->rchild->parent = node;
+        }
+    }
 }
 
 BiTreeElemType BinaryTree::deleteChildNode(BiNode *node, LR lr) {
@@ -124,22 +143,43 @@ BiTreeElemType BinaryTree::deleteChildNode(BiNode *node, LR lr) {
     return ans;
 }
 
-void BinaryTree::preOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data) {
+void BinaryTree::preOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data) {
+    if (root) {
+        **data = root->data;
+        visit(root->data);
+        (*data)++;
+        BinaryTree *lChildTree = getChildTree(LEFT), *rChildTree = getChildTree(RIGHT);
+        lChildTree->preOrderTraverse(visit, data);
+        rChildTree->preOrderTraverse(visit, data);
+    }
+}
+
+void BinaryTree::inOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data) {
+    if (root) {
+        BinaryTree *lChildTree = getChildTree(LEFT), *rChildTree = getChildTree(RIGHT);
+        lChildTree->inOrderTraverse(visit, data);
+        **data = root->data;
+        visit(root->data);
+        (*data)++;
+        rChildTree->inOrderTraverse(visit, data);
+    }
+}
+
+void BinaryTree::postOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data) {
+    if (root) {
+        BinaryTree *lChildTree = getChildTree(LEFT), *rChildTree = getChildTree(RIGHT);
+        lChildTree->postOrderTraverse(visit, data);
+        rChildTree->postOrderTraverse(visit, data);
+        **data = root->data;
+        visit(root->data);
+        (*data)++;
+    }
+}
+
+void BinaryTree::levelOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data) {
 
 }
 
-void BinaryTree::inOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data) {
-
-}
-
-void BinaryTree::postOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data) {
-
-}
-
-void BinaryTree::levelOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data) {
-
-}
-
-void BinaryTree::shwo() {
+void BinaryTree::show() {
 
 }

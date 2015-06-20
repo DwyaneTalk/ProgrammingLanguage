@@ -8,6 +8,12 @@ typedef struct BiNode{
     struct BiNode *lchild;
     struct BiNode *rchild;
     struct BiNode *parent;
+    BiNode(int data = 0){
+        data = data;
+        lchild = NULL;
+        rchild = NULL;
+        parent = NULL;
+    }
 } BiNode;
 
 class BinaryTree
@@ -33,11 +39,11 @@ public:
     BiNode* getNodeSibling(BiNode *node, LR &lr);
     void insertChildNode(BiNode *node, LR lr, BiTreeElemType data);
     BiTreeElemType deleteChildNode(BiNode *node, LR lr);
-    void preOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data);
-    void inOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data);
-    void postOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data);
-    void levelOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data);
-    void shwo();
+    void preOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data);
+    void inOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data);
+    void postOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data);
+    void levelOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data);
+    void show();
 };
 
 #endif
