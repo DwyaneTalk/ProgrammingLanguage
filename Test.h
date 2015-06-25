@@ -6,20 +6,23 @@
 #include "Stack.h"
 #include "Queue.h"
 #include "BinaryTree.h"
+#include "Tree.h"
 
 class Test{
 private:
-    SqList sqList;
-    LinkList linkList;
-    Stack stack;
-    Queue queue;
-    BinaryTree biTree;
+    SqList      sqList;
+    LinkList    linkList;
+    Stack       stack;
+    Queue       queue;
+    BinaryTree  biTree;
+    Tree        tree;
 public:
     void testSqList();
     void testLinkList();
     void testStack();
     void testQueue();
     void testBinaryTree();
+    void testTree();
 };
 
 #endif

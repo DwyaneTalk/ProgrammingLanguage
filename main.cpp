@@ -4,16 +4,17 @@ int main() {
     globalInit();
     Test test;
 
-//    test.testSqList();
+    //test.testSqList();
 
-//    test.testLinkList();
+    //test.testLinkList();
 
-//    test.testStack();
+    //test.testStack();
 
-//    test.testQueue();
+    //test.testQueue();
 
-    test.testBinaryTree();
+    //test.testBinaryTree();
 
+    test.testTree();
     system("pause");
     return 0;
 }

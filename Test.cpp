@@ -167,3 +167,7 @@ void Test::testBinaryTree() {
         cout << elem_data[i] << " ";
     cout << endl;
 }
+
+void Test::testTree() {
+
+}
