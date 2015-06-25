@@ -5,6 +5,19 @@ BinaryTree::BinaryTree() {
 }
 
 BinaryTree::~BinaryTree() {
+    if (root) {
+        queue<BiNode *> queue;
+        BiNode *node;
+        queue.push(root);
+        while (!queue.empty()) {
+            node = queue.front();
+            queue.pop();
+            if (node->lchild)   queue.push(node->lchild);
+            if (node->rchild)   queue.push(node->rchild);
+            delete node;
+        }
+        root = NULL;
+    }
 }
 
 void BinaryTree::init() {
@@ -12,22 +25,56 @@ void BinaryTree::init() {
         BinaryTree *leftTree = getChildTree(LEFT), *rightTree = getChildTree(RIGHT);
         leftTree->init();
         rightTree->init();
-        delete leftTree;
-        delete rightTree;
         delete root;
+        root = NULL;
     }
 }
 
-void BinaryTree::createBibaryTree() {
-
+void BinaryTree::createBibaryTree(BiNode **root, BiNode *parent) {
+    BiTreeElemType data;
+    fin >> data;
+    if (data == 0) {
+        (*root) = NULL;
+    } else {
+        (*root) = new BiNode(data);
+        (*root)->parent = parent;
+        createBibaryTree(&(*root)->lchild, *root);
+        createBibaryTree(&(*root)->rchild, *root);
+    }
 }
 
-void BinaryTree::preinCreateBinaryTree(BiTreeElemType *pre_data, BiTreeElemType *in_data, int nums) {
-
+void BinaryTree::preinCreateBinaryTree(BiNode **root, BiNode *parent, BiTreeElemType *pre_data, BiTreeElemType *in_data, int nums) {
+    if (nums) {
+        (*root) = new BiNode(pre_data[0]);
+        (*root)->parent = parent;
+        int idx = 0;
+        for (; idx < nums; ++idx) {
+            if (in_data[idx] == pre_data[0]) {
+                break;
+            }
+        }
+        preinCreateBinaryTree(&(*root)->lchild, *root, pre_data + 1, in_data, idx);
+        preinCreateBinaryTree(&(*root)->rchild, *root, pre_data + 1 + idx, in_data + idx + 1, nums - idx - 1);
+    } else {
+        (*root) = NULL;
+    }
 }
 
-void BinaryTree::postinCreateBinaryTree(BiTreeElemType *post_data, BiTreeElemType *in_data, int nums) {
-
+void BinaryTree::postinCreateBinaryTree(BiNode **root, BiNode *parent, BiTreeElemType *post_data, BiTreeElemType *in_data, int nums) {
+    if (nums) {
+        (*root) = new BiNode(post_data[nums - 1]);
+        (*root)->parent = parent;
+        int idx = 0;
+        for (; idx < nums; ++idx) {
+            if (in_data[idx] == post_data[nums - 1]) {
+                break;
+            }
+        }
+        postinCreateBinaryTree(&(*root)->lchild, (*root), post_data, in_data, idx);
+        postinCreateBinaryTree(&(*root)->rchild, (*root), post_data + idx, in_data + idx + 1, nums - idx - 1);
+    } else {
+        (*root) = NULL;
+    }
 }
 
 bool BinaryTree::isEmpty() {
@@ -35,12 +82,34 @@ bool BinaryTree::isEmpty() {
 }
 
 void BinaryTree::getNodeInfo(int& depth, int& allNodeNums, int& leafNodeNums) {
-
+    if (root) {
+        BinaryTree *lChildTree = getChildTree(LEFT), *rChildTree = getChildTree(RIGHT);
+        int ldepth, lallNums, lleafNums, rdepth, rallNums, rleafNums;
+        lChildTree->getNodeInfo(ldepth, lallNums, lleafNums);
+        rChildTree->getNodeInfo(rdepth, rallNums, rleafNums);
+        if (ldepth || rdepth) {
+            depth = MAX(ldepth, rdepth) + 1;
+            allNodeNums = lallNums + rallNums + 1;
+            leafNodeNums = lleafNums + rleafNums;
+        } else {
+            depth = 1;
+            allNodeNums = 1;
+            leafNodeNums = 1;
+        }
+    } else {
+        depth = 0;
+        allNodeNums = 0;
+        leafNodeNums = 0;
+    }
 
 }
 
 BiNode* BinaryTree::getRoot() {
     return root;
+}
+
+BiNode** BinaryTree::getRootPoint() {
+    return &root;
 }
 
 BiNode* BinaryTree::findNode(BiTreeElemType data) {
@@ -51,15 +120,26 @@ BiNode* BinaryTree::findNode(BiTreeElemType data) {
         BiNode *ansNode;
         BinaryTree *leftree = getChildTree(LEFT);
         ansNode = leftree->findNode(data);
-        delete leftree;
         if (!ansNode) {
             BinaryTree *rightTree = getChildTree(RIGHT);
             ansNode = rightTree->findNode(data);
-            delete rightTree;
         }
         return ansNode;
     }
    return NULL;
+}
+
+void BinaryTree::setChildNode(BiNode *node, LR lr, BiNode *newNode) {
+    if (node) {
+        if (lr == LEFT) {
+            node->lchild = newNode;
+        } else {
+            node->rchild = newNode;
+        }
+    } else {
+        cout << "对空结点的非法操作" << endl;
+        exit(ERROR);
+    }
 }
 
 BiTreeElemType BinaryTree::getNodeData(BiNode *node) {
@@ -138,7 +218,10 @@ BiTreeElemType BinaryTree::deleteChildNode(BiNode *node, LR lr) {
         nodeTree->root = node;
         BinaryTree *childTree = nodeTree->getChildTree(lr);
         ans = getNodeData(getNodeChild(node, lr));
-        if (childTree)  childTree->init();
+        if (childTree) {
+            childTree->init();
+            setChildNode(node, lr, NULL);
+        }
     }
     return ans;
 }
@@ -176,10 +259,32 @@ void BinaryTree::postOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemTy
     }
 }
 
-void BinaryTree::levelOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType **data) {
-
+void BinaryTree::levelOrderTraverse(void(*visit)(BiTreeElemType &e), BiTreeElemType *data) {
+    if (root) {
+        queue<BiNode*>queue;
+        BiNode *node;
+        queue.push(root);
+        while (!queue.empty()) {
+            node = queue.front();
+            queue.pop();
+            if (node->lchild)   queue.push(node->lchild);
+            if (node->rchild)   queue.push(node->rchild);
+            *(data++) = node->data;
+        }
+    }
 }
 
-void BinaryTree::show() {
+void BinaryTree::show(int n) {
+    if (root) {
+        BinaryTree *rTree = getChildTree(RIGHT), *lTree = getChildTree(LEFT);
+        rTree->show(n + 1);
+        for (int i = 0; i < n; ++i)
+            cout << "     ";
+        cout << root->data << endl;
+        lTree->show(n + 1);
+    }
+}
 
+void BinaryTree::visit(BiTreeElemType &data) {
+    data = data;
 }

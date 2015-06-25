@@ -1,6 +1,7 @@
 #include "Test.h"
 
 int main() {
+    globalInit();
     Test test;
 
 //    test.testSqList();
@@ -10,6 +11,8 @@ int main() {
 //    test.testStack();
 
 //    test.testQueue();
+
+    test.testBinaryTree();
 
     system("pause");
     return 0;

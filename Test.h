@@ -5,6 +5,7 @@
 #include "LinkList.h"
 #include "Stack.h"
 #include "Queue.h"
+#include "BinaryTree.h"
 
 class Test{
 private:
@@ -12,11 +13,13 @@ private:
     LinkList linkList;
     Stack stack;
     Queue queue;
+    BinaryTree biTree;
 public:
     void testSqList();
     void testLinkList();
     void testStack();
     void testQueue();
+    void testBinaryTree();
 };
 
 #endif

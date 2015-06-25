@@ -93,3 +93,77 @@ void Test::testQueue() {
     stack.traverse(Queue::visit);
     queue.show();
 }
+
+void Test::testBinaryTree() {
+    cout << "二叉树测试开始……" << endl;
+    BiTreeElemType pre_data[MAXELEMNUM], in_data[MAXELEMNUM], post_data[MAXELEMNUM], elem_data[MAXELEMNUM];
+    cout << "二叉树创建并显示……" << endl;
+    biTree.createBibaryTree(biTree.getRootPoint(), NULL);
+    biTree.show(0);
+    int i, nums;
+    for (i = 0;; ++i) {
+        fin >> pre_data[i];
+        if (!pre_data[i]) {
+            nums = i;
+            break;
+        }
+    }
+    for (i = 0; i <= nums; ++i)
+        fin >> in_data[i];
+    for (i = 0; i <= nums; ++i)
+        fin >> post_data[i];
+    biTree.init();
+    cout << "先序、中序创建二叉树并显示……" << endl;
+    biTree.show(0);
+    biTree.preinCreateBinaryTree(biTree.getRootPoint(), NULL, pre_data, in_data, nums);
+    biTree.show(0);
+    cout << "后序、中序创建二叉树并显示……" << endl;
+    BinaryTree *ptrBiTree = new BinaryTree();
+    ptrBiTree->postinCreateBinaryTree(ptrBiTree->getRootPoint(), NULL, post_data, in_data, nums);
+    ptrBiTree->show(0);
+    delete ptrBiTree;
+    int depth, allNodeNums, leafNodeNums;
+    biTree.getNodeInfo(depth, allNodeNums, leafNodeNums);
+    cout << "二叉树信息：depth(" << depth << ") allNums(" << allNodeNums << ") leafNums(" << leafNodeNums << ")……" << endl;
+    BiTreeElemType data = 4;
+    BiNode *node = biTree.findNode(data);
+    cout << "获取值为4的结点，元素为：" << biTree.getNodeData(node);
+    biTree.setNodeData(node, 8);
+    cout << ", 设置为新值后为：" << biTree.getNodeData(node) << endl;
+    biTree.show(0);
+    LR lr;
+    BiNode *newNode = biTree.getNodeSibling(node, lr);
+    cout << "元素：" << biTree.getNodeData(node) << "的结点为：" << lr << "结点，兄弟结点元素为：" << biTree.getNodeData(newNode) << endl;
+    biTree.insertChildNode(biTree.getRoot(), LEFT, 4);
+    biTree.insertChildNode(biTree.getRoot(), RIGHT, 9);
+    biTree.show(0);
+    biTree.getNodeInfo(depth, allNodeNums, leafNodeNums);
+    cout << "二叉树信息：depth(" << depth << ") allNums(" << allNodeNums << ") leafNums(" << leafNodeNums << ")……" << endl;
+    biTree.deleteChildNode(node, LEFT);
+    biTree.show(0);
+    biTree.getNodeInfo(depth, allNodeNums, leafNodeNums);
+    cout << "二叉树信息：depth(" << depth << ") allNums(" << allNodeNums << ") leafNums(" << leafNodeNums << ")……" << endl;
+    BiTreeElemType *base = elem_data;
+    biTree.preOrderTraverse(BinaryTree::visit, &base);
+    cout << "先序遍历结果：";
+    for (i = 0; i < allNodeNums; ++i)
+        cout << elem_data[i] << " ";
+    cout << endl;
+    base = elem_data;
+    biTree.inOrderTraverse(BinaryTree::visit, &base);
+    cout << "中序遍历结果：";
+    for (i = 0; i < allNodeNums; ++i)
+        cout << elem_data[i] << " ";
+    cout << endl;
+    base = elem_data;
+    biTree.postOrderTraverse(BinaryTree::visit, &base);
+    cout << "后序遍历结果：";
+    for (i = 0; i < allNodeNums; ++i)
+        cout << elem_data[i] << " ";
+    cout << endl;
+    biTree.levelOrderTraverse(BinaryTree::visit, elem_data);
+    cout << "后序遍历结果：";
+    for (i = 0; i < allNodeNums; ++i)
+        cout << elem_data[i] << " ";
+    cout << endl;
+}
