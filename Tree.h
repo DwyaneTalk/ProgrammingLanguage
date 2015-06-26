@@ -6,13 +6,17 @@
 #include<stack>
 
 typedef struct ChildNode {
-    UInt32              index;
+    UInt8              index;
     struct ChildNode*   next;
+    ChildNode(UInt8 index) {
+        this->index = index;
+        next = NULL;
+    }
 }ChildNode;
 
 typedef struct TreeNode {
     TreeElemType    e;
-    UInt32          parent_idx;
+    UInt8           parent_idx;
     ChildNode*      child_list;
 }TreeNode;
 
@@ -27,7 +31,6 @@ public:
     Tree();
     ~Tree();
     void init();
-    void Tree::renewSpace();
     void createTree();
     bool isEmpty();
     void getTreeInfo(UInt8 &depth, UInt8 &all_nums, UInt8 &leaf_nums);
@@ -35,15 +38,16 @@ public:
     TreeNode* getTreeNode(TreeElemType e);
     TreeElemType getNodeData(TreeNode* node);
     void setNodeData(TreeNode* node, TreeElemType e);
-    TreeNode* getParent();
+    TreeNode* getParent(TreeNode* node);
     TreeNode* getChild(TreeNode* node, UInt8 index);
     TreeNode* getSbling(TreeNode* node, LR lr);
+    UInt8     getChildIndex(TreeNode* node, TreeElemType e);
     void InsertChild(TreeNode* node, TreeElemType e);
     TreeElemType deleteChild(TreeNode* node, UInt8 index);
     TreeElemType deleteNode(TreeNode* node);
     void DFSTraverse(void(*visit)(TreeElemType& e), TreeElemType *data);
     void BFSTraverse(void(*visit)(TreeElemType& e), TreeElemType *data);
-    void show(UInt8 depth);
+    void show();
     void visit(TreeElemType& e);
 };
 

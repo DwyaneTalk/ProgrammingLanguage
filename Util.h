@@ -11,9 +11,11 @@ using namespace std;
 // global variable externs
 extern ifstream fin;
 extern ofstream fout;
+
 // global function statements
 
 void globalInit();
 
+void* renew(void* base, int count, int inc, int size);
 
 #endif 

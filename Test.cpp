@@ -169,5 +169,7 @@ void Test::testBinaryTree() {
 }
 
 void Test::testTree() {
-
+    cout << "Ê÷µÄ²âÊÔ¿ªÊ¼¡­¡­" << endl;
+    tree.createTree();
+    tree.show();
 }
