@@ -172,4 +172,9 @@ void Test::testTree() {
     cout << "树的测试开始……" << endl;
     tree.createTree();
     tree.show();
+    //tree.init();
+    //tree.show();
+    UInt8 depth, all_nums, leaf_nums;
+    tree.getTreeInfo(depth, all_nums, leaf_nums);
+    cout << "树的结点信息：depth(" << depth << ") all_nums(" << all_nums << ") leaf_nums(" << leaf_nums << ")" << endl;
 }
