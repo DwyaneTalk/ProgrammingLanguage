@@ -1,11 +1,7 @@
 # algorithms
-just for practice
+algorithms solution backup
 
-### Tips
-getting any better idea for any problem or finding any mistakes in my code, I'll be grateful for your commits or comments 
+### for anyone
+if you read my solutions, i am waiting for your any better ideas for any problems or any other advice
 
-### Connect me
-@lutao
-DwyaneTalk@gmail.com
-
-## what a ugly coding style ^_^!
+## forgive me for my ugly coding style and incomprehensible chinese comments!
