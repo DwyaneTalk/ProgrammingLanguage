@@ -5,6 +5,7 @@ dataStructure/
 *.sdf
 *.opensdf
 *.suo
-!*.cpp
-!*.h
+!source/
+!inout/
 !README.md
+!.gitignore

@@ -1,4 +1,4 @@
-#include "SqList.h"
+#include "../inc/SqList.h"
 
 
 SqList::SqList(){

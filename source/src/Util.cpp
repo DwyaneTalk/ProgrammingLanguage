@@ -1,4 +1,4 @@
-#include "Util.h"
+#include "../inc/Util.h"
 //global variables
 ifstream fin;
 ofstream fout;

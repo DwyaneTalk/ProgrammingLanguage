@@ -1,4 +1,4 @@
-#include "Test.h"
+#include "inc/Test.h"
 
 int main() {
     globalInit();

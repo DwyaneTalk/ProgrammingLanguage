@@ -1,4 +1,4 @@
-#include "Tree.h"
+#include "../inc/Tree.h"
 
 Tree::Tree() {
     if (base = new TreeNode[INIT_SIZE]) {

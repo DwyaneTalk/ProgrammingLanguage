@@ -1,4 +1,4 @@
-#include "LinkList.h"
+#include "../inc/LinkList.h"
 
 LinkList::LinkList() {
     head = tail = NULL;

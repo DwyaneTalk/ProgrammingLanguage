@@ -1,4 +1,4 @@
-#include "BinaryTree.h"
+#include "../inc/BinaryTree.h"
 
 BinaryTree::BinaryTree() {
     root = NULL;

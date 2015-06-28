@@ -1,4 +1,4 @@
-#include "Stack.h"
+#include "../inc/Stack.h"
 
 Stack::Stack() {
     base = new StackElemType[INIT_SIZE];

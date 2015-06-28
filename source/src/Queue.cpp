@@ -1,4 +1,4 @@
-#include "Queue.h"
+#include "../inc/Queue.h"
 
 Queue::Queue(){
     head = tail = NULL;
