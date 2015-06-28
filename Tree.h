@@ -33,6 +33,8 @@ public:
     void init();
     void createTree();
     bool isEmpty();
+    UInt8 getNodeNums();
+    UInt8 getLeafNums();
     void getTreeInfo(UInt8 &depth, UInt8 &all_nums, UInt8 &leaf_nums);
     TreeNode* getRoot();
     TreeNode* getTreeNode(TreeElemType e);
@@ -48,7 +50,7 @@ public:
     void DFSTraverse(void(*visit)(TreeElemType& e), TreeElemType *data);
     void BFSTraverse(void(*visit)(TreeElemType& e), TreeElemType *data);
     void show();
-    void visit(TreeElemType& e);
+    void static visit(TreeElemType& e);
 };
 
 #endif

@@ -176,5 +176,36 @@ void Test::testTree() {
     //tree.show();
     UInt8 depth, all_nums, leaf_nums;
     tree.getTreeInfo(depth, all_nums, leaf_nums);
-    cout << "树的结点信息：depth(" << depth << ") all_nums(" << all_nums << ") leaf_nums(" << leaf_nums << ")" << endl;
+    cout << "树的结点信息：depth(" << (UInt32)depth << ") all_nums(" << (UInt32)all_nums << ") leaf_nums(" << (UInt32)leaf_nums << ")" << endl;
+    TreeNode* tree_node = tree.getRoot();
+    TreeElemType node_data = tree.getNodeData(tree_node);
+    tree.setNodeData(tree_node, node_data + 1);
+    TreeNode* child_node = tree.getChild(tree_node, 2);
+    TreeNode* sbling_node = tree.getSbling(child_node, LEFT);
+    TreeNode* parent_node = tree.getParent(sbling_node);
+    UInt8 child_index = tree.getChildIndex(parent_node, 4);
+    cout << "结点相关操作信息：" << node_data << " " << tree.getNodeData(child_node) << " " << tree.getNodeData(sbling_node) << " " << tree.getNodeData(parent_node) << " " << (UInt32)child_index << endl;
+    tree.setNodeData(parent_node, 1);
+    tree.show();
+    tree.InsertChild(child_node, 8);
+    tree.InsertChild(sbling_node, 9);
+    //tree.show();
+    tree.deleteChild(sbling_node, 1);
+    //tree.show();
+    tree.deleteNode(tree.getSbling(child_node, RIGHT));
+    tree.show();
+    TreeElemType data[MAXELEMNUM];
+    tree.BFSTraverse(Tree::visit, data);
+    all_nums = tree.getNodeNums();
+    cout << "BFS遍历的结果为：";
+    for (UInt8 i = 0; i < all_nums; ++i) {
+        cout << data[i] << " ";
+    }
+    cout << endl;
+    tree.DFSTraverse(Tree::visit, data);
+    cout << "DFS遍历的结果为：";
+    for (UInt8 i = 0; i < all_nums; ++i) {
+        cout << data[i] << " ";
+    }
+    cout << endl;
 }
