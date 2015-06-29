@@ -3,7 +3,10 @@
 
 SqList::SqList(){
 	elem = new SqListElemType[INIT_SIZE];
-	if (!elem)	exit(OVER);
+    if (!elem) {
+        ferr << "申请内存失败！" << endl;
+        exit(OVER);
+    }
 	listSize = INIT_SIZE;
 	length = 0;
 }
@@ -17,7 +20,10 @@ SqList::~SqList(){
 void SqList::Init() {
     delete[] elem;
     elem = new SqListElemType[INIT_SIZE];
-    if (!elem)	exit(OVER);
+    if (!elem) {
+        ferr << "申请内存失败！" << endl;
+        exit(OVER);
+    }
     listSize = INIT_SIZE;
     length = 0;
 }
@@ -42,7 +48,7 @@ int SqList::getLength(){
 
 SqListElemType SqList::getElem(int i){
 	if (i < 0) {
-		cout << "不合法的获取元素位置" << endl;
+        ferr << "不合法的获取元素位置" << endl;
 		exit(ERROR);
 	}
 	return elem[i];
@@ -50,7 +56,7 @@ SqListElemType SqList::getElem(int i){
 
 int SqList::insertElem(SqListElemType e, int i){
 	if (i < 0 || i > length){
-		cout << "不合法的插入元素位置" << endl;
+        ferr << "不合法的插入元素位置" << endl;
 		exit(ERROR);
 	}
 	if (length >= listSize){
@@ -65,7 +71,7 @@ int SqList::insertElem(SqListElemType e, int i){
 
 SqListElemType SqList::deleleElem(int i){
 	if (i < 0 || i >= length){
-		cout << "不合法的删除元素位置" << endl;
+        ferr << "不合法的删除元素位置" << endl;
 		exit(ERROR);
 	}
 	SqListElemType delElem = elem[i];
@@ -78,7 +84,7 @@ SqListElemType SqList::deleleElem(int i){
 
 SqListElemType SqList::replaceElem(SqListElemType e, int i) {
     if (i < 0 || i >= length) {
-        cout << "不合法的替换元素位置" << endl;
+        ferr << "不合法的替换元素位置" << endl;
         exit(ERROR);
     }
     SqListElemType ans = elem[i];

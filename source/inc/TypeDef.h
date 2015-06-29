@@ -42,6 +42,7 @@ enum GType {
 #define		INCREMENT	    10
 #define     MAXELEMNUM      200
 
+#define     MAX_ARC         INT_MAX
 
 //ºê×´Ì¬
 #define		OK				0

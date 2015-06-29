@@ -35,7 +35,7 @@ int Queue::getLength(){
 
 QueueElemType Queue::getHead(){
     if (size < 1) {
-        cout << "队列为空，操作非法" << endl;
+        ferr << "队列为空，操作非法" << endl;
         exit(ERROR);
     }
     return head->data;
@@ -43,7 +43,7 @@ QueueElemType Queue::getHead(){
 
 QueueElemType Queue::deQueue() {
     if (size < 1) {
-        cout << "队列为空，操作非法" << endl;
+        ferr << "队列为空，操作非法" << endl;
         exit(ERROR);
     }
     QueueElemType ans;

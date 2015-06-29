@@ -2,11 +2,13 @@
 //global variables
 ifstream fin;
 ofstream fout;
+ofstream ferr;
 
 // global functions
 void globalInit() {
     fin.open("input.txt");
     fout.open("output.txt");
+    ferr.open("error.txt");
 }
 
 void* renew(void* base, int count, int inc, int size) {
@@ -15,7 +17,7 @@ void* renew(void* base, int count, int inc, int size) {
         memcpy(new_base, base, count * size);
         return new_base;
     } else {
-        cout << "ÉêÇëÄÚ´æÊ§°Ü£¡" << endl;
+        ferr << "ÉêÇëÄÚ´æÊ§°Ü£¡" << endl;
         exit(OVER);
     }
 }

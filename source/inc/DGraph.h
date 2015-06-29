@@ -20,7 +20,23 @@ typedef struct Vex {
 
 class DGraph : public Graph {
 private:
-    Vex*    vexs;
+    Vex*    vexs;    //Ê®×ÖÁ´±í´æ´¢
 public:
+    DGraph();
+    ~DGraph();
+    void    init();
+    void    createGraph();
+    bool    isEmpty();
+    Vex*    locateVex(VexType data);
+    VexType getVexData(Vex* vex);
+    void    setVexData(Vex* vex, VexType data);
+    Vex*    firstVex(Vex* vex);
+    Vex*    nextVex(Vex* vex, Vex* cur_vex);
+    Vex*    insertVex(VexType data);
+    VexType deleteVex(Vex* vex);
+    void    insertArc(Vex* t_vex, Vex* h_vex, ArcType arc);
+    ArcType deleteArc(Vex* t_vex, Vex* h_vex);
+    void    DFSTraverse();
+    void    BFSTraverse();
 };
 #endif // !DGRAPH_H

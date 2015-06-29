@@ -6,7 +6,7 @@ Stack::Stack() {
         top = 0;
         max_size = INIT_SIZE;
     } else {
-        cout << "ÉêÇëÄÚ´æÊ§°Ü" << endl;
+        ferr << "ÉêÇëÄÚ´æÊ§°Ü" << endl;
         exit(OVER);
     }
 }
@@ -31,7 +31,7 @@ int Stack::getLength() {
 
 StackElemType Stack::getTop() {
     if (top <= 0) {
-        cout << "Õ»¿Õ£¬ÎÞ·¨»ñÈ¡Õ»¶¥ÔªËØ" << endl;
+        ferr << "Õ»¿Õ£¬ÎÞ·¨»ñÈ¡Õ»¶¥ÔªËØ" << endl;
         exit(ERROR);
     }
     return base[top - 1];
@@ -39,7 +39,7 @@ StackElemType Stack::getTop() {
 
 StackElemType Stack::pop() {
     if (top <= 0) {
-        cout << "Õ»¿Õ£¬ÎÞ·¨³öÕ»" << endl;
+        ferr << "Õ»¿Õ£¬ÎÞ·¨³öÕ»" << endl;
         exit(ERROR);
     }
     return base[--top];
@@ -49,7 +49,7 @@ void Stack::push(StackElemType e) {
     if (top >= max_size) {
         StackElemType *newBase = new StackElemType[max_size + INCREMENT];
         if (!newBase) {
-            cout << "ÉêÇëÄÚ´æÊ§°Ü" << endl;
+            ferr << "ÉêÇëÄÚ´æÊ§°Ü" << endl;
             exit(OVER);
         }
         memcpy(newBase, base, sizeof(StackElemType)* max_size);

@@ -61,7 +61,7 @@ LinkListElemType LinkList::getElem(int i) {
     }
     if (node && i >= 0)   return node->data;
     else {
-        cout << "不合法的元素下标" << endl;
+        ferr << "不合法的元素下标" << endl;
         exit(ERROR);
     }
 }
@@ -75,7 +75,8 @@ void LinkList::insertHeadElem(LinkListElemType e) {
         if (!size)  tail = node;
         size += 1;
     } else {
-        exit(OVER);
+        ferr << "不合法的元素下标" << endl;
+        exit(ERROR);
     }
 }
 
@@ -91,7 +92,8 @@ void LinkList::insertTailElem(LinkListElemType e) {
         tail = node;
         size += 1;
     } else {
-        exit(OVER);
+        ferr << "不合法的元素下标" << endl;
+        exit(ERROR);
     }
 }
 
@@ -115,14 +117,14 @@ void LinkList::insertElem(LinkListElemType e, int i) {
             tail = newNode;
         size += 1;
     } else {
-        cout << "不合法的元素下标" << endl;
+        ferr << "不合法的元素下标" << endl;
         exit(ERROR);
     }
 }
 
 LinkListElemType LinkList::deleteHeadElem() {
     if (size < 1) {
-        cout << "不合法的删除元素" << endl;
+        ferr << "不合法的删除元素" << endl;
         exit(ERROR);
     }
     LinkListElemType ans = head->data;
@@ -136,7 +138,7 @@ LinkListElemType LinkList::deleteHeadElem() {
 
 LinkListElemType LinkList::deleteTailElem() {
     if (size < 1) {
-        cout << "不合法的删除元素" << endl;
+        ferr << "不合法的删除元素" << endl;
         exit(ERROR);
     }
     LinkListElemType ans;
@@ -160,7 +162,7 @@ LinkListElemType LinkList::deleteTailElem() {
 
 LinkListElemType LinkList::deleteElem(int i) {
     if (i < 0 || i >= size) {
-        cout << "不合法的删除元素" << endl;
+        ferr << "不合法的删除元素" << endl;
         exit(ERROR);
     }
     LinkListElemType ans;
@@ -191,7 +193,7 @@ LinkListElemType LinkList::deleteElem(int i) {
 
 LinkListElemType LinkList::replaceElem(LinkListElemType e, int i) {
     if (i < 0 || i >= size) {
-        cout << "不合法的删除元素" << endl;
+        ferr << "不合法的删除元素" << endl;
         exit(ERROR);
     }
     LinkListElemType ans;

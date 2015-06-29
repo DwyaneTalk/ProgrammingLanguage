@@ -6,7 +6,7 @@ Tree::Tree() {
         node_nums = 0;
         max_nums = INIT_SIZE;
     } else {
-        cout << "内存申请失败！" << endl;
+        ferr << "内存申请失败！" << endl;
         exit(OVER);
     }
 }
@@ -148,21 +148,21 @@ TreeNode* Tree::getTreeNode(TreeElemType e) {
 
 TreeElemType Tree::getNodeData(TreeNode* node) {
     if(node)    return node->e;
-    cout << "无效的操作结点" << endl;
+    ferr << "无效的操作结点" << endl;
     exit(ERROR);
 }
 
 void Tree::setNodeData(TreeNode* node, TreeElemType e) {
     if (node)   node->e = e;
     else {
-        cout << "无效的操作结点" << endl;
+        ferr << "无效的操作结点" << endl;
         exit(ERROR);
     }
 }
 
 TreeNode* Tree::getParent(TreeNode* node) {
     if (node)   return base + node->parent_idx;
-    cout << "无效的操作结点" << endl;
+    ferr << "无效的操作结点" << endl;
     exit(ERROR);
 }
 
@@ -174,10 +174,10 @@ TreeNode* Tree::getChild(TreeNode* node, UInt8 index) {
             child_node = child_node->next;
         }
         if (child_node)     return base + child_node->index;
-        cout << "该结点孩子结点数少于：" << index << endl;
+        ferr << "该结点孩子结点数少于：" << index << endl;
         exit(ERROR);
     }
-    cout << "无效的操作结点" << endl;
+    ferr << "无效的操作结点" << endl;
     exit(ERROR);
 }
 
@@ -187,7 +187,7 @@ TreeNode* Tree::getSbling(TreeNode* node, LR lr) {
         ChildNode *child_node = parent_node->child_list;
         if (lr == LEFT) {
             if (!child_node) {
-                cout << "树结构出错！" << endl;
+                ferr << "树结构出错！" << endl;
                 exit(ERROR);
             }
             while (child_node->next && base[child_node->next->index].e != node->e) {
@@ -200,10 +200,10 @@ TreeNode* Tree::getSbling(TreeNode* node, LR lr) {
             }
             if (child_node->next)   return base + child_node->next->index;
         }
-        cout << "该结点没有相应的兄弟结点" << endl;
+        ferr << "该结点没有相应的兄弟结点" << endl;
         exit(ERROR);
     }
-    cout << "无效的操作结点" << endl;
+    ferr << "无效的操作结点" << endl;
     exit(ERROR);
 }
 
@@ -229,20 +229,20 @@ void Tree::InsertChild(TreeNode* node, TreeElemType e) {
         base[node_nums].child_list = NULL;
         if (!node->child_list) {
             if (!(node->child_list = new ChildNode(node_nums))) {
-                cout << "申请内存失败！" << endl;
+                ferr << "申请内存失败！" << endl;
                 exit(OVER);
             }
         } else {
             ChildNode* child_node = node->child_list;
             while (child_node->next)    child_node = child_node->next;
             if (!(child_node->next = new ChildNode(node_nums))) {
-                cout << "申请内存失败！" << endl;
+                ferr << "申请内存失败！" << endl;
                 exit(OVER);
             }
         }
         ++node_nums;
     } else {
-        cout << "无效的操作结点" << endl;
+        ferr << "无效的操作结点" << endl;
         exit(ERROR);
     }
 }
@@ -257,7 +257,7 @@ TreeElemType Tree::deleteChild(TreeNode* node, UInt8 index) {
         UInt8 free_idx;
         if (index == 1) {
             if (!node->child_list) {
-                cout << "该结点孩子结点数少于：" << index << endl;
+                ferr << "该结点孩子结点数少于：" << index << endl;
                 exit(ERROR);
             }
             free_node = node->child_list;
@@ -288,7 +288,7 @@ TreeElemType Tree::deleteChild(TreeNode* node, UInt8 index) {
                 }
                 child_node->next = free_node->next;
             } else {
-                cout << "该结点孩子结点数少于：" << index << endl;
+                ferr << "该结点孩子结点数少于：" << index << endl;
                 exit(ERROR);
             }
         }
@@ -305,7 +305,7 @@ TreeElemType Tree::deleteChild(TreeNode* node, UInt8 index) {
             if (child_list) {
                 child_list->index = start_idx - 1;
             } else {
-                cout << "树结构出错" << endl;
+                ferr << "树结构出错" << endl;
                 exit(ERROR);
             }
             ++start_idx;
@@ -313,7 +313,7 @@ TreeElemType Tree::deleteChild(TreeNode* node, UInt8 index) {
         --node_nums;
         return e;
     } else {
-        cout << "无效的操作结点" << endl;
+        ferr << "无效的操作结点" << endl;
         exit(ERROR);
     }
 }

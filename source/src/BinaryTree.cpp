@@ -137,7 +137,7 @@ void BinaryTree::setChildNode(BiNode *node, LR lr, BiNode *newNode) {
             node->rchild = newNode;
         }
     } else {
-        cout << "对空结点的非法操作" << endl;
+        ferr << "对空结点的非法操作" << endl;
         exit(ERROR);
     }
 }
@@ -191,7 +191,7 @@ BiNode* BinaryTree::getNodeSibling(BiNode *node, LR &lr) {
 
 void BinaryTree::insertChildNode(BiNode *node, LR lr, BiTreeElemType data){
     if (!node) {
-        cout << "无效的二叉树插入节点" << endl;
+        ferr << "无效的二叉树插入节点" << endl;
         exit(ERROR);
     }
     if (lr == LEFT) {
