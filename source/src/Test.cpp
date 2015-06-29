@@ -199,7 +199,7 @@ void Test::testTree() {
     all_nums = tree.getNodeNums();
     cout << "BFS遍历的结果为：";
     for (UInt8 i = 0; i < all_nums; ++i) {
-        cout << data[i] << " ";
+        cout << data[i] << " ";                    
     }
     cout << endl;
     tree.DFSTraverse(Tree::visit, data);

@@ -20,10 +20,19 @@ typedef     int     StackElemType;
 typedef     int     QueueElemType;
 typedef     int     BiTreeElemType;
 typedef     int     TreeElemType;
+typedef     char    VexType;
+typedef     int     ArcType;
 
 enum LR {
     LEFT = 0,
     RIGHT = 1
+};
+
+enum GType {
+    DG  = 0,    //有向无权图
+    DN  = 1,    //有向带权图(网)
+    UDG = 2,    //无向无权图
+    UDN = 3     //无向带权图
 };
 
 /*
