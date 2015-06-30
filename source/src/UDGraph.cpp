@@ -103,6 +103,7 @@ Vex*    UDGraph::nextVex(Vex* vex, Vex* cur_vex) {
 Vex*    UDGraph::insertVex(VexType data) {
     if (vex_nums < MAXELEMNUM) {
         vexs[vex_nums++].data = data;
+        return vexs + vex_nums - 1;
     } else {
         ferr << "顶点数达到最大，无法添加新的顶点！" << endl;
         exit(ERROR);
@@ -141,9 +142,11 @@ ArcType UDGraph::deleteArc(Vex* t_vex, Vex* h_vex) {
     if (t_vex && h_vex) {
         UInt8 t_idx = getVexIndex(t_vex);
         UInt8 h_idx = getVexIndex(h_vex);
+        ArcType arc = arcs[t_idx][h_idx].value;
         if (t_idx >= 0 && h_idx >= 0) {
             arcs[t_idx][h_idx].value = MAX_ARC;
             arcs[h_idx][t_idx].value = MAX_ARC;
+            return arc;
         } else {
             ferr << "对空顶点的非法操作！" << endl;
             exit(ERROR);
@@ -154,8 +157,31 @@ ArcType UDGraph::deleteArc(Vex* t_vex, Vex* h_vex) {
     }
 }
 
-void    UDGraph::DFSTraverse() {}
-void    UDGraph::BFSTraverse() {}
+void    UDGraph::DFSTraverse(void(*visit)(VexType &data), VexType* out_data) {
+    bool *visited = new bool[1];
+}
+
+void    UDGraph::BFSTraverse(void(*visit)(VexType &data), VexType* out_data) {}
+
+void    UDGraph::show() {
+    cout << "图的存储结构显示如下：" << endl;
+    cout << "顶点集： ";
+    for (UInt8 j = 0; j < vex_nums; ++j)
+        cout << " " << vexs[j].data;
+    cout << endl;
+    for (UInt8 i = 0; i < vex_nums; ++i) {
+        cout << "顶点：" << vexs[i].data << " ";
+        for (UInt8 j = 0; j < vex_nums; ++j) {
+            cout << " " << arcs[i][j].value;
+        }
+        cout << endl;
+    }
+}
+
+void    UDGraph::visit(VexType& data) {
+    //do some visit operation
+
+}
 
 UInt8   UDGraph::getDataIndex(VexType data) {
     for (UInt8 i = 0; i < vex_nums; ++i) {

@@ -14,7 +14,12 @@ int main() {
 
     //test.testBinaryTree();
 
-    test.testTree();
+    //test.testTree();
+
+    test.testDGraph();
+
+    test.testUDGraph();
+
     system("pause");
     return 0;
 }

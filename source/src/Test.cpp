@@ -209,3 +209,11 @@ void Test::testTree() {
     }
     cout << endl;
 }
+
+void Test::testDGraph() {
+
+}
+
+void Test::testUDGraph() {
+
+}

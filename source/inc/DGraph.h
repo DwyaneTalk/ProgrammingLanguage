@@ -18,7 +18,7 @@ typedef struct Vex {
 } Vex;
 
 
-class DGraph : public Graph {
+class DGraph{
 private:
     Vex*    vexs;    //Ê®×ÖÁ´±í´æ´¢
 public:
@@ -36,7 +36,9 @@ public:
     VexType deleteVex(Vex* vex);
     void    insertArc(Vex* t_vex, Vex* h_vex, ArcType arc);
     ArcType deleteArc(Vex* t_vex, Vex* h_vex);
-    void    DFSTraverse();
-    void    BFSTraverse();
+    void    DFSTraverse(void(*visit)(VexType &data), VexType* out_data);
+    void    BFSTraverse(void(*visit)(VexType &data), VexType* out_data);
+    void    show();
+    void    visit(VexType &data);
 };
 #endif // !DGRAPH_H
