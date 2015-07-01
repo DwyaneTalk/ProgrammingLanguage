@@ -1,51 +1,60 @@
 #ifndef UDGRAPH_H
 #define UDGRAPH_H
 
-#include "Graph.h"
+#include "Util.h"
+#include<stack>
+#include<queue>
 
-typedef struct Vex {
+typedef struct UVex{
     VexType   data;
     VexInfo*       info;   //顶点的附加信息
-    Vex(VexInfo* info = NULL) {
+    UVex(VexInfo* info = NULL) {
         this->info = info;
     }
-} Vex;
+} UVex;
 
-typedef struct Arc {
+typedef struct UArc {
     ArcType   value;
     ArcInfo*        info;   //弧的附加信息
-    Arc(ArcType value = MAX_ARC, ArcInfo* info = NULL) {
+    UArc(ArcType value = NULL_ARC, ArcInfo* info = NULL) {
         this->value = value;
         this->info = info;
     }
-} Arc;
+} UArc;
 
-class UDGraph : public Graph {   //无向图
+class UDGraph{   //无向图
 private:
-    Vex*    vexs;   //顶点集
-    Arc**   arcs;   //邻接矩阵
+    GType   graph_type;
+    UInt32  vex_nums;
+    UInt32  arc_nums;
+    UVex*    vexs;   //顶点集
+    UArc**   arcs;   //邻接矩阵
 
     UInt8   getDataIndex(VexType data);
-    UInt8   getVexIndex(Vex* vex);
+    UInt8   getVexIndex(UVex* vex);
+    UVex*   getIndexVex(UInt8 index);
 public:
     UDGraph();
     ~UDGraph();
     void    init();
     void    createGraph();
-    bool    isEmpty();
-    Vex*    locateVex(VexType data);
-    VexType getVexData(Vex* vex);
-    void    setVexData(Vex* vex, VexType data);
-    Vex*    firstVex(Vex* vex);
-    Vex*    nextVex(Vex* vex, Vex* cur_vex);
-    Vex*    insertVex(VexType data);
-    VexType deleteVex(Vex* vex);
-    void    insertArc(Vex* t_vex, Vex* h_vex, ArcType arc);
-    ArcType deleteArc(Vex* t_vex, Vex* h_vex);
-    void    DFSTraverse(void(*visit)(VexType &data), VexType* out_data);
-    void    BFSTraverse(void(*visit)(VexType &data), VexType* out_data);
+    GType   getType()       { return graph_type; }
+    UInt32  getVexNums()    { return vex_nums; }
+    UInt32  getArcNums()    { return arc_nums; }
+    bool    isEmpty()       { return !vex_nums; }
+    UVex*   locateVex(VexType data);
+    VexType getVexData(UVex* vex);
+    void    setVexData(UVex* vex, VexType data);
+    UVex*   firstVex(UVex* vex);
+    UVex*   nextVex(UVex* vex, UVex* cur_vex);
+    UVex*   insertVex(VexType data);
+    VexType deleteVex(UVex* vex);
+    void    insertArc(UVex* t_vex, UVex* h_vex, ArcType arc);
+    ArcType deleteArc(UVex* t_vex, UVex* h_vex);
+    void    DFSTraverse(void(*visit)(VexType &data));
+    void    BFSTraverse(void(*visit)(VexType &data));
     void    show();
-    void    visit(VexType &data);
+    void    static visit(VexType &data);
 };
 
 #endif // !UDGRAPH_H

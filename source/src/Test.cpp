@@ -215,5 +215,42 @@ void Test::testDGraph() {
 }
 
 void Test::testUDGraph() {
-
+    ud_graph.createGraph();
+    ud_graph.show();
+    ud_graph.init();
+    ud_graph.show();
+    ud_graph.createGraph();
+    ud_graph.show();
+    GType   type = ud_graph.getType();
+    UInt32  vex_nums = ud_graph.getVexNums();
+    UInt32  arc_nums = ud_graph.getArcNums();
+    bool    is_empty = ud_graph.isEmpty();
+    cout << "无向图的基本信息：type(" << type << ") vex_nums(" << vex_nums << ") arc_nums(" << arc_nums << ") empty(" << is_empty << ")" << endl;
+    VexType ori_data = 'C', new_data = 'E';
+    UVex* vex = ud_graph.locateVex(ori_data);
+    ori_data = ud_graph.getVexData(vex);
+    ud_graph.setVexData(vex, new_data);
+    new_data = ud_graph.getVexData(vex);
+    UVex *first_vex, *second_vex;
+    VexType first_data, second_data;
+    first_vex = ud_graph.firstVex(vex);
+    second_vex = ud_graph.nextVex(vex, first_vex);
+    first_data = ud_graph.getVexData(first_vex);
+    second_data = ud_graph.getVexData(second_vex);
+    cout << "顶点操作：" << ori_data << " " << new_data << " " << first_data << " " << second_data << endl;
+    UVex* new_vex = ud_graph.insertVex(ori_data);
+    ud_graph.show();
+    ud_graph.insertArc(new_vex, vex, 3);
+    ud_graph.insertArc(new_vex, first_vex, 5);
+    ud_graph.insertArc(new_vex, second_vex, 4);
+    ud_graph.deleteArc(first_vex, second_vex);
+    ud_graph.show();
+    UVex* delete_vex = ud_graph.locateVex('B');
+    ud_graph.deleteVex(delete_vex);
+    ud_graph.show();
+    cout << "深度遍历结果：";
+    ud_graph.DFSTraverse(UDGraph::visit);
+    cout << endl << "宽度遍历结果：";
+    ud_graph.BFSTraverse(UDGraph::visit);
+    cout << endl;
 }

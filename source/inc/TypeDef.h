@@ -35,6 +35,15 @@ enum GType {
     UDN = 3     //无向带权图
 };
 
+//附加信息可以用来扩展图的功能
+typedef struct VexInfo {   //顶点的附加信息
+
+} VexInfo;
+
+typedef struct ArcInfo {    //弧的附加信息
+
+} ArcInfo;
+
 /*
 	define the MACRO
 */
@@ -42,7 +51,7 @@ enum GType {
 #define		INCREMENT	    10
 #define     MAXELEMNUM      200
 
-#define     MAX_ARC         INT_MAX
+#define     NULL_ARC        0
 
 //宏状态
 #define		OK				0

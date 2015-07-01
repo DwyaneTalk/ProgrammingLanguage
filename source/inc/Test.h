@@ -18,7 +18,7 @@ private:
     Queue       queue;
     BinaryTree  biTree;
     Tree        tree;
-    DGraph      d_graph;
+    //DGraph      d_graph;
     UDGraph     ud_graph;
 public:
     void testSqList();

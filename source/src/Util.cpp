@@ -9,6 +9,7 @@ void globalInit() {
     fin.open("input.txt");
     fout.open("output.txt");
     ferr.open("error.txt");
+    ferr << "runtime error log start¡­¡­" << endl;
 }
 
 void* renew(void* base, int count, int inc, int size) {
