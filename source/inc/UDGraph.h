@@ -45,6 +45,7 @@ public:
     UVex*   locateVex(VexType data);
     VexType getVexData(UVex* vex);
     void    setVexData(UVex* vex, VexType data);
+    UInt8   getVexDegree(UVex *vex);
     UVex*   firstVex(UVex* vex);
     UVex*   nextVex(UVex* vex, UVex* cur_vex);
     UVex*   insertVex(VexType data);

@@ -79,6 +79,16 @@ void    UDGraph::setVexData(UVex* vex, VexType data) {
     }
 }
 
+UInt8   UDGraph::getVexDegree(UVex *vex) {
+    UInt8 index = getVexIndex(vex);
+    UInt8 degree = 0;
+    for (UInt8 i = 0; i < vex_nums; ++i) {
+        if (arcs[index][i].value != NULL_ARC)   ++degree;
+    }
+    return degree;
+}
+
+
 UVex*    UDGraph::firstVex(UVex* vex) {
     UInt8 idx = getVexIndex(vex);
     for (UInt8 i = 0; i < vex_nums; ++i) {
@@ -88,6 +98,7 @@ UVex*    UDGraph::firstVex(UVex* vex) {
 }
 
 UVex*    UDGraph::nextVex(UVex* vex, UVex* cur_vex) {
+    if (!cur_vex)   return firstVex(vex);
     UInt8 t_idx = getVexIndex(vex);
     UInt8 h_idx = getVexIndex(cur_vex);
     for (UInt8 i = h_idx + 1; i < vex_nums; ++i) {

@@ -1,13 +1,19 @@
-4 4
+4 7
 A B C D
-A B 5
-A C 2
-A D 1
-C D 6
+A C 1
+A B 2
+C A 6
+C D 7
+D A 5
+D B 3
+D C 7
 
-4 4
+4 7
 A B C D
-A B 5
-A C 2
-A D 1
-C D 6
+A C 1
+A B 2
+C A 6
+C D 7
+D A 5
+D B 3
+D C 7

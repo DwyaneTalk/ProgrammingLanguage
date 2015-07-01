@@ -2,20 +2,32 @@
 #define DGRAPH_H
 
 #include "Util.h"
-
+#include<stack>
+#include<queue>
 
 typedef struct DArc {
     ArcType   value;
-    UInt8           tvex;     //指向尾顶点在顶点集的索引
-    UInt8           hvex;     //指向头顶点在顶点集的索引
+    UInt8           tidx;     //指向尾顶点在顶点集的索引
+    UInt8           hidx;     //指向头顶点在顶点集的索引
     struct DArc     *tlink;
     struct DArc     *hlink;
+    DArc(ArcType value, UInt8 tidx, UInt8 hidx) {
+        this->value = value;
+        this->tidx = tidx;
+        this->hidx = hidx;
+        tlink = NULL;
+        hlink = NULL;
+    }
 } DArc;
 
 typedef struct DVex {
     VexType   data;
-    DArc*            in_list;
-    DArc*            out_list;
+    DArc*     h_list;
+    DArc*     t_list;
+    DVex() {
+        h_list = NULL;
+        t_list = NULL;
+    }
 } DVex;
 
 
@@ -24,21 +36,26 @@ private:
     GType   graph_type;
     UInt32  vex_nums;
     UInt32  arc_nums;
-    DVex*    vexs;    //十字链表存储
+    DVex*   vexs;    //十字链表存储
+
+    UInt8   getDataIndex(VexType data);
+    UInt8   getVexIndex(DVex* vex);
+    DVex*   getIndexVex(UInt8 index);
 public:
     DGraph();
     ~DGraph();
     void    init();
     void    createGraph();
-    bool    isEmpty();
+    bool    isEmpty()       { return !vex_nums; }
     GType   getType()       { return graph_type; }
     UInt32  getVexNums()    { return vex_nums; }
     UInt32  getArcNums()    { return arc_nums; }
     DVex*   locateVex(VexType data);
     VexType getVexData(DVex* vex);
     void    setVexData(DVex* vex, VexType data);
-    DVex*   firstVex(DVex* vex);
-    DVex*   nextVex(DVex* vex, DVex* cur_vex);
+    UInt8   getVexInDegree(DVex *vex);
+    UInt8   getVexOutDegree(DVex *vex);
+    DVex*   adjVex(DVex* vex, DVex* cur_vex);
     DVex*   insertVex(VexType data);
     VexType deleteVex(DVex* vex);
     void    insertArc(DVex* t_vex, DVex* h_vex, ArcType arc);
