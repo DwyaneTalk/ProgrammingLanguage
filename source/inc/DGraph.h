@@ -60,8 +60,8 @@ public:
     VexType deleteVex(DVex* vex);
     void    insertArc(DVex* t_vex, DVex* h_vex, ArcType arc);
     ArcType deleteArc(DVex* t_vex, DVex* h_vex);
-    void    DFSTraverse(void(*visit)(VexType &data), VexType* out_data);
-    void    BFSTraverse(void(*visit)(VexType &data), VexType* out_data);
+    void    DFSTraverse(void(*visit)(VexType &data));
+    void    BFSTraverse(void(*visit)(VexType &data));
     void    show();
     void    visit(VexType &data);
 };

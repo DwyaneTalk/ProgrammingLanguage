@@ -162,6 +162,78 @@ DVex* DGraph::insertVex(VexType data) {
     }
 }
 
+void DGraph::DFSTraverse(void(*visit)(VexType &data)) {
+    stack<DVex*>stack;
+    DVex *cur_vex, *ner_vex;
+    UInt8 index;
+    bool *visited = new bool[vex_nums];
+    memset(visited, 0, sizeof(bool)* vex_nums);
+    for (UInt8 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            cur_vex = getIndexVex(i);
+            visit(cur_vex->data);
+            visited[i] = true;
+            stack.push(cur_vex);
+            while (!stack.empty()) {
+                cur_vex = stack.top();
+                ner_vex = NULL;
+                while (ner_vex = adjVex(cur_vex, ner_vex)) {
+                    index = getVexIndex(ner_vex);
+                    if (!visited[index]) {
+                        visit(ner_vex->data);
+                        visited[index] = true;
+                        stack.push(ner_vex);
+                        break;
+                    }
+                }
+                if (!ner_vex) {
+                    stack.pop();
+                }
+            }
+        }
+    }
+    delete visited;
+}
+
+void DGraph::BFSTraverse(void(*visit)(VexType &data)) {
+    queue<DVex*>queue;
+    bool *visited = new bool[vex_nums];
+    DVex *cur_vex, *ner_vex;
+    UInt8 index;
+    memset(visited, 0, sizeof(bool)* vex_nums);
+    for (UInt8 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            cur_vex = getIndexVex(i);
+            visit(cur_vex->data);
+            visited[i] = true;
+            queue.push(cur_vex);
+            while (!queue.empty()) {
+                cur_vex = queue.front();
+                queue.pop();
+                ner_vex = NULL;
+                while (ner_vex = adjVex(cur_vex, ner_vex)) {
+                    index = getVexIndex(ner_vex);
+                    if (visited[index]) {
+                        visit(ner_vex->data);
+                        visited[index] = true;
+                        queue.push(ner_vex);
+                    }
+                }
+            }
+        }
+    }
+    delete visited;
+}
+
+void DGraph::show() {
+
+}
+
+void DGraph::visit(VexType &data) {
+    //do some operation
+    cout << " " << data;
+}
+
 UInt8 DGraph::getDataIndex(VexType data) {
     UInt8 index;
     for (index = 0; index < vex_nums; ++index) {
