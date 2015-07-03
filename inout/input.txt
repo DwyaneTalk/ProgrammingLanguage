@@ -3,7 +3,7 @@ A B C D
 A C 1
 A B 2
 C A 6
-C D 7
+C D 4
 D A 5
 D B 3
 D C 7
@@ -13,7 +13,7 @@ A B C D
 A C 1
 A B 2
 C A 6
-C D 7
+C D 4
 D A 5
 D B 3
 D C 7

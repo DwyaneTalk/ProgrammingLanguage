@@ -162,6 +162,27 @@ DVex* DGraph::insertVex(VexType data) {
     }
 }
 
+VexType DGraph::deleteVex(DVex *vex) {
+    VexType data = getVexData(vex);
+    UInt8 index = getVexIndex(vex);
+    UInt8 idx;
+    DArc *arc = vex->t_list;
+    while (arc) {
+        idx = arc->hidx;
+        arc = arc->tlink;
+    }
+
+    return data;
+}
+
+void DGraph::insertArc(DVex* t_vex, DVex* h_vex, ArcType value) {
+
+}
+
+ArcType DGraph::deleteArc(DVex* t_vex, DVex* h_vex) {
+
+}
+
 void DGraph::DFSTraverse(void(*visit)(VexType &data)) {
     stack<DVex*>stack;
     DVex *cur_vex, *ner_vex;
@@ -226,7 +247,17 @@ void DGraph::BFSTraverse(void(*visit)(VexType &data)) {
 }
 
 void DGraph::show() {
-
+    cout << "图的存储结构如下：" << endl;
+    DVex *vex, *cur_vex, *pre_vex;
+    for (UInt8 i = 0; i < vex_nums; ++i) {
+        vex = getIndexVex(i);
+        cout << "顶点：" << getVexData(vex) << " 出度为" << getVexOutDegree(vex) << " 对应的邻接顶点： ";
+        pre_vex = NULL;
+        while (cur_vex = adjVex(vex, pre_vex)) {
+            cout << " " << getVexData(cur_vex);
+            pre_vex = cur_vex;
+        }
+    }
 }
 
 void DGraph::visit(VexType &data) {
