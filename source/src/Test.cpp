@@ -211,10 +211,23 @@ void Test::testTree() {
 }
 
 void Test::testDGraph() {
-
+    cout << "有向图测试开始：" << endl;
+    d_graph.createGraph();
+    d_graph.show();
+    d_graph.init();
+    d_graph.show();
+    d_graph.createGraph();
+    d_graph.show();
+    GType   type = d_graph.getType();
+    UInt32  vex_nums = d_graph.getVexNums();
+    UInt32  arc_nums = d_graph.getArcNums();
+    bool    is_empty = d_graph.isEmpty();
+    cout << "有向图的基本信息：type(" << type << ") vex_nums(" << vex_nums << ") arc_nums(" << arc_nums << ") empty(" << is_empty << ")" << endl;
+    VexType ori_data = 'C', new_data = 'E';
 }
 
 void Test::testUDGraph() {
+    cout << "无向图测试开始：" << endl;
     ud_graph.createGraph();
     ud_graph.show();
     ud_graph.init();
