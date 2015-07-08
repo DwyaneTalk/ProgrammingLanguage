@@ -13,10 +13,10 @@ DGraph::DGraph() {
 
 DGraph::~DGraph() {
     for (UInt8 i = 0; i < vex_nums; ++i) {
-        DArc* list_arc = vexs->h_list, *free_arc;
+        DArc* list_arc = getIndexVex(i)->t_list, *free_arc;
         while (list_arc) {
             free_arc = list_arc;
-            list_arc = list_arc->hlink;
+            list_arc = list_arc->tlink;
             delete free_arc;
         }
     }
@@ -24,11 +24,16 @@ DGraph::~DGraph() {
 }
 
 void DGraph::init() {
+    DVex* vex;
+    DArc* list_arc, *free_arc;
     for (UInt8 i = 0; i < vex_nums; ++i) {
-        DArc* list_arc = vexs->h_list, *free_arc;
+        vex = getIndexVex(i);
+        list_arc = vex->t_list;
+        vex->h_list = NULL;
+        vex->t_list = NULL;
         while (list_arc) {
             free_arc = list_arc;
-            list_arc = list_arc->hlink;
+            list_arc = list_arc->tlink;
             delete free_arc;
         }
     }
@@ -136,16 +141,23 @@ UInt8 DGraph::getVexOutDegree(DVex *vex) {
 }
 
 DVex* DGraph::adjVex(DVex *vex, DVex *cur_vex) {
+    if (!vex) {
+        ferr << "对空顶点非法操作！" << endl;
+        exit(ERROR);
+    }
     if (!cur_vex) {
-        return vexs + vex->t_list->tidx;
+        if (vex->t_list)
+            return vexs + vex->t_list->hidx;
+        else
+            return NULL;
     } else {
         UInt8 index = getVexIndex(cur_vex);
         DArc* arc_list = vex->t_list;
-        while (arc_list->tidx != index) {
+        while (arc_list->hidx != index) {
             arc_list = arc_list->tlink;
         }
         if (arc_list->tlink) {
-            return vexs + arc_list->tlink->tidx;
+            return vexs + arc_list->tlink->hidx;
         } else {
             return NULL;
         }
@@ -171,16 +183,35 @@ VexType DGraph::deleteVex(DVex *vex) {
         idx = arc->hidx;
         arc = arc->tlink;
     }
-
     return data;
 }
 
 void DGraph::insertArc(DVex* t_vex, DVex* h_vex, ArcType value) {
-
+    if (t_vex || h_vex) {
+        DArc* new_arc = new DArc(value, getVexIndex(t_vex), getVexIndex(h_vex));
+        DArc *t_list = t_vex->t_list, *h_list = h_vex->h_list;
+        if (!t_list)    t_vex->t_list = new_arc;
+        else {
+            while (t_list->tlink) {
+                t_list = t_list->tlink;
+            }
+            t_list->tlink = new_arc;
+        }
+        if (!h_list)    h_vex->h_list = new_arc;
+        else {
+            while (h_list->hlink) {
+                h_list = h_list->hlink;
+            }
+            h_list->hlink = new_arc;
+        }
+    } else {
+        ferr << "对空顶点非法操作！" << endl;
+        exit(ERROR);
+    }
 }
 
 ArcType DGraph::deleteArc(DVex* t_vex, DVex* h_vex) {
-
+    return 0;
 }
 
 void DGraph::DFSTraverse(void(*visit)(VexType &data)) {
@@ -251,12 +282,13 @@ void DGraph::show() {
     DVex *vex, *cur_vex, *pre_vex;
     for (UInt8 i = 0; i < vex_nums; ++i) {
         vex = getIndexVex(i);
-        cout << "顶点：" << getVexData(vex) << " 出度为" << getVexOutDegree(vex) << " 对应的邻接顶点： ";
+        cout << "顶点：" << getVexData(vex) << " 入度(" << (Int32)getVexInDegree(vex) << ") 出度(" << (Int32)getVexOutDegree(vex) << ") 对应的邻接顶点： ";
         pre_vex = NULL;
         while (cur_vex = adjVex(vex, pre_vex)) {
-            cout << " " << getVexData(cur_vex);
+            cout << "   " << getVexData(cur_vex);
             pre_vex = cur_vex;
         }
+        cout << endl;
     }
 }
 

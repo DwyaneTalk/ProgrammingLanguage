@@ -18,7 +18,7 @@ int main() {
 
     test.testDGraph();
 
-    test.testUDGraph();
+    //test.testUDGraph();
 
     system("pause");
     return 0;
