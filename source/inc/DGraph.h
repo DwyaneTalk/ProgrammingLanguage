@@ -53,8 +53,12 @@ public:
     DVex*   locateVex(VexType data);
     VexType getVexData(DVex* vex);
     void    setVexData(DVex* vex, VexType data);
+    DArc*   locateArc(DVex* t_vex, DVex* h_vex);
+    ArcType getArcValue(DArc* arc);
+    void    setArcValue(DArc* vex, ArcType value);
     UInt8   getVexInDegree(DVex *vex);
     UInt8   getVexOutDegree(DVex *vex);
+    DArc*   adjArc(DVex* vex, DArc* cur_arc);
     DVex*   adjVex(DVex* vex, DVex* cur_vex);
     DVex*   insertVex(VexType data);
     VexType deleteVex(DVex* vex);
@@ -63,6 +67,6 @@ public:
     void    DFSTraverse(void(*visit)(VexType &data));
     void    BFSTraverse(void(*visit)(VexType &data));
     void    show();
-    void    visit(VexType &data);
+    void static visit(VexType &data);
 };
 #endif // !DGRAPH_H

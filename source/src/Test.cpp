@@ -243,12 +243,24 @@ void Test::testDGraph() {
     d_graph.insertArc(new_vex, vex, 8);
     d_graph.insertArc(new_vex, first_vex, 9);
     d_graph.insertArc(second_vex, new_vex, 10);
+    DArc* arc = d_graph.locateArc(second_vex, first_vex);
+    d_graph.setArcValue(arc, 15);
     d_graph.show();
-    //ud_graph.deleteArc(first_vex, second_vex);
-    //ud_graph.show();
-    //UVex* delete_vex = ud_graph.locateVex('B');
-    //ud_graph.deleteVex(delete_vex);
-    //ud_graph.show();
+    d_graph.deleteArc(second_vex, first_vex);
+    d_graph.show();
+    DVex* delete_vex = d_graph.locateVex('B');
+    d_graph.deleteVex(delete_vex);
+    d_graph.show();
+    type = d_graph.getType();
+    vex_nums = d_graph.getVexNums();
+    arc_nums = d_graph.getArcNums();
+    is_empty = d_graph.isEmpty();
+    cout << "有向图的基本信息：type(" << type << ") vex_nums(" << vex_nums << ") arc_nums(" << arc_nums << ") empty(" << is_empty << ")" << endl;
+    cout << "深度遍历结果：";
+    d_graph.DFSTraverse(DGraph::visit);
+    cout << endl << "宽度遍历结果：";
+    d_graph.BFSTraverse(DGraph::visit);
+    cout << endl;
 
 }
 
