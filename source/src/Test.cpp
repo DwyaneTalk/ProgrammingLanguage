@@ -261,7 +261,6 @@ void Test::testDGraph() {
     cout << endl << "宽度遍历结果：";
     d_graph.BFSTraverse(DGraph::visit);
     cout << endl;
-
 }
 
 void Test::testUDGraph() {

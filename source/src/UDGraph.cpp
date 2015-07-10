@@ -88,7 +88,6 @@ UInt8   UDGraph::getVexDegree(UVex *vex) {
     return degree;
 }
 
-
 UVex*    UDGraph::firstVex(UVex* vex) {
     UInt8 idx = getVexIndex(vex);
     for (UInt8 i = 0; i < vex_nums; ++i) {
@@ -285,4 +284,21 @@ UInt8   UDGraph::getVexIndex(UVex* vex) {
 
 UVex*   UDGraph::getIndexVex(UInt8 index) {
     return vexs + index;
+}
+
+UInt32  UDGraph::connectedCompnent() {
+    UInt32 connected_count = 0;
+    stack<UVex*> stack;
+    UInt32  vex_nums = getVexNums();
+    UVex *cur_vex, *ner_vex;
+    bool*   visited = new bool[vex_nums];
+    memset(visited, 0, sizeof(bool)* vex_nums);
+    UInt32* order = new UInt32[vex_nums];
+    memset(order, 0, sizeof(UInt32)* vex_nums);
+    for (UInt8 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            ++connected_count;
+
+        }
+    }
 }

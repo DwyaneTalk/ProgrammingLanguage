@@ -56,6 +56,11 @@ public:
     void    BFSTraverse(void(*visit)(VexType &data));
     void    show();
     void    static visit(VexType &data);
+    UInt32  connectedCompnent();
+    void    SpanTree();
+    void    primMinSpanTree();
+    void    KruskalMinSpanTree();
+    UInt32  articulationPoint();
 };
 
 #endif // !UDGRAPH_H
