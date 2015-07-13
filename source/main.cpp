@@ -16,9 +16,11 @@ int main() {
 
     //test.testTree();
 
-    test.testDGraph();
+    //test.testDGraph();
 
     //test.testUDGraph();
+
+    test.testUDGraphApp();
 
     system("pause");
     return 0;

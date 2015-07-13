@@ -29,6 +29,8 @@ public:
     void testTree();
     void testDGraph();
     void testUDGraph();
+    void testDGraphApp();
+    void testUDGraphApp();
 };
 
 #endif

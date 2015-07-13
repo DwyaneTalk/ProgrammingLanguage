@@ -183,6 +183,7 @@ void    UDGraph::DFSTraverse(void(*visit)(VexType &data)) {
     UInt8 *order = new UInt8[vex_nums];
     stack<UVex*>stack;
     UVex *cur_vex, *ner_vex;
+    UInt8 index;
     memset(visited, 0, sizeof(bool)* vex_nums);
     memset(order, 0, sizeof(UInt8)* vex_nums);
     for (UInt8 i = 0; i < vex_nums; ++i) {
@@ -193,22 +194,19 @@ void    UDGraph::DFSTraverse(void(*visit)(VexType &data)) {
             stack.push(cur_vex);
             while (!stack.empty()) {
                 cur_vex = stack.top();
-                if (order[i] < vex_nums) {
-                    UInt8 j;
-                    for (j = order[i]; j < vex_nums; ++j) {
-                        if (arcs[i][j].value != NULL_ARC) {
-                            order[i] = j + 1;
-                            break;
-                        }
+                UInt8 j;
+                index = getVexIndex(cur_vex);
+                for (j = order[index]; j < vex_nums; ++j) {
+                    if (arcs[index][j].value != NULL_ARC && !visited[j]) {
+                        order[index] = j + 1;
+                        break;
                     }
-                    if (j < vex_nums && !visited[j]) {
-                        ner_vex = getIndexVex(j);
-                        visit(ner_vex->data);
-                        visited[j] = true;
-                        stack.push(ner_vex);
-                    } else {
-                        stack.pop();
-                    }
+                }
+                if (j < vex_nums) {
+                    ner_vex = getIndexVex(j);
+                    visit(ner_vex->data);
+                    visited[j] = true;
+                    stack.push(ner_vex);
                 } else {
                     stack.pop();
                 }
@@ -227,19 +225,26 @@ void    UDGraph::BFSTraverse(void(*visit)(VexType &data)) {
     for (UInt8 i = 0; i < vex_nums; ++i) {
         if (!visited[i]) {
             cur_vex = getIndexVex(i);
+            visit(cur_vex->data);
+            visited[getVexIndex(cur_vex)] = true;
             queue.push(cur_vex);
             while (!queue.empty()) {
                 cur_vex = queue.front();
                 queue.pop();
-                visit(cur_vex->data);
-                visited[getVexIndex(cur_vex)] = true;
                 first_vex = firstVex(cur_vex);
-                if (first_vex && !visited[getVexIndex(first_vex)]) {
-                    queue.push(first_vex);
+                if (first_vex) {
+                    if (!visited[getVexIndex(first_vex)]) {
+                        visit(first_vex->data);
+                        visited[getVexIndex(first_vex)] = true;
+                        queue.push(first_vex);
+                    }
                     next_vex = nextVex(cur_vex, first_vex);
                     while (next_vex) {
-                        if (!visited[getVexIndex(next_vex)])
+                        if (!visited[getVexIndex(next_vex)]) {
+                            visit(next_vex->data);
+                            visited[getVexIndex(next_vex)] = true;
                             queue.push(next_vex);
+                        }
                         next_vex = nextVex(cur_vex, next_vex);
                     }
                 }
@@ -290,15 +295,43 @@ UInt32  UDGraph::connectedCompnent() {
     UInt32 connected_count = 0;
     stack<UVex*> stack;
     UInt32  vex_nums = getVexNums();
+    UInt8 index;
     UVex *cur_vex, *ner_vex;
     bool*   visited = new bool[vex_nums];
     memset(visited, 0, sizeof(bool)* vex_nums);
-    UInt32* order = new UInt32[vex_nums];
-    memset(order, 0, sizeof(UInt32)* vex_nums);
+    int*    order = new int[vex_nums];
+    memset(order, 0, sizeof(int)* vex_nums);
     for (UInt8 i = 0; i < vex_nums; ++i) {
         if (!visited[i]) {
             ++connected_count;
-
+            cout << "第" << connected_count << "个连通分量：";
+            cur_vex = getIndexVex(i);
+            visited[i] = true;
+            cout << " " << cur_vex->data;
+            stack.push(cur_vex);
+            while (!stack.empty()) {
+                cur_vex = stack.top();
+                index = getVexIndex(cur_vex);
+                UInt32 j;
+                for (j = order[index]; j < vex_nums; ++j) {
+                    if (arcs[index][j].value != NULL_ARC && !visited[j]) {
+                        order[index] = j + 1;
+                        break;
+                    }
+                }
+                if (j < vex_nums) {
+                    ner_vex = getIndexVex(j);
+                    visited[j] = true;
+                    cout << " " << ner_vex->data;
+                    stack.push(ner_vex);
+                } else {
+                    stack.pop();
+                }
+            }
+            cout << endl;
         }
     }
+    delete visited;
+    delete order;
+    return connected_count;
 }

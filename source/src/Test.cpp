@@ -304,3 +304,22 @@ void Test::testUDGraph() {
     ud_graph.BFSTraverse(UDGraph::visit);
     cout << endl;
 }
+
+void Test::testDGraphApp() {
+    cout << "有向图应用测试开始：" << endl;
+    d_graph.createGraph();
+    d_graph.show();
+}
+
+void Test::testUDGraphApp() {
+    cout << "无向图应用测试开始：" << endl;
+    ud_graph.createGraph();
+    ud_graph.show();
+    cout << "深度遍历结果：";
+    ud_graph.DFSTraverse(UDGraph::visit);
+    cout << endl;
+    cout << "宽度遍历结果：";
+    ud_graph.BFSTraverse(UDGraph::visit);
+    cout << endl;
+    ud_graph.connectedCompnent();
+}
