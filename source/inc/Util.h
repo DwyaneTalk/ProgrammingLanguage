@@ -5,6 +5,7 @@
 #include <fstream>
 #include "stdlib.h"
 #include <limits.h>
+#include <algorithm>
 
 #include "TypeDef.h"
 
@@ -21,5 +22,7 @@ extern ofstream ferr;
 void globalInit();
 
 void* renew(void* base, int count, int inc, int size);
+
+UInt32 getMin(UInt32 *array, UInt32 nums, UInt32 *index);
 
 #endif 

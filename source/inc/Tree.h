@@ -44,7 +44,7 @@ public:
     TreeNode* getChild(TreeNode* node, UInt8 index);
     TreeNode* getSbling(TreeNode* node, LR lr);
     UInt8     getChildIndex(TreeNode* node, TreeElemType e);
-    void InsertChild(TreeNode* node, TreeElemType e);
+    TreeNode* InsertChild(TreeNode* node, TreeElemType e);
     TreeElemType deleteChild(TreeNode* node, UInt8 index);
     TreeElemType deleteNode(TreeNode* node);
     void DFSTraverse(void(*visit)(TreeElemType& e), TreeElemType *data);

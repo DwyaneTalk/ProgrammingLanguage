@@ -1,5 +1,6 @@
 #ifndef TYPEDEF_H
 #define TYPEDEF_H
+#include <limits.h>
 
 typedef     signed char         Int8;
 typedef     unsigned char       UInt8;
@@ -19,7 +20,7 @@ typedef		int		LinkListElemType;
 typedef     int     StackElemType;
 typedef     int     QueueElemType;
 typedef     int     BiTreeElemType;
-typedef     int     TreeElemType;
+typedef     char     TreeElemType;
 typedef     char    VexType;
 typedef     int     ArcType;
 
@@ -51,7 +52,8 @@ typedef struct ArcInfo {    //弧的附加信息
 #define		INCREMENT	    10
 #define     MAXELEMNUM      200
 
-#define     NULL_ARC        0
+#define     NULL_ARC        INT_MAX
+#define     MIN_ARC         INT_MIN
 
 //宏状态
 #define		OK				0

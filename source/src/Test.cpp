@@ -322,4 +322,13 @@ void Test::testUDGraphApp() {
     ud_graph.BFSTraverse(UDGraph::visit);
     cout << endl;
     ud_graph.connectedCompnent();
+    cout << "生成树和生成森林测试如下" << endl;
+    Tree* tree = ud_graph.SpanTree();
+    tree->show();
+    cout << "prim最小生成树测试如下" << endl;
+    tree = ud_graph.primMinSpanTree();
+    tree->show();
+    cout << "kruskal最小生成树测试如下" << endl;
+    tree = ud_graph.KruskalMinSpanTree();
+    tree->show();
 }

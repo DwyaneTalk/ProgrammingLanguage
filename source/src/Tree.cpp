@@ -134,7 +134,9 @@ void Tree::getTreeInfo(UInt8 &depth, UInt8 &all_nums, UInt8 &leaf_nums) {
 }
 
 TreeNode* Tree::getRoot() {
-    return base + root_idx;
+    if (root_idx >= 0)
+        return base + root_idx; 
+    else    return NULL;
 }
 
 TreeNode* Tree::getTreeNode(TreeElemType e) {
@@ -218,7 +220,7 @@ UInt8 Tree::getChildIndex(TreeNode* node, TreeElemType e) {
     else                return -1;
 }
 
-void Tree::InsertChild(TreeNode* node, TreeElemType e) {
+TreeNode* Tree::InsertChild(TreeNode* node, TreeElemType e) {
     if (node) {
         if (node_nums >= max_nums) {
             base = (TreeNode*)renew(base, max_nums, INCREMENT, sizeof(TreeNode));
@@ -241,10 +243,16 @@ void Tree::InsertChild(TreeNode* node, TreeElemType e) {
             }
         }
         ++node_nums;
+    } else if(isEmpty()){
+        base[node_nums].e = e;
+        base[node_nums].parent_idx = -1;
+        base[node_nums].child_list = NULL;
+        root_idx = node_nums++;
     } else {
         ferr << "无效的操作结点" << endl;
         exit(ERROR);
     }
+    return base + node_nums - 1;
 }
 
 TreeElemType Tree::deleteChild(TreeNode* node, UInt8 index) {

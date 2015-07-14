@@ -22,3 +22,14 @@ void* renew(void* base, int count, int inc, int size) {
         exit(OVER);
     }
 }
+
+UInt32 getMin(UInt32 *array, UInt32 nums, UInt32 *index) {
+    UInt32 min_value = *array;
+    for (UInt32 i = 1; i < nums; ++i) {
+        if (*(array + i) < min_value) {
+            min_value = *(array + i);
+            *(index) = i;
+        }
+    }
+    return min_value;
+}

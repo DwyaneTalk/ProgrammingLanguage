@@ -2,6 +2,7 @@
 #define UDGRAPH_H
 
 #include "Util.h"
+#include "Tree.h"
 #include<stack>
 #include<queue>
 
@@ -43,6 +44,7 @@ public:
     UInt32  getArcNums()    { return arc_nums; }
     bool    isEmpty()       { return !vex_nums; }
     UVex*   locateVex(VexType data);
+    UArc*   locateArc(UVex* vex1, UVex* vex2);
     VexType getVexData(UVex* vex);
     void    setVexData(UVex* vex, VexType data);
     UInt8   getVexDegree(UVex *vex);
@@ -57,9 +59,9 @@ public:
     void    show();
     void    static visit(VexType &data);
     UInt32  connectedCompnent();
-    void    SpanTree();
-    void    primMinSpanTree();
-    void    KruskalMinSpanTree();
+    Tree*   SpanTree();
+    Tree*   primMinSpanTree();
+    Tree*   KruskalMinSpanTree();
     UInt32  articulationPoint();
 };
 

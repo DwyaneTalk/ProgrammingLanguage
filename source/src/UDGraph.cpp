@@ -61,6 +61,16 @@ UVex*    UDGraph::locateVex(VexType data) {
     else            return vexs + index;
 }
 
+UArc*   UDGraph::locateArc(UVex* vex1, UVex* vex2) {
+    if (vex1 && vex2) {
+        UInt8 idx1 = getVexIndex(vex1), idx2 = getVexIndex(vex2);
+        return &arcs[idx1][idx2];
+    } else {
+        ferr << "对空顶点的非法操作" << endl;
+        exit(ERROR);
+    }
+}
+
 VexType UDGraph::getVexData(UVex* vex) {
     if (vex) {
         return vex->data;
@@ -263,7 +273,10 @@ void    UDGraph::show() {
     for (UInt8 i = 0; i < vex_nums; ++i) {
         cout << "顶点：" << vexs[i].data << " ";
         for (UInt8 j = 0; j < vex_nums; ++j) {
-            cout << " " << arcs[i][j].value;
+            if (arcs[i][j].value != NULL_ARC )
+                cout << " " << arcs[i][j].value;
+            else 
+                cout << " x";
         }
         cout << endl;
     }
@@ -334,4 +347,163 @@ UInt32  UDGraph::connectedCompnent() {
     delete visited;
     delete order;
     return connected_count;
+}
+
+Tree*   UDGraph::SpanTree() {
+    Tree *tree = new Tree;
+    tree->InsertChild(NULL, '0');
+    TreeNode *parent;
+    UInt32 vex_nums = getVexNums();
+    bool* visited = new bool[vex_nums];
+    memset(visited, 0, sizeof(bool)* vex_nums);
+    int* order = new int[vex_nums];
+    memset(order, 0, sizeof(int)* vex_nums);
+    UVex *cur_vex, *ner_vex;
+    UInt32 index;
+    stack<UVex*> vex_stack;
+    stack<TreeNode*> tree_node;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            parent = tree->getRoot();
+            cur_vex = getIndexVex(i);
+            parent =  tree->InsertChild(parent, cur_vex->data);
+            visited[i] = true;
+            vex_stack.push(cur_vex);
+            tree_node.push(parent);
+            while (!vex_stack.empty()) {
+                cur_vex = vex_stack.top();
+                parent = tree_node.top();
+                index = getVexIndex(cur_vex);
+                UInt32 j;
+                for (j = order[index]; j < vex_nums; ++j) {
+                    if (arcs[index][j].value != NULL_ARC && !visited[j]) {
+                        order[index] = j + 1;
+                        break;
+                    }
+                }
+                if (j < vex_nums) {
+                    ner_vex = getIndexVex(j);
+                    parent = tree->InsertChild(parent, ner_vex->data);
+                    visited[j] = true;
+                    vex_stack.push(ner_vex);
+                    tree_node.push(parent);
+                } else {
+                    vex_stack.pop();
+                    tree_node.pop();
+                }
+            }
+        }
+    }
+    delete visited;
+    delete order;
+    return tree;
+}
+
+Tree*   UDGraph::primMinSpanTree() {
+    Tree* tree = new Tree;
+    UInt32 vex_nums = getVexNums();
+    TreeNode* *adj_vex = new TreeNode*[vex_nums];
+    Int32 *cost = new Int32[vex_nums];
+    bool   *chosed = new bool[vex_nums];
+    cost[0] = 0;
+    chosed[0] = true;
+    UInt32 total_cost = 0;
+    UVex *cur_vex = getIndexVex(0);
+    TreeNode* parent = tree->InsertChild(NULL, cur_vex->data);
+    for (UInt32 i = 1; i < vex_nums; ++i) {
+        adj_vex[i] = parent;
+        cost[i] = arcs[0][i].value;
+        chosed[i] = false;
+    }
+    for (UInt32 i = 1; i < vex_nums; ++i) {
+        UInt32 next;
+        ArcType min_value = NULL_ARC;
+        for (UInt32 j = 0; j < vex_nums; ++j) {
+            if (!chosed[j] && cost[j] < min_value) {
+                next = j;
+                min_value = cost[j];
+            }
+        }
+        cur_vex = getIndexVex(next);
+        parent = tree->InsertChild(adj_vex[next], cur_vex->data);
+        total_cost += min_value;
+        cost[next] = 0;
+        chosed[next] = true;
+        for (UInt32 j = 0; j < vex_nums; ++j) {
+            if (cost[j] > arcs[next][j].value) {
+                cost[j] = arcs[next][j].value;
+                adj_vex[j] = parent;
+            }
+        }
+    }
+    delete adj_vex;
+    delete cost;
+    delete chosed;
+    return tree;
+}
+
+typedef struct {
+    ArcType value;
+    UInt32 l1;
+    UInt32 l2;
+} Link;
+
+int compare(const void *a, const void *b) {
+    Link *A = (Link *)a;
+    Link *B = (Link *)b;
+    return (A->value) - (B->value);
+}
+
+void connect(UInt32 *connect_cnt, UInt32 nums, UInt32 l1, UInt32 l2) {
+    for (UInt32 i = 0; i < nums; ++i) {
+        if (connect_cnt[i] == l2)   connect_cnt[i] = l1;
+    }
+}
+
+Tree*   UDGraph::KruskalMinSpanTree() {
+    Tree* tree = new Tree;
+    Link *link = new Link[arc_nums];
+    UInt32 count = 0, total_cost = 0;
+    bool   *inserted = new bool[vex_nums];
+    memset(inserted, 0, sizeof(bool)* vex_nums);
+    UInt32 *connect_cnt = new UInt32[vex_nums];
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        connect_cnt[i] = i;
+        for (UInt32 j = i; j < vex_nums; ++j) {
+            if (arcs[i][j].value != NULL_ARC) {
+                link[count++] = { arcs[i][j].value, i, j };
+            }
+        }
+    }
+    qsort(link, arc_nums, sizeof(Link), compare);
+    count = 0;
+    UDGraph graph;
+    UVex *vex1, *vex2, *new_vex1, *new_vex2;
+    for (UInt32 i = 1; i < vex_nums; ++i) {
+        while (connect_cnt[link[count].l1] == connect_cnt[link[count].l2]) {
+            ++count;
+        }
+        total_cost += link[count].value;
+        vex1 = getIndexVex(link[count].l1);
+        vex2 = getIndexVex(link[count].l2);
+        if (!inserted[link[count].l1]) {
+            new_vex1 = graph.insertVex(vex1->data);
+            inserted[link[count].l1] = true;
+        } else {
+            new_vex1 = graph.locateVex(vex1->data);
+        }
+        if (!inserted[link[count].l2]) {
+            new_vex2 = graph.insertVex(vex2->data);
+            inserted[link[count].l2] = true;
+        } else {
+            new_vex2 = graph.locateVex(vex2->data);
+        }
+        connect(connect_cnt, vex_nums, connect_cnt[link[count].l1], connect_cnt[link[count].l2]);
+        graph.insertArc(new_vex1, new_vex2, link[count++].value);
+    }
+    return graph.SpanTree();
+}
+
+UInt32  UDGraph::articulationPoint() {
+
 }
