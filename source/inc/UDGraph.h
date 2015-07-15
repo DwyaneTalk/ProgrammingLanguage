@@ -62,7 +62,7 @@ public:
     Tree*   SpanTree();
     Tree*   primMinSpanTree();
     Tree*   KruskalMinSpanTree();
-    UInt32  articulationPoint();
+    void   articulationPoint();
 };
 
 #endif // !UDGRAPH_H

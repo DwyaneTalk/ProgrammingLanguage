@@ -325,10 +325,14 @@ void Test::testUDGraphApp() {
     cout << "生成树和生成森林测试如下" << endl;
     Tree* tree = ud_graph.SpanTree();
     tree->show();
+    delete tree;
     cout << "prim最小生成树测试如下" << endl;
     tree = ud_graph.primMinSpanTree();
     tree->show();
+    delete tree;
     cout << "kruskal最小生成树测试如下" << endl;
     tree = ud_graph.KruskalMinSpanTree();
     tree->show();
+    delete tree;
+    ud_graph.articulationPoint();
 }

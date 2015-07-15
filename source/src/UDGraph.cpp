@@ -504,6 +504,62 @@ Tree*   UDGraph::KruskalMinSpanTree() {
     return graph.SpanTree();
 }
 
-UInt32  UDGraph::articulationPoint() {
-
+void  UDGraph::articulationPoint() {
+    stack<UVex *>stack;
+    UInt32 vex_nums = getVexNums(), index, par_index, count = 0;;
+    UInt32 *visited = new UInt32[vex_nums];
+    UInt32 *low = new UInt32[vex_nums];
+    UInt32 *order = new UInt32[vex_nums];
+    bool   *point = new bool[vex_nums];
+    memset(visited, 0, sizeof(UInt32)* vex_nums);
+    memset(order, 0, sizeof(UInt32)* vex_nums);
+    memset(point, 0, sizeof(bool)* vex_nums);
+    UVex *cur_vex, *ner_vex, *par_vex;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            count = 0;
+            cur_vex = getIndexVex(i);
+            visited[i] = low[i] = ++count;
+            stack.push(cur_vex);
+            while (!stack.empty()) {
+                cur_vex = stack.top();
+                index = getVexIndex(cur_vex);
+                UInt32 j;
+                for (j = order[index]; j < vex_nums; ++j) {
+                    if (arcs[index][j].value != NULL_ARC) {
+                        if (!visited[j]) {
+                            order[index] = j + 1;
+                            break;
+                        } else if (visited[j] < low[index]) {
+                            low[index] = visited[j];
+                        }
+                    }
+                }
+                if (j < vex_nums) {
+                    ner_vex = getIndexVex(j);
+                    visited[j] = low[j] = ++count;
+                    stack.push(ner_vex);
+                } else {
+                    stack.pop();
+                    if (!stack.empty()) {
+                        par_vex = stack.top();
+                        par_index = getVexIndex(par_vex);
+                        if (low[index] < low[par_index])    low[par_index] = low[index];
+                        if (low[index] >= visited[par_index]) {
+                            point[par_index] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    cout << "�ؽڵ㣺";
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        if (point[i])   cout << " " << getIndexVex(i)->data << " ";
+    }
+    cout << endl;
+    delete order;
+    delete visited;
+    delete low;
+    delete point;
 }
