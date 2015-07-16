@@ -328,10 +328,11 @@ ArcType DGraph::deleteArc(DVex* t_vex, DVex* h_vex) {
 
 void DGraph::DFSTraverse(void(*visit)(VexType &data)) {
     stack<DVex*>stack;
-    DVex *cur_vex, *ner_vex;
-    UInt8 index;
+    DVex *cur_vex, *ner_vex, **pre_vex = new DVex*[vex_nums];
+    UInt8 index, idx;
     bool *visited = new bool[vex_nums];
     memset(visited, 0, sizeof(bool)* vex_nums);
+    memset(pre_vex, 0, sizeof(DVex*)* vex_nums);
     for (UInt8 i = 0; i < vex_nums; ++i) {
         if (!visited[i]) {
             cur_vex = getIndexVex(i);
@@ -340,12 +341,14 @@ void DGraph::DFSTraverse(void(*visit)(VexType &data)) {
             stack.push(cur_vex);
             while (!stack.empty()) {
                 cur_vex = stack.top();
-                ner_vex = NULL;
+                index = getVexIndex(cur_vex);
+                ner_vex = pre_vex[index];
                 while (ner_vex = adjVex(cur_vex, ner_vex)) {
-                    index = getVexIndex(ner_vex);
-                    if (!visited[index]) {
+                    idx = getVexIndex(ner_vex);
+                    if (!visited[idx]) {
                         visit(ner_vex->data);
-                        visited[index] = true;
+                        visited[idx] = true;
+                        pre_vex[index] = ner_vex;
                         stack.push(ner_vex);
                         break;
                     }
@@ -438,3 +441,167 @@ DVex* DGraph::getIndexVex(UInt8 index) {
     }
     return vexs + index;
 }
+
+DGraph* DGraph::complementGraph() {
+    DGraph  *graph = new DGraph;
+    UInt32 vex_nums = getVexNums(), arc_nums = getArcNums();
+    GType graph_type = getType();
+    DArc *old_hlist, **new_tlist;
+    graph->setType(graph_type);
+    graph->setVexNums(vex_nums);
+    graph->setArcNums(arc_nums);
+    DVex *new_vex, *old_vex, *ner_vex;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        old_vex = getIndexVex(i);
+        old_hlist = old_vex->h_list;
+        new_vex = graph->getIndexVex(i);
+        new_tlist = &new_vex->t_list;
+        graph->setVexData(new_vex, old_vex->data);
+        while (old_hlist) {
+            (*new_tlist) = new DArc(old_hlist->value, old_hlist->hidx, old_hlist->tidx);
+            ner_vex = graph->getIndexVex(old_hlist->tidx);
+            (*new_tlist)->hlink = ner_vex->h_list;
+            ner_vex->h_list = (*new_tlist);
+            new_tlist = &(*new_tlist)->tlink;
+            old_hlist = old_hlist->hlink;
+        }
+    }
+    return graph;
+}
+
+
+UInt32 DGraph::weaklyConnectedCompnent(){
+    stack<DVex*> stack;
+    UInt32 vex_nums = getVexNums();
+    UInt32 index, idx;
+    UInt32 connected_count = 0;
+    DVex *cur_vex, *ner_vex, **pre_vex = new DVex*[vex_nums];
+    bool *visited = new bool[vex_nums];
+    memset(visited, 0, sizeof(bool)* vex_nums);
+    memset(pre_vex, 0, sizeof(DVex*)* vex_nums);
+    cout << "有向图的弱连通分量如下：" << endl;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            ++connected_count;
+            cout << "第" << connected_count << "个弱连通分量：";
+            cur_vex = getIndexVex(i);
+            cout << " " << cur_vex->data << " ";
+            visited[i] = true;
+            stack.push(cur_vex);
+            while (!stack.empty()) {
+                cur_vex = stack.top();
+                index = getVexIndex(cur_vex);
+                ner_vex = pre_vex[index];
+                while (ner_vex = adjVex(cur_vex, ner_vex)) {
+                    idx = getVexIndex(ner_vex);
+                    if (!visited[idx]) {
+                        cout << " " << ner_vex->data << " ";
+                        visited[idx] = true;
+                        pre_vex[index] = ner_vex;
+                        stack.push(ner_vex);
+                    }
+                }
+                if (!ner_vex) {
+                    stack.pop();
+                }
+            }
+            cout << endl;
+        }
+    }
+    delete visited;
+    return connected_count;
+}
+
+UInt32 DGraph::strongConnectedCompnent(){
+    DGraph *c_graph = complementGraph();
+    c_graph->show();
+    stack<DVex*> stack;
+    UInt32 index, idx, count = 0, weakly_cnt = 0, strong_cnt = 0 , vex_nums = getVexNums();
+    DVex *cur_vex, *ner_vex, **pre_vex = new DVex*[vex_nums];
+    bool *visited = new bool[vex_nums];
+    UInt32 *finished = new UInt32[vex_nums + 1];
+    UInt32 *new_finished = finished;
+    memset(visited, 0, sizeof(bool)* vex_nums);
+    memset(pre_vex, 0, sizeof(DVex*)* vex_nums);
+    cout << "有向图的强连通分量测试：" << endl;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        if (!visited[i]) {
+            count = 0;
+            cur_vex = getIndexVex(i);
+            visited[i] = true;
+            stack.push(cur_vex);
+            while (!stack.empty()) {
+                cur_vex = stack.top();
+                index = getVexIndex(cur_vex);
+                ner_vex = pre_vex[index];
+                while (ner_vex = adjVex(cur_vex, ner_vex)) {
+                    idx = getVexIndex(ner_vex);
+                    if (!visited[idx]) {
+                        visited[idx] = true;
+                        pre_vex[index] = ner_vex;
+                        stack.push(ner_vex);
+                        break;
+                    }
+                }
+                if (!ner_vex) {
+                    ++count;
+                    *(++new_finished) = getVexIndex(stack.top());
+                    stack.pop();
+                }
+            }
+            strong_cnt = c_graph->strongConnectedCompnentResult(new_finished - count, count, strong_cnt);
+        }
+    }
+    delete visited;
+    delete c_graph;
+    delete finished;
+    return strong_cnt;
+}
+
+UInt32 DGraph::strongConnectedCompnentResult(UInt32 *finished, UInt32 vex_cnt, UInt32 strong_cnt){
+    UInt32 vex_nums = getVexNums(),index, idx;
+    stack<DVex*> stack;
+    DVex *cur_vex, *ner_vex, **pre_vex = new DVex*[vex_nums];
+    bool *visited = new bool[vex_nums];
+    memset(pre_vex, 0, sizeof(DVex*)* vex_nums);
+    for (UInt32 i = 0; i < vex_nums; ++i)   visited[i] = true;
+    for (UInt32 i = 1; i <= vex_cnt; ++i)    visited[finished[i]] = false;
+    for (UInt32 i = vex_cnt; i > 0; --i) {
+        UInt32 j = finished[i];
+        if (!visited[j]) {
+            ++strong_cnt;
+            cout << "第" << strong_cnt << "个强连通分量：";
+            cur_vex = getIndexVex(j);
+            cout << " " << cur_vex->data << " ";
+            visited[j] = true;
+            stack.push(cur_vex);
+            while (!stack.empty()) {
+                cur_vex = stack.top();
+                index = getVexIndex(cur_vex);
+                ner_vex = pre_vex[index];
+                while (ner_vex = adjVex(cur_vex, ner_vex)) {
+                    idx = getVexIndex(ner_vex);
+                    if (!visited[idx]) {
+                        cout << " " << ner_vex->data << " ";
+                        visited[idx] = true;
+                        pre_vex[index] = ner_vex;
+                        stack.push(ner_vex);
+                        break;
+                    }
+                }
+                if (!ner_vex) {
+                    stack.pop();
+                }
+            }
+            cout << endl;
+        }
+    }
+    delete visited;
+    return strong_cnt;
+}
+
+//void   DGraph::topoLogicalSort(){}
+//void   DGraph::topoLogicalOrder(){}
+//void   DGraph::criticalPath(){}
+//void   DGraph::dijkstraShortestPath(){}
+//void   DGraph::floydShortestPath(){}

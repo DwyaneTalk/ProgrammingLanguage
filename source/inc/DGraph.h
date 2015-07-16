@@ -50,6 +50,9 @@ public:
     GType   getType()       { return graph_type; }
     UInt32  getVexNums()    { return vex_nums; }
     UInt32  getArcNums()    { return arc_nums; }
+    void    setType(GType graph_type)       { this->graph_type = graph_type; }
+    void    setVexNums(UInt32 vex_nums)    { this->vex_nums = vex_nums; }
+    void    setArcNums(UInt32 arc_nums)    { this->arc_nums = arc_nums; }
     DVex*   locateVex(VexType data);
     VexType getVexData(DVex* vex);
     void    setVexData(DVex* vex, VexType data);
@@ -68,5 +71,14 @@ public:
     void    BFSTraverse(void(*visit)(VexType &data));
     void    show();
     void static visit(VexType &data);
+    DGraph* complementGraph();
+    UInt32  weaklyConnectedCompnent();//弱连通分量
+    UInt32  strongConnectedCompnent();//强连通分量
+    UInt32  strongConnectedCompnentResult(UInt32 *finished, UInt32 vex_cnt, UInt32 strong_cnt);//强连通分量
+    void    topoLogicalSort();
+    void    topoLogicalOrder();
+    void    criticalPath();
+    void    dijkstraShortestPath();
+    void    floydShortestPath();
 };
 #endif // !DGRAPH_H

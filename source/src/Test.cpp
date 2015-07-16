@@ -309,6 +309,8 @@ void Test::testDGraphApp() {
     cout << "有向图应用测试开始：" << endl;
     d_graph.createGraph();
     d_graph.show();
+    d_graph.weaklyConnectedCompnent();
+    d_graph.strongConnectedCompnent();
 }
 
 void Test::testUDGraphApp() {

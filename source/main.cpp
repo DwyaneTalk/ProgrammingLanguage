@@ -20,7 +20,9 @@ int main() {
 
     //test.testUDGraph();
 
-    test.testUDGraphApp();
+    //test.testUDGraphApp();
+
+    test.testDGraphApp();
 
     system("pause");
     return 0;
