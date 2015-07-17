@@ -11,10 +11,12 @@ typedef struct DArc {
     UInt8           hidx;     //指向头顶点在顶点集的索引
     struct DArc     *tlink;
     struct DArc     *hlink;
-    DArc(ArcType value, UInt8 tidx, UInt8 hidx) {
+    ArcInfo         *info;
+    DArc(ArcType value, UInt8 tidx, UInt8 hidx, ArcInfo* info = NULL) {
         this->value = value;
         this->tidx = tidx;
         this->hidx = hidx;
+        this->info = info;
         tlink = NULL;
         hlink = NULL;
     }
@@ -24,9 +26,11 @@ typedef struct DVex {
     VexType   data;
     DArc*     h_list;
     DArc*     t_list;
-    DVex() {
+    VexInfo*  info;
+    DVex(VexInfo *info = NULL) {
         h_list = NULL;
         t_list = NULL;
+        this->info = info;
     }
 } DVex;
 
@@ -41,6 +45,7 @@ private:
     UInt8   getDataIndex(VexType data);
     UInt8   getVexIndex(DVex* vex);
     DVex*   getIndexVex(UInt8 index);
+    VexType* topoLogicalOrder(UInt32 *ve);
 public:
     DGraph();
     ~DGraph();
@@ -63,6 +68,8 @@ public:
     UInt8   getVexOutDegree(DVex *vex);
     DArc*   adjArc(DVex* vex, DArc* cur_arc);
     DVex*   adjVex(DVex* vex, DVex* cur_vex);
+    DArc*   adjReverseArc(DVex* vex, DArc* cur_arc);
+    DVex*   adjReverseVex(DVex* vex, DVex* cur_vex);
     DVex*   insertVex(VexType data);
     VexType deleteVex(DVex* vex);
     void    insertArc(DVex* t_vex, DVex* h_vex, ArcType arc);
@@ -75,9 +82,8 @@ public:
     UInt32  weaklyConnectedCompnent();//弱连通分量
     UInt32  strongConnectedCompnent();//强连通分量
     UInt32  strongConnectedCompnentResult(UInt32 *finished, UInt32 vex_cnt, UInt32 strong_cnt);//强连通分量
-    void    topoLogicalSort();
-    void    topoLogicalOrder();
-    void    criticalPath();
+    VexType* topoLogicalSort();
+    DArc*   criticalPath();
     void    dijkstraShortestPath();
     void    floydShortestPath();
 };

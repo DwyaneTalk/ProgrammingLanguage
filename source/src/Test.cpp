@@ -311,6 +311,21 @@ void Test::testDGraphApp() {
     d_graph.show();
     d_graph.weaklyConnectedCompnent();
     d_graph.strongConnectedCompnent();
+    VexType* topo_order = d_graph.topoLogicalSort();
+    if (!topo_order)    cout << "有向图存在环，无法进行拓扑排序" << endl;
+    else {
+        cout << "其中一个拓扑排序：";
+        UInt32 vex_nums = d_graph.getVexNums();
+        for (UInt32 i = 0; i < vex_nums; ++i)   cout << " " << topo_order[i];
+        cout << endl;
+        delete topo_order;
+    }
+    DArc *path = d_graph.criticalPath();
+    cout << "关键路径如下：" << endl;
+    while (path) {
+        cout << (UInt32)path->tidx << " " << (UInt32)path->hidx << " " << path->value << endl;
+        path = path->tlink;
+    }
 }
 
 void Test::testUDGraphApp() {

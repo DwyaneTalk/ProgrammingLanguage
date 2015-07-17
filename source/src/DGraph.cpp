@@ -170,6 +170,7 @@ UInt8 DGraph::getVexOutDegree(DVex *vex) {
 
 }
 
+//求以vex为尾的弧
 DArc* DGraph::adjArc(DVex* vex, DArc* cur_arc) {
     if (!vex) {
         ferr << "对空顶点非法操作！" << endl;
@@ -190,6 +191,7 @@ DArc* DGraph::adjArc(DVex* vex, DArc* cur_arc) {
     }
 }
 
+//求以vex为尾的邻接顶点
 DVex* DGraph::adjVex(DVex *vex, DVex *cur_vex) {
     if (!vex) {
         ferr << "对空顶点非法操作！" << endl;
@@ -208,6 +210,52 @@ DVex* DGraph::adjVex(DVex *vex, DVex *cur_vex) {
         }
         if (arc_list && arc_list->tlink) {
             return vexs + arc_list->tlink->hidx;
+        } else {
+            return NULL;
+        }
+    }
+}
+
+//求以vex为头的弧
+DArc* DGraph::adjReverseArc(DVex* vex, DArc* cur_arc) {
+    if (!vex) {
+        ferr << "对空顶点非法操作！" << endl;
+        exit(ERROR);
+    }
+    if (!cur_arc) {
+        return vex->h_list;
+    } else {
+        DArc* arc_list = vex->h_list;
+        while (arc_list && arc_list != cur_arc) {
+            arc_list = arc_list->hlink;
+        }
+        if (arc_list && arc_list->hlink) {
+            return arc_list->hlink;
+        } else {
+            return NULL;
+        }
+    }
+}
+
+//求以vex为头的邻接顶点
+DVex* DGraph::adjReverseVex(DVex *vex, DVex *cur_vex) {
+    if (!vex) {
+        ferr << "对空顶点非法操作！" << endl;
+        exit(ERROR);
+    }
+    if (!cur_vex) {
+        if (vex->h_list)
+            return vexs + vex->h_list->tidx;
+        else
+            return NULL;
+    } else {
+        UInt8 index = getVexIndex(cur_vex);
+        DArc* arc_list = vex->h_list;
+        while (arc_list && arc_list->tidx != index) {
+            arc_list = arc_list->hlink;
+        }
+        if (arc_list && arc_list->hlink) {
+            return vexs + arc_list->hlink->tidx;
         } else {
             return NULL;
         }
@@ -469,7 +517,6 @@ DGraph* DGraph::complementGraph() {
     return graph;
 }
 
-
 UInt32 DGraph::weaklyConnectedCompnent(){
     stack<DVex*> stack;
     UInt32 vex_nums = getVexNums();
@@ -499,6 +546,7 @@ UInt32 DGraph::weaklyConnectedCompnent(){
                         visited[idx] = true;
                         pre_vex[index] = ner_vex;
                         stack.push(ner_vex);
+                        break;
                     }
                 }
                 if (!ner_vex) {
@@ -600,8 +648,161 @@ UInt32 DGraph::strongConnectedCompnentResult(UInt32 *finished, UInt32 vex_cnt, U
     return strong_cnt;
 }
 
-//void   DGraph::topoLogicalSort(){}
-//void   DGraph::topoLogicalOrder(){}
-//void   DGraph::criticalPath(){}
+//AOV网络(activity on vertex network)，有向无环图
+VexType*   DGraph::topoLogicalSort(){
+    UInt32 vex_nums = getVexNums(), count = 0;
+    UInt32 *in_degree = new UInt32[vex_nums];
+    VexType *topo_order = new VexType[vex_nums];
+    stack<DVex*> stack;
+    DVex *cur_vex, *ner_vex;
+    UInt32 cur_idx, ner_idx;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        cur_vex = getIndexVex(i);
+        in_degree[i] = getVexInDegree(cur_vex);
+        if (!in_degree[i])  stack.push(cur_vex);
+    }
+    while (!stack.empty()) {
+        cur_vex = stack.top();
+        cur_idx = getVexIndex(cur_vex);
+        stack.pop();
+        topo_order[count++] = cur_vex->data;
+        ner_vex = NULL;
+        while (ner_vex = adjVex(cur_vex, ner_vex)) {
+            ner_idx = getVexIndex(ner_vex);
+            if (!(--in_degree[ner_idx]))   stack.push(ner_vex);
+        }
+    }
+    delete in_degree;
+    if (count < vex_nums) {
+        delete topo_order;
+        ferr << "有向图不能求拓扑排序" << endl;
+        return NULL;
+    } else {
+        return topo_order;
+    }
+}
+
+//AOE网络(activity on edge network)，有向无环带权图，且只有一个入度为0和一个出度为0的点
+VexType*   DGraph::topoLogicalOrder(UInt32 *ve){
+    UInt32 vex_nums = getVexNums(), count = 0;
+    UInt32 *in_degree = new UInt32[vex_nums], out_degree;
+    VexType *topo_order = new VexType[vex_nums];
+    stack<DVex*> stack;
+    DVex *cur_vex, *ner_vex;
+    DArc *ner_arc;
+    UInt32 cur_idx, ner_idx;
+    Int32 in_vex = -1, out_vex = -1;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        ve[i] = 0;
+        cur_vex = getIndexVex(i);
+        in_degree[i] = getVexInDegree(cur_vex);
+        if (!in_degree[i]) {
+            if (in_vex >= 0) {
+                delete in_degree;
+                delete topo_order;
+                return NULL;
+            }
+            in_vex = i;
+            stack.push(cur_vex);
+        }
+        out_degree = getVexOutDegree(cur_vex);
+        if (!out_degree) {
+            if (out_vex >= 0) {
+                delete in_degree;
+                delete topo_order;
+                return NULL;
+            }
+            out_vex = i;
+        }
+    }
+    if (out_vex < 0) {
+        delete in_degree;
+        delete topo_order;
+        return NULL;
+    }
+    while (!stack.empty()) {
+        cur_vex = stack.top();
+        cur_idx = getVexIndex(cur_vex);
+        stack.pop();
+        topo_order[count++] = cur_vex->data;
+        ner_arc = NULL;
+        while (ner_arc = adjArc(cur_vex, ner_arc)) {
+            ner_idx = ner_arc->hidx;
+            ner_vex = getIndexVex(ner_idx);
+            if (!(--in_degree[ner_idx]))   stack.push(ner_vex);
+            if (ve[cur_idx] + ner_arc->value > ve[ner_idx]) ve[ner_idx] = ve[cur_idx] + ner_arc->value;
+        }
+    }
+    delete in_degree;
+    if (count < vex_nums) {
+        delete topo_order;
+        return NULL;
+    } else {
+        return topo_order;
+    }
+}
+
+typedef struct{
+    DArc    *arc;
+    UInt32  ae;
+    UInt32  al;
+}ArcValue;
+
+DArc*   DGraph::criticalPath(){
+    UInt32 vex_nums = getVexNums(), arc_nums = getArcNums();
+    UInt32 cur_idx, ner_idx, arc_cnt = 0;
+    UInt32 *ve = new UInt32[vex_nums], *vl = new UInt32[vex_nums];
+    ArcValue *arc_value = new ArcValue[arc_nums];
+    VexType *topo_order = topoLogicalOrder(ve);
+    DVex *cur_vex;
+    DArc *ner_arc, *critial_arc = NULL, *pre_arc = NULL;
+    if (!topo_order) {
+        ferr << "有向图不能求关键路径" << endl;
+        delete ve;
+        delete vl;
+        delete arc_value;
+        delete topo_order;
+        return NULL;
+    }
+    vl[vex_nums - 1] = ve[vex_nums - 1];
+    for (Int32 i = vex_nums - 2; i >= 0; --i) {
+        cur_vex = locateVex(topo_order[i]);
+        cur_idx = getVexIndex(cur_vex);
+        ner_arc = NULL;
+        while (ner_arc = adjArc(cur_vex, ner_arc)) {
+            ner_idx = ner_arc->hidx;
+            if (vl[ner_idx] - ner_arc->value < vl[cur_idx]) vl[cur_idx] = vl[ner_idx] - ner_arc->value;
+        }
+    }
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        cur_vex = getIndexVex(i);
+        ner_arc = cur_vex->t_list;
+        while (ner_arc) {
+            arc_value[arc_cnt].arc = ner_arc;
+            arc_value[arc_cnt].ae = ve[i];
+            arc_value[arc_cnt].al = vl[ner_arc->hidx] - ner_arc->value;
+            ++arc_cnt;
+            ner_arc = ner_arc->tlink;
+        }
+    }
+    for (UInt32 i = 0; i < arc_nums; ++i) {
+        if (arc_value[i].ae == arc_value[i].al) {
+            if (!critial_arc) {
+                critial_arc = new DArc(arc_value[i].arc->value, arc_value[i].arc->tidx, arc_value[i].arc->hidx);
+                pre_arc = critial_arc;
+            } else {
+                pre_arc->tlink = new DArc(arc_value[i].arc->value, arc_value[i].arc->tidx, arc_value[i].arc->hidx);
+                pre_arc = pre_arc->tlink;
+            }
+        }
+    }
+    delete ve;
+    delete vl;
+    delete arc_value;
+    delete topo_order;
+    return critial_arc;
+}
+
 //void   DGraph::dijkstraShortestPath(){}
+
 //void   DGraph::floydShortestPath(){}
