@@ -311,12 +311,12 @@ void Test::testDGraphApp() {
     d_graph.show();
     d_graph.weaklyConnectedCompnent();
     d_graph.strongConnectedCompnent();
+    UInt32 vex_nums = d_graph.getVexNums();
     VexType* topo_order = d_graph.topoLogicalSort();
     if (!topo_order)    cout << "有向图存在环，无法进行拓扑排序" << endl;
     else {
         cout << "其中一个拓扑排序：";
-        UInt32 vex_nums = d_graph.getVexNums();
-        for (UInt32 i = 0; i < vex_nums; ++i)   cout << " " << topo_order[i];
+         for (UInt32 i = 0; i < vex_nums; ++i)   cout << " " << topo_order[i];
         cout << endl;
         delete topo_order;
     }
@@ -326,6 +326,22 @@ void Test::testDGraphApp() {
         cout << (UInt32)path->tidx << " " << (UInt32)path->hidx << " " << path->value << endl;
         path = path->tlink;
     }
+    VexType data = 'A';
+    UInt32 **path_len = d_graph.dijkstraShortestPath(data);
+    cout << "单源("<< data <<")最短路径：" << endl;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        cout << path_len[1][i] << " " << path_len[0][i] << endl;
+    }
+    delete path_len;
+    UInt32 ***path_mat;
+    cout << "任意两点的最短路径：" << endl;
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        for (UInt32 j = 0; j < vex_nums; ++j) {
+            cout << path_mat[0][i][j] << "(" << path_mat[1][i][j] << ") ";
+        }
+        cout << endl;
+    }
+    delete path;
 }
 
 void Test::testUDGraphApp() {

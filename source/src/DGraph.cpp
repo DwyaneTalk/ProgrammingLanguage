@@ -803,6 +803,56 @@ DArc*   DGraph::criticalPath(){
     return critial_arc;
 }
 
-//void   DGraph::dijkstraShortestPath(){}
+UInt32**   DGraph::dijkstraShortestPath(VexType vex_data){
+    UInt32 ver_nums = getVexNums();
+    DVex *s_vex = locateVex(vex_data), *cur_vex;
+    if (!s_vex) {
+        ferr << "源顶点不存在！" << endl;
+        exit(ERROR);
+    }
+    UInt32 s_idx = getVexIndex(s_vex), cur_idx, cur_min;
+    DArc *s_arc = s_vex->t_list;
+    UInt32 **path_len = new UInt32*[2];
+    bool   *vex_set = new bool[vex_nums];
+    path_len[0] = new UInt32[vex_nums];
+    path_len[1] = new UInt32[vex_nums];
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        path_len[0][i] = NULL_ARC;
+        path_len[1][i] = s_idx;
+        vex_set[i] = 0;
+    }
+    while (s_arc) {
+        path_len[0][s_arc->hidx] = s_arc->value;
+        s_arc = s_arc->tlink;
+    }
+    path_len[0][s_idx] = 0;
+    vex_set[s_idx] = true;
+    for (UInt32 i = 1; i < vex_nums; ++i) {
+        cur_min = NULL_ARC;
+        for (UInt32 j = 0; j < vex_nums; ++j) {
+            if (!vex_set[j]) {
+                if (path_len[0][j] < cur_min) {
+                    cur_min = path_len[0][j];
+                    cur_idx = j;
+                }
+            }
+        }
+        vex_set[cur_idx] = true;
+        cur_vex = getIndexVex(cur_idx);
+        s_arc = cur_vex->t_list;
+        while (s_arc) {
+            if (!vex_set[s_arc->hidx]) {
+                if (path_len[0][cur_idx] + s_arc->value < path_len[0][s_arc->hidx]) {
+                    path_len[0][s_arc->hidx] = path_len[0][cur_idx] + s_arc->value;
+                    path_len[1][s_arc->hidx] = cur_idx;
+                }
+            }
+            s_arc = s_arc->tlink;
+        }
+    }
+    return path_len;
+}
 
-//void   DGraph::floydShortestPath(){}
+UInt32***  DGraph::floydShortestPath() {
+    UInt32 vex_nums = getVexNums();
+}

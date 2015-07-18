@@ -84,7 +84,7 @@ public:
     UInt32  strongConnectedCompnentResult(UInt32 *finished, UInt32 vex_cnt, UInt32 strong_cnt);//强连通分量
     VexType* topoLogicalSort();
     DArc*   criticalPath();
-    void    dijkstraShortestPath();
-    void    floydShortestPath();
+    UInt32** dijkstraShortestPath(VexType vex_data);
+    UInt32*** floydShortestPath();
 };
 #endif // !DGRAPH_H
