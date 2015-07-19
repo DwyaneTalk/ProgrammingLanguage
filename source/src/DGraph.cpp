@@ -855,4 +855,37 @@ UInt32**   DGraph::dijkstraShortestPath(VexType vex_data){
 
 UInt32***  DGraph::floydShortestPath() {
     UInt32 vex_nums = getVexNums();
+    UInt32 ***path = new UInt32**[2];
+    DVex *cur_vex;
+    DArc *ner_arc;
+    path[0] = new UInt32*[vex_nums];
+    path[1] = new UInt32*[vex_nums];
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        path[0][i] = new UInt32[vex_nums];  //最短路径
+        path[1][i] = new UInt32[vex_nums];  //中间结点
+        for (UInt32 j = 0; j < vex_nums; ++j) {
+            path[0][i][j] = NULL_ARC;
+            path[1][i][j] = i;
+        }
+    }
+    for (UInt32 i = 0; i < vex_nums; ++i) {
+        cur_vex = getIndexVex(i);
+        ner_arc = cur_vex->t_list;
+        path[0][i][i] = 0;
+        while (ner_arc) {
+            path[0][i][ner_arc->hidx] = ner_arc->value;
+            ner_arc = ner_arc->tlink;
+        }
+    }
+    for (UInt32 k = 0; k < vex_nums; ++k) {
+        for (UInt32 u = 0; u < vex_nums; ++u) {
+            for (UInt32 v = 0; v < vex_nums; ++v) {
+                if (path[0][u][k] + path[0][k][v] < path[0][u][v]) {
+                    path[0][u][v] = path[0][u][k] + path[0][k][v];
+                    path[1][u][v] = k;
+                }
+            }
+        }
+    }
+    return path;
 }

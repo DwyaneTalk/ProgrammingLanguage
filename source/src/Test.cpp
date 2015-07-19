@@ -330,17 +330,27 @@ void Test::testDGraphApp() {
     UInt32 **path_len = d_graph.dijkstraShortestPath(data);
     cout << "单源("<< data <<")最短路径：" << endl;
     for (UInt32 i = 0; i < vex_nums; ++i) {
-        cout << path_len[1][i] << " " << path_len[0][i] << endl;
+        if (path_len[0][i] == NULL_ARC)
+            cout << path_len[1][i] << " x" << endl;
+        else
+            cout << path_len[1][i] << " " << path_len[0][i] << endl;
     }
     delete path_len;
-    UInt32 ***path_mat;
+    UInt32 ***path_mat = d_graph.floydShortestPath();
     cout << "任意两点的最短路径：" << endl;
     for (UInt32 i = 0; i < vex_nums; ++i) {
         for (UInt32 j = 0; j < vex_nums; ++j) {
-            cout << path_mat[0][i][j] << "(" << path_mat[1][i][j] << ") ";
+            if (path_mat[0][i][j] == NULL_ARC)
+                cout << "x(" << path_mat[1][i][j] << ") ";
+            else
+                cout << path_mat[0][i][j] << "(" << path_mat[1][i][j] << ") ";
         }
+        delete path_mat[0][i];
+        delete path_mat[1][i];
         cout << endl;
     }
+    delete path_mat[0];
+    delete path_mat[1];
     delete path;
 }
 

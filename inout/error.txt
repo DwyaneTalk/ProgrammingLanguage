@@ -1,1 +1,3 @@
 runtime error log start……
+有向图不能求拓扑排序
+有向图不能求关键路径
