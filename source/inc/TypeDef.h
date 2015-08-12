@@ -20,9 +20,10 @@ typedef		int		LinkListElemType;
 typedef     int     StackElemType;
 typedef     int     QueueElemType;
 typedef     int     BiTreeElemType;
-typedef     char     TreeElemType;
+typedef     char    TreeElemType;
 typedef     char    VexType;
 typedef     int     ArcType;
+typedef     int     SearchType;
 
 enum LR {
     LEFT = 0,
@@ -34,6 +35,15 @@ enum GType {
     DN  = 1,    //有向带权图(网)
     UDG = 2,    //无向无权图
     UDN = 3     //无向带权图
+};
+
+enum FindType {
+    SEQ = 0,    //顺序查找
+    BIN = 1,    //折半查找
+    FIB = 2,    //斐波那契查找
+    INT = 3,    //插值查找
+    STR = 4,    //静态树查找
+    IDX = 5    //索引查找
 };
 
 //附加信息可以用来扩展图的功能
