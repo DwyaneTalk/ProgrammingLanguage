@@ -70,11 +70,43 @@ Int32 StaticSrhTable::binSearch(SearchType key) {
 }
 
 Int32 StaticSrhTable::fibSearch(SearchType key) {
-
+    UInt32 low = 0, high = size - 1, mid, fib_num = MAX(5, size);
+    UInt32 *fib = new UInt32[fib_num];
+    fib[0] = 0;
+    fib[1] = 1;
+    UInt32 i = 2, u = 0;
+    while (i < fib_num) {
+        fib[i] = fib[i - 1] + fib[i - 2];
+        ++i;
+    }
+    while (size >= fib[u]) {
+        ++u;
+    }
+    SearchType *data_ext = new SearchType[fib[u] - 1];
+    memcpy(data_ext, data, sizeof(SearchType)* size);
+    for (i = size; i < fib[u] - 2; ++i)
+        data_ext[i] = data[size - 1];
+    while (low <= high) {
+        mid =low + fib[u - 1] - 1;
+        if (data_ext[mid] == key) {
+            delete fib;
+            delete data_ext;
+            return MIN(mid, size);
+        } else if (data_ext[mid] < key) {
+            low = mid + 1;
+            u = u - 2;
+        } else {
+            high = mid - 1;
+            u = u - 1;
+        }
+    }
+    delete fib;
+    delete data_ext;
+    return -1;
 }
 
 Int32 StaticSrhTable::intSearch(SearchType key) {
-
+    SearchType min = seq_data[0], max = seq_data[size - 1];
 }
 
 Int32 StaticSrhTable::strSearch(SearchType key) {
