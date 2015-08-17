@@ -1,18 +1,28 @@
 #include "Util.h"
 #include "BinaryTree.h"
 
-typedef struct {
+typedef struct IdxItem {
     SearchType  key;
-    UInt32      idx;
+    UInt32      start;
+    UInt32      end;
+} IdxItem;
+
+typedef struct Index{
+    IdxItem     *items;
+    UInt32      nums;
+    Index(UInt32 nums = 0) {
+        this->nums = nums;
+    }
 } Index;
 
 class StaticSrhTable {
 private:
     SearchType *data;
     UInt32      size;
+    UInt32     *weight;
     SearchType *seq_data;
     BinaryTree *sta_srh_tree;
-    Index      *idx_table;
+    Index      idx_table;
     Int32 seqSearch(SearchType key);
     Int32 binSearch(SearchType key);
     Int32 fibSearch(SearchType key);
@@ -20,6 +30,9 @@ private:
     Int32 strSearch(SearchType key);
     Int32 idxSearch(SearchType key);
     void  sortData();
+    void  initIdx();
+    void  initTree();
+    BiNode* createTree(UInt32 *sw, SearchType *seq_data, UInt32 low, UInt32 hig);
 public:
     StaticSrhTable();
     ~StaticSrhTable();

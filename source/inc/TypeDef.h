@@ -74,5 +74,5 @@ typedef struct ArcInfo {    //弧的附加信息
 //宏操作
 #define     MAX(a, b)       ((a) > (b) ? (a) : (b))
 #define     MIN(a, b)       ((a) < (b) ? (a) : (b))
-#define     ABS(a)          ((a) > 0 ? (a) : (-(a)));
+#define     ABS(a)          ((a) > 0 ? (a) : (0 - (a)))
 #endif
