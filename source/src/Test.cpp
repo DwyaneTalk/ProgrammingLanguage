@@ -379,3 +379,93 @@ void Test::testUDGraphApp() {
     delete tree;
     ud_graph.articulationPoint();
 }
+
+void Test::testStaSrhTable() {
+    sta_srh_table.traverse(StaticSrhTable::visit);
+    SearchType key = 13;
+    Int32 key_idx;
+    FindType f_type = SEQ;
+    key_idx = sta_srh_table.search(f_type, key);
+    cout << "顺序查找：" << endl;
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    key = 29;
+    key_idx = sta_srh_table.search(f_type, key);
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    f_type = IDX;
+    key = 13;
+    key_idx = sta_srh_table.search(f_type, key);
+    cout << endl << "分块查找：" << endl;
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    key = 29;
+    key_idx = sta_srh_table.search(f_type, key);
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+
+    f_type = BIN;
+    key = 38;
+    key_idx = sta_srh_table.search(f_type, key);
+    cout << endl << "折半查找：" << endl;
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    key = 39;
+    key_idx = sta_srh_table.search(f_type, key);
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    f_type = FIB;
+    key = 38;
+    key_idx = sta_srh_table.search(f_type, key);
+    cout << endl << "斐波那契查找：" << endl;
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    key = 39;
+    key_idx = sta_srh_table.search(f_type, key);
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    f_type = INT;
+    key = 38;
+    key_idx = sta_srh_table.search(f_type, key);
+    cout << endl << "插值查找：" << endl;
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    key = 39;
+    key_idx = sta_srh_table.search(f_type, key);
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    f_type = STR;
+    key = 38;
+    key_idx = sta_srh_table.search(f_type, key);
+    cout << endl << "次优查找树查找：" << endl;
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+    key = 39;
+    key_idx = sta_srh_table.search(f_type, key);
+    if (key_idx >= 0)
+        cout << key << "查找成功,下标为" << key_idx << endl;
+    else
+        cout << key << "查找失败！" << endl;
+}

@@ -9,6 +9,7 @@
 #include "Tree.h"
 #include "DGraph.h"
 #include "UDGraph.h"
+#include "StaticSrhTable.h"
 
 class Test{
 private:
@@ -20,6 +21,7 @@ private:
     Tree        tree;
     DGraph      d_graph;
     UDGraph     ud_graph;
+    StaticSrhTable sta_srh_table;
 public:
     void testSqList();
     void testLinkList();
@@ -31,6 +33,7 @@ public:
     void testUDGraph();
     void testDGraphApp();
     void testUDGraphApp();
+    void testStaSrhTable();
 };
 
 #endif

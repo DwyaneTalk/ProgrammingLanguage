@@ -22,7 +22,9 @@ int main() {
 
     //test.testUDGraphApp();
 
-    test.testDGraphApp();
+    //test.testDGraphApp();
+
+    test.testStaSrhTable();
 
     system("pause");
     return 0;

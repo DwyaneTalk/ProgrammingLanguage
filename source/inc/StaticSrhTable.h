@@ -1,5 +1,7 @@
 #include "Util.h"
 #include "BinaryTree.h"
+#include<algorithm>
+#include<queue>
 
 typedef struct IdxItem {
     SearchType  key;

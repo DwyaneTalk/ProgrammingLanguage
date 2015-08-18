@@ -1,5 +1,4 @@
 #include "../inc/StaticSrhTable.h"
-#include<algorithm>
 
 StaticSrhTable::StaticSrhTable() {
     fin >> size;
@@ -9,7 +8,8 @@ StaticSrhTable::StaticSrhTable() {
         }
         seq_data = NULL;
         sta_srh_tree = NULL;
-        idx_table = NULL;
+        idx_table.items = NULL;
+        weight = NULL;
     } else {
         ferr << "æ≤Ã¨≤È’“±Ìƒ⁄¥Ê…Í«Î ß∞‹" << endl;
         exit(OVER);
@@ -18,9 +18,10 @@ StaticSrhTable::StaticSrhTable() {
 
 StaticSrhTable::~StaticSrhTable() {
     delete data;
-    delete seq_data;
-    delete sta_srh_tree;
-    delete idx_table.items;
+    if (seq_data) delete seq_data;
+    if (sta_srh_tree) delete sta_srh_tree;
+    if(idx_table.items) delete idx_table.items;
+    if(weight) delete weight;
     size = 0;
 }
 
@@ -82,9 +83,9 @@ Int32 StaticSrhTable::fibSearch(SearchType key) {
         ++u;
     }
     SearchType *data_ext = new SearchType[fib[u] - 1];
-    memcpy(data_ext, data, sizeof(SearchType)* size);
+    memcpy(data_ext, seq_data, sizeof(SearchType)* size);
     for (i = size; i < fib[u] - 2; ++i)
-        data_ext[i] = data[size - 1];
+        data_ext[i] = seq_data[size - 1];
     while (low <= high) {
         mid =low + fib[u - 1] - 1;
         if (data_ext[mid] == key) {
@@ -105,10 +106,13 @@ Int32 StaticSrhTable::fibSearch(SearchType key) {
 }
 
 Int32 StaticSrhTable::intSearch(SearchType key) {
-    SearchType min = seq_data[0], max = seq_data[size - 1];
+    SearchType min, max;
     UInt32 low = 0, high = size - 1, mid;
     while (low <= high) {
-        mid = low + (key - min) * (size - 1) / (max - min);
+        max = seq_data[high];
+        min = seq_data[low];
+        if (min > key || max < key) return -1;
+        mid = low + (key - min) * (high - low) / (max - min);
         if (seq_data[mid] == key) {
             return mid;
         } else if (seq_data[mid] > key) {
@@ -140,9 +144,9 @@ Int32 StaticSrhTable::idxSearch(SearchType key) {
     if (key > idx_table.items[idx_table.nums - 1].key)  return -1;
     while (low < high) {
         mid = (low + high) / 2;
-        if (key > data[mid]) {
+        if (key > idx_table.items[mid].key) {
             low = mid + 1;
-        } else if (key < data[mid]) {
+        } else if (key < idx_table.items[mid].key) {
             high = mid;
         } else {
             break;
@@ -165,6 +169,10 @@ void  StaticSrhTable::sortData() {
         }
         memcpy(seq_data, data, sizeof(SearchType)* size);
         sort(seq_data, seq_data + size);
+        cout << "≈≈–Ú∫Û£∫";
+        for (UInt32 i = 0; i < size; ++i)
+            cout << seq_data[i] << " ";
+        cout << endl;
     }
 }
 
@@ -189,7 +197,7 @@ void  StaticSrhTable::initIdx() {
         idx_table.nums = 0;
         UInt32 start = 0;
         for (UInt32 i = 0; i < size; ++i) {
-            if (min_data[i] > max_data[i]) {
+            if (min_data[i] >= max_data[i]) {
                 idx_table.items[idx_table.nums].start = start;
                 idx_table.items[idx_table.nums].end = i;
                 idx_table.items[idx_table.nums].key = max_data[i];
@@ -205,31 +213,35 @@ void  StaticSrhTable::initIdx() {
 void  StaticSrhTable::initTree() {
     sortData();
     if (!sta_srh_tree) {
+        UInt32 *weight = new UInt32[size];
+        UInt32 *sw = new UInt32[size];
+        sta_srh_tree = new BinaryTree;
         //  ‰»Î»®÷µ
         for (UInt32 i = 0; i < size; ++i) {
             fin >> weight[i];
         }
-        UInt32 * sw = new UInt32[size + 1];
-        sta_srh_tree = new BinaryTree;
         if (!sw || !sta_srh_tree) {
             ferr << "¥Œ”≈≤È’“ ˜ƒ⁄¥Ê…Í«Î ß∞‹£°" << endl;
             exit(OVER);
         }
-        sw[0] = 0;
-        for (UInt32 i = 1; i <= size; ++i) {
-            sw[i] = sw[i - 1] + weight[i - 1];
+        sw[0] = weight[0];
+        for (UInt32 i = 1; i < size; ++i) {
+            sw[i] = sw[i - 1] + weight[i];
         }
         (*sta_srh_tree->getRootPoint()) = createTree(sw, seq_data, 0, size - 1);
+        delete sw;
     }
 }
 
 BiNode* StaticSrhTable::createTree(UInt32 *sw, SearchType *seq_data, UInt32 low, UInt32 high) {
-    UInt32 min = ABS(sw[high + 1] - sw[low + 1]);
-    UInt32 dw = sw[high + 1] + sw[low];
+    UInt32 min = ABS(sw[high] - sw[low]);
+    Int32 dw;
     UInt32 idx = low;
     UInt32 tmp_value;
+    if (low) dw = sw[high] + sw[low - 1];
+    else dw = sw[high];
     for (UInt32 i = low + 1; i <= high; ++i) {
-        if (tmp_value = ABS(dw - sw[i + 1] - sw[i]) < min) {
+        if ((tmp_value = ABS(Int32(dw - sw[i] - sw[i - 1]))) < min) {
             min = tmp_value;
             idx = i;
         }
