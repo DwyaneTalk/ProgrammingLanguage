@@ -25,7 +25,7 @@ StaticSrhTable::~StaticSrhTable() {
     size = 0;
 }
 
-Int32 StaticSrhTable::search(FindType f_type, SearchType key) {
+Int32 StaticSrhTable::search(StaFindType f_type, SearchType key) {
     switch (f_type) {
     case SEQ:   
         return seqSearch(key);

@@ -384,7 +384,7 @@ void Test::testStaSrhTable() {
     sta_srh_table.traverse(StaticSrhTable::visit);
     SearchType key = 13;
     Int32 key_idx;
-    FindType f_type = SEQ;
+    StaFindType f_type = SEQ;
     key_idx = sta_srh_table.search(f_type, key);
     cout << "Ë³Ðò²éÕÒ£º" << endl;
     if (key_idx >= 0)

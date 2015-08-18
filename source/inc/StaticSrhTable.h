@@ -1,7 +1,6 @@
 #include "Util.h"
 #include "BinaryTree.h"
 #include<algorithm>
-#include<queue>
 
 typedef struct IdxItem {
     SearchType  key;
@@ -38,7 +37,7 @@ private:
 public:
     StaticSrhTable();
     ~StaticSrhTable();
-    Int32 search(FindType f_type, SearchType key);
+    Int32 search(StaFindType f_type, SearchType key);
     void traverse(void(*visit) (SearchType &e));
     void static visit(SearchType &e);
 };

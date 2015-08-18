@@ -37,13 +37,17 @@ enum GType {
     UDN = 3     //无向带权图
 };
 
-enum FindType {
+enum StaFindType {
     SEQ = 0,    //顺序查找
     BIN = 1,    //折半查找
     FIB = 2,    //斐波那契查找
     INT = 3,    //插值查找
     STR = 4,    //静态树查找
     IDX = 5    //索引查找
+};
+
+enum DynFindType {
+    BST = 0,    //二叉排序树
 };
 
 //附加信息可以用来扩展图的功能
