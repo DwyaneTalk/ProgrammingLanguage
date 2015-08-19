@@ -24,8 +24,9 @@ int main() {
 
     //test.testDGraphApp();
 
-    test.testStaSrhTable();
+    //test.testStaSrhTable();
 
+    test.testDynSrhTable();
     system("pause");
     return 0;
 }

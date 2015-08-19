@@ -10,6 +10,7 @@
 #include "DGraph.h"
 #include "UDGraph.h"
 #include "StaticSrhTable.h"
+#include "DynamicSrhTable.h"
 
 class Test{
 private:
@@ -22,6 +23,7 @@ private:
     DGraph      d_graph;
     UDGraph     ud_graph;
     StaticSrhTable sta_srh_table;
+    DynamicSrhTable dyn_srh_table;
 public:
     void testSqList();
     void testLinkList();
@@ -34,6 +36,7 @@ public:
     void testDGraphApp();
     void testUDGraphApp();
     void testStaSrhTable();
+    void testDynSrhTable();
 };
 
 #endif

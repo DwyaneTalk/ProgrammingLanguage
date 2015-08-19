@@ -469,3 +469,15 @@ void Test::testStaSrhTable() {
     else
         cout << key << "²éÕÒÊ§°Ü£¡" << endl;
 }
+
+void Test::testDynSrhTable() {
+    SearchType data[7] = { 45, 24, 53, 45, 12, 24, 90 };
+    UInt32 size = sizeof(data) / sizeof(SearchType);
+    DynFindType f_type = BST;
+    for (UInt32 i = 0; i < size; ++i) {
+        dyn_srh_table.search(f_type, data[i]);
+    }
+    dyn_srh_table.traverse(DynamicSrhTable::visit);
+    dyn_srh_table.deleteData(f_type, 45);
+    dyn_srh_table.traverse(DynamicSrhTable::visit);
+}

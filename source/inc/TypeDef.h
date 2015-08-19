@@ -68,6 +68,7 @@ typedef struct ArcInfo {    //弧的附加信息
 
 #define     NULL_ARC        INT_MAX
 #define     MIN_ARC         INT_MIN
+#define     NULL_DATA       INT_MIN
 
 //宏状态
 #define		OK				0
