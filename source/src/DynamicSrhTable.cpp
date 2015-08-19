@@ -154,6 +154,11 @@ void DynamicSrhTable::traverse(void(*visit)(SearchType &e)) {
     }
     cout << endl;
     bin_sort_tree->show(0);
+    SearchType *tmp_data = new SearchType[size], *in_data = tmp_data;
+    bin_sort_tree->inOrderTraverse(BinaryTree::visit, &in_data);
+    for (UInt32 i = 0; i < size; ++i)
+        cout << data[tmp_data[i]] << " ";
+    cout << endl;
 }
 
 void DynamicSrhTable::visit(SearchType &e) {

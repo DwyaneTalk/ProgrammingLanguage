@@ -8,6 +8,7 @@ private:
     UInt32      max_size;
     UInt32      size;
     BinaryTree *bin_sort_tree;
+    BinaryTree *bal_bin_tree;
     UInt32 newElem(SearchType key);
     void delElem(UInt32 index);
     Int32 bstSearch(SearchType key, BiNode *&node);
