@@ -4,7 +4,12 @@ DynamicSrhTable::DynamicSrhTable() {
     size = 0;
     if (data = new SearchType[INIT_SIZE]) {
         max_size = INIT_SIZE;
-        bin_sort_tree = NULL;
+        bin_sort_tree = new BinaryTree;
+        bal_bin_tree = new BinaryTree;
+        if(!bin_sort_tree || !bal_bin_tree) {
+            ferr << "申请初始内存失败！" << endl;
+            exit(OVER);
+        }
     } else {
         ferr << "申请初始内存失败！" << endl;
         exit(OVER);
@@ -16,6 +21,7 @@ DynamicSrhTable::~DynamicSrhTable() {
     max_size = 0;
     delete data;
     delete bin_sort_tree;
+    delete bal_bin_tree;
 }
 
 UInt32 DynamicSrhTable::newElem(SearchType key) {
@@ -44,7 +50,10 @@ Int32 DynamicSrhTable::search(DynFindType f_type, SearchType key) {
             bstInsert(node, newElem(key));
         }
         return index;
+    case BBT:
+        return bbtSearch(key);
     }
+    return -1;
 }
 
 void DynamicSrhTable::deleteData(DynFindType f_type, SearchType key) {
@@ -64,9 +73,6 @@ void DynamicSrhTable::deleteData(DynFindType f_type, SearchType key) {
 }
 
 Int32 DynamicSrhTable::bstSearch(SearchType key, BiNode *&node) {
-    if (!bin_sort_tree) {
-        bin_sort_tree = new BinaryTree;
-    }
     BiNode *cur_node = bin_sort_tree->getRoot();
     node = NULL;
     while (cur_node) {
@@ -142,6 +148,154 @@ void DynamicSrhTable::bstDelete(BiNode *node, UInt32 index) {
             bstDelete(node, t_node->data);
         }
     }
+}
+
+Int32 DynamicSrhTable::bbtSearch(SearchType key) {
+    BiNode *parent = NULL, *node = bal_bin_tree->getRoot();
+    stack<LR> lr_stack;
+    lr_stack.push(LEFT);
+    // search step
+    while (node) {
+        if (data[node->data] == key)
+            return node->data;
+        else if (data[node->data] < key) {
+            parent = node;
+            node = node->rchild;
+            lr_stack.push(RIGHT);
+        } else {
+            parent = node;
+            node = node->lchild;
+            lr_stack.push(LEFT);
+        }
+    }
+    LR lr = lr_stack.top();
+    lr_stack.pop();
+    UInt32 index = newElem(key);
+    (lr == LEFT ? parent->lchild : parent->rchild) = node = new BiNode(index);
+    node->parent = parent;
+    node->info->i_value1 = EH;
+    bool taller = true;
+    while (taller && parent) {
+        if (lr == LEFT) {
+            switch (parent->info->i_value1) {
+            case LH:
+                if (parent->parent->lchild == parent)
+                    parent->parent->lchild = leftBlance(parent);
+                else
+                    parent->parent->rchild = leftBlance(parent);
+                taller = false;
+                break;
+            case EH:
+                parent->info->i_value1 = LH;
+                break;
+            case RH:
+                parent->info->i_value1 = EH;
+                taller = false;
+                break;
+            }
+        } else {
+            switch (parent->info->i_value1) {
+            case LH:
+                parent->info->i_value1 = EH;
+                taller = false;
+                break;
+            case EH:
+                parent->info->i_value1 = RH;
+                break;
+            case RH:
+                if (parent->parent->lchild == parent)
+                    parent->parent->lchild = rightBlance(parent);
+                else
+                    parent->parent->rchild = rightBlance(parent);
+                taller = false;
+                break;
+            }
+        }
+        node = parent;
+        parent = parent->parent;
+        lr = lr_stack.top();
+        lr_stack.pop();
+    }
+    while (!lr_stack.empty()) {
+        lr_stack.pop();
+    }
+    return -1;
+}
+
+BiNode* DynamicSrhTable::leftBlance(BiNode *node) {
+    BiNode *node_b = node->lchild, *node_c;
+    switch (node_b->info->i_value1) {
+    case LH:
+        node->info->i_value1 = node_b->info->i_value1 = RH;
+        return rightRotate(node);
+    case RH:
+        node_c = node_b->rchild;
+        switch (node_c->info->i_value1) {
+        case LH:
+            node_b->info->i_value1 = EH;
+            node->info->i_value1 = RH;
+            break;
+        case EH:
+            node_b->info->i_value1 = node->info->i_value1 = EH;
+            break;
+        case RH:
+            node_b->info->i_value1 = LH;
+            node->info->i_value1 = EH;
+            break;
+        }
+        node_c->info->i_value1 = EH;
+        node->lchild = leftRotate(node_b);
+        return rightRotate(node);
+    default:
+        ferr << "操作出现错误，非法坐平衡操作" << endl;
+        exit(ERROR);
+        break;
+    }
+}
+
+BiNode* DynamicSrhTable::rightBlance(BiNode *node) {
+    BiNode *node_b = node->rchild, *node_c;
+    switch (node_b->info->i_value1) {
+    case LH:
+        node_c = node_b->lchild;
+        switch (node_c->info->i_value1) {
+        case LH:
+            node->info->i_value1 = EH;
+            node_b->info->i_value1 = RH;
+            break;
+        case EH:
+            node->info->i_value1 = node_b->info->i_value1 = EH;
+            break;
+        case RH:
+            node->info->i_value1 = LH;
+            node_b->info->i_value1 = EH;
+            break;
+        }
+        node_c->info->i_value1 = EH;
+        node->rchild = rightRotate(node_b);
+        return leftRotate(node);
+    case RH:
+        node->info->i_value1 = node_b->info->i_value1 = EH;
+        return leftRotate(node);
+    default:
+        ferr << "操作出现错误，非法坐平衡操作" << endl;
+        exit(ERROR);
+        break;
+    }
+}
+
+BiNode* DynamicSrhTable::leftRotate(BiNode *node) {
+    BiNode *node_b = node->rchild;
+    node->rchild = node_b->lchild;
+    node_b->lchild = node;
+    return node_b;
+}
+
+BiNode* DynamicSrhTable::rightRotate(BiNode *node) {
+    BiNode *node_b = node->lchild;
+    node->lchild = node_b->rchild;
+    node_b->rchild = node;
+    return node_b;
 }
 
 void DynamicSrhTable::traverse(void(*visit)(SearchType &e)) {

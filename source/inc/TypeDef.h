@@ -48,6 +48,13 @@ enum StaFindType {
 
 enum DynFindType {
     BST = 0,    //二叉排序树
+    BBT = 1,    //平衡二叉树
+};
+
+enum Balance {
+    LH,         //左高
+    EH,         //等高
+    RH          //右高
 };
 
 //附加信息可以用来扩展图的功能

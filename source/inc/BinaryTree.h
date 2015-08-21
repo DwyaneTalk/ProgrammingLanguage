@@ -4,14 +4,22 @@
 #include "Util.h"
 #include <queue>
 
+typedef struct NodeInfo {
+    UInt32 u_value1;
+    UInt32 u_value2;
+    Int32  i_value1;
+    Int32  i_value2;
+} NodeInfo;
 
 typedef struct BiNode{
     BiTreeElemType data;
+    NodeInfo      *info;
     struct BiNode *lchild;
     struct BiNode *rchild;
     struct BiNode *parent;
     BiNode(int data = 0){
         this->data = data;
+        info = NULL;
         lchild = NULL;
         rchild = NULL;
         parent = NULL;

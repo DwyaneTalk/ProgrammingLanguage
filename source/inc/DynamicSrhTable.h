@@ -14,6 +14,11 @@ private:
     Int32 bstSearch(SearchType key, BiNode *&node);
     BiNode* bstInsert(BiNode *node, UInt32 index);
     void bstDelete(BiNode *node, UInt32 index);
+    Int32 bbtSearch(SearchType key);
+    BiNode* leftBlance(BiNode *node);
+    BiNode* rightBlance(BiNode *node);
+    BiNode* leftRotate(BiNode *node);
+    BiNode* rightRotate(BiNode *node);
 public:
     DynamicSrhTable();
     ~DynamicSrhTable();
