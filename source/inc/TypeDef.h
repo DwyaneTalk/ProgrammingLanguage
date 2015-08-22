@@ -52,9 +52,9 @@ enum DynFindType {
 };
 
 enum Balance {
-    LH,         //左高
-    EH,         //等高
-    RH          //右高
+    LH = -1,         //左高
+    EH = 0,         //等高
+    RH = 1        //右高
 };
 
 //附加信息可以用来扩展图的功能

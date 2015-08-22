@@ -22,9 +22,10 @@ private:
 public:
     DynamicSrhTable();
     ~DynamicSrhTable();
+    void init();
     Int32 search(DynFindType f_type, SearchType key);
     void deleteData(DynFindType f_type, SearchType key);
-    void traverse(void(*visit)(SearchType &e));
+    void traverse(DynFindType f_type, void(*visit)(SearchType &e));
     void static visit(SearchType &e);
 };
 

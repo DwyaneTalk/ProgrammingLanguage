@@ -24,6 +24,12 @@ DynamicSrhTable::~DynamicSrhTable() {
     delete bal_bin_tree;
 }
 
+void DynamicSrhTable::init() {
+    size = 0;
+    bin_sort_tree->init();
+    bal_bin_tree->init();
+}
+
 UInt32 DynamicSrhTable::newElem(SearchType key) {
     if (size < max_size) {
         data[size] = key;
@@ -58,7 +64,7 @@ Int32 DynamicSrhTable::search(DynFindType f_type, SearchType key) {
 
 void DynamicSrhTable::deleteData(DynFindType f_type, SearchType key) {
     BiNode *node;
-    UInt32 index;
+    Int32 index;
     switch (f_type) {
     case BST:
         index = bstSearch(key, node);
@@ -171,6 +177,11 @@ Int32 DynamicSrhTable::bbtSearch(SearchType key) {
     LR lr = lr_stack.top();
     lr_stack.pop();
     UInt32 index = newElem(key);
+    if (!parent) {
+        *bal_bin_tree->getRootPoint() = node = new BiNode(index);
+        node->info->i_value1 = EH;
+        return -1;
+    }
     (lr == LEFT ? parent->lchild : parent->rchild) = node = new BiNode(index);
     node->parent = parent;
     node->info->i_value1 = EH;
@@ -179,10 +190,15 @@ Int32 DynamicSrhTable::bbtSearch(SearchType key) {
         if (lr == LEFT) {
             switch (parent->info->i_value1) {
             case LH:
-                if (parent->parent->lchild == parent)
-                    parent->parent->lchild = leftBlance(parent);
-                else
-                    parent->parent->rchild = leftBlance(parent);
+                if (!parent->parent) {
+                    (*bal_bin_tree->getRootPoint()) = leftBlance(parent);
+                } else {
+                    BiNode *parent_node = parent->parent;
+                    if (parent_node->lchild == parent)
+                        parent_node->lchild = leftBlance(parent);
+                    else
+                        parent_node->rchild = leftBlance(parent);
+                }
                 taller = false;
                 break;
             case EH:
@@ -203,10 +219,15 @@ Int32 DynamicSrhTable::bbtSearch(SearchType key) {
                 parent->info->i_value1 = RH;
                 break;
             case RH:
-                if (parent->parent->lchild == parent)
-                    parent->parent->lchild = rightBlance(parent);
-                else
-                    parent->parent->rchild = rightBlance(parent);
+                if (!parent->parent) {
+                    *(bal_bin_tree->getRootPoint()) = rightBlance(parent);
+                } else {
+                    BiNode *parent_node = parent->parent;
+                    if (parent_node->lchild == parent)
+                        parent_node->lchild = rightBlance(parent);
+                    else
+                        parent_node->rchild = rightBlance(parent);
+                }
                 taller = false;
                 break;
             }
@@ -288,6 +309,10 @@ BiNode* DynamicSrhTable::leftRotate(BiNode *node) {
     BiNode *node_b = node->rchild;
     node->rchild = node_b->lchild;
     node_b->lchild = node;
+    node_b->parent = node->parent;
+    node->parent = node_b;
+    if (node->rchild)
+        node->rchild->parent = node;
     return node_b;
 }
 
@@ -295,10 +320,14 @@ BiNode* DynamicSrhTable::rightRotate(BiNode *node) {
     BiNode *node_b = node->lchild;
     node->lchild = node_b->rchild;
     node_b->rchild = node;
+    node_b->parent = node->parent;
+    node->parent = node_b;
+    if (node->lchild)
+        node->lchild->parent = node;
     return node_b;
 }
 
-void DynamicSrhTable::traverse(void(*visit)(SearchType &e)) {
+void DynamicSrhTable::traverse(DynFindType f_type, void(*visit)(SearchType &e)) {
     UInt32 length = size;
     for (UInt32 i = 0; i < length; ++i) {
         if (data[i] != NULL_DATA)
@@ -307,9 +336,19 @@ void DynamicSrhTable::traverse(void(*visit)(SearchType &e)) {
             ++length;
     }
     cout << endl;
-    bin_sort_tree->show(0);
-    SearchType *tmp_data = new SearchType[size], *in_data = tmp_data;
-    bin_sort_tree->inOrderTraverse(BinaryTree::visit, &in_data);
+    SearchType *tmp_data = new SearchType[size], *in_data;
+    switch (f_type) {
+    case BST:
+        in_data = tmp_data;
+        bin_sort_tree->show(0);
+        bin_sort_tree->inOrderTraverse(BinaryTree::visit, &in_data);
+        break;
+    case BBT:
+        in_data = tmp_data;
+        bal_bin_tree->show(0);
+        bal_bin_tree->inOrderTraverse(BinaryTree::visit, &in_data);
+        break;
+    }
     for (UInt32 i = 0; i < size; ++i)
         cout << data[tmp_data[i]] << " ";
     cout << endl;

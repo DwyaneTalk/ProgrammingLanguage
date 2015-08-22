@@ -19,7 +19,7 @@ typedef struct BiNode{
     struct BiNode *parent;
     BiNode(int data = 0){
         this->data = data;
-        info = NULL;
+        info = new NodeInfo;
         lchild = NULL;
         rchild = NULL;
         parent = NULL;
