@@ -11,6 +11,7 @@
 #include "UDGraph.h"
 #include "StaticSrhTable.h"
 #include "DynamicSrhTable.h"
+#include "BMinusTree.h"
 
 class Test{
 private:
@@ -24,6 +25,7 @@ private:
     UDGraph     ud_graph;
     StaticSrhTable sta_srh_table;
     DynamicSrhTable dyn_srh_table;
+    BMinusTree  bminus_tree;
 public:
     void testSqList();
     void testLinkList();
@@ -37,6 +39,7 @@ public:
     void testUDGraphApp();
     void testStaSrhTable();
     void testDynSrhTable();
+    void testBMinusTree();
 };
 
 #endif

@@ -21,7 +21,7 @@ typedef struct Key {
 } Key; 
 
 typedef struct BTreeNode {
-    int key_num;
+    UInt32 key_num;
     BTreeNode*   parent;
     Key*     key[m + 1]; //key[0]不用
     BTreeNode*   child[m + 1];  //多出来一个空间，是在分裂结点之前的暂存空间
@@ -29,7 +29,7 @@ typedef struct BTreeNode {
         this->key_num = 0;
         this->parent = parent;
         for (UInt32 i = 1; i <= m; ++i) {
-            this->key[i] = new Key;
+            this->key[i] = NULL;
         }
         for (UInt32 i = 0; i <= m; ++i) {
             this->child[i] = NULL;
@@ -39,7 +39,7 @@ typedef struct BTreeNode {
 
 typedef struct Location {
     BTreeNode*   node;
-    int     idx;
+    UInt32     idx;
     bool    tag;
     Location(BTreeNode *node = NULL, int idx = 0, bool tag = false) {
         this->node = node;
@@ -51,16 +51,16 @@ typedef struct Location {
 class BMinusTree {
 private:
     BTreeNode* root;
-    int rank;
+    UInt32 rank;
     Int32 searchInNode(BTreeNode *node, BTreeType key_value);
     void  insertInNode(Location *loc, Key* key, BTreeNode* child);
     Key*  splitNode(BTreeNode* node, Location* loc, BTreeNode* &new_node);
 public:
     BMinusTree();
     ~BMinusTree();
-    Location* searchKey(BTreeType key_value);
+    bool searchKey(BTreeType key_value, BTreeNode* &res_node, UInt32 &res_idx);
     void insertKey(Location* loc, Key* key);
-    BTreeType deleteKey(Location* res);
+    void deleteKey(Location* res);
 };
 
 #endif  //DMINUSTREE_H

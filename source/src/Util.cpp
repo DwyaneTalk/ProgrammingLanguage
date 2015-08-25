@@ -33,3 +33,24 @@ UInt32 getMin(UInt32 *array, UInt32 nums, UInt32 *index) {
     }
     return min_value;
 }
+
+void memShift(void *left, void *right, LR lr, UInt32 size) {
+    UInt8 delta = (UInt8 *)right - (UInt8*)left;
+    UInt8* end = (UInt8*)left + size - delta;
+    if (!delta) return;
+    if (lr == LEFT) {
+        UInt8* base = (UInt8*)left;
+        while (base <= end) {
+            memcpy(base, base + delta, delta);
+            base += delta;
+        }
+        memcpy(base, base + delta, (UInt8*)left + size - base);
+    } else {
+        UInt8* base = (UInt8*)right + size - delta;
+        while (base >= right) {
+            memcpy(base, base - delta, delta);
+            base -= delta;
+        }
+        memcpy(right, left, base + delta - right);
+    }
+}

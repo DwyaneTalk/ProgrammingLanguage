@@ -489,3 +489,18 @@ void Test::testDynSrhTable() {
     }
     dyn_srh_table.traverse(f_type, DynamicSrhTable::visit);
 }
+
+void Test::testBMinusTree() {
+    BTreeType data[] = {45, 24, 53, 90, 3, 12, 37, 50, 61, 70, 100, 30, 26, 85, 7};
+    UInt32 size = sizeof(data) / sizeof(BTreeType);
+    UInt32 idx;
+    BTreeNode *node;
+    bool res;
+    for (UInt32 i = 0; i < 11; ++i) {
+        res = bminus_tree.searchKey(data[i], node, idx);
+    }
+    BTreeType del_value = 45;
+    res = bminus_tree.searchKey(del_value, node, idx);
+    Location* loc = new Location(node, idx, res);
+    bminus_tree.deleteKey(loc);
+}
