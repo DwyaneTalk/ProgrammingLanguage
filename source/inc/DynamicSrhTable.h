@@ -1,3 +1,6 @@
+#ifndef DYNAMICSRHTABLE_H
+#define DYNAMICSRHTABLE_H
+
 #include "Util.h"
 #include "BinaryTree.h"
 #include<stack>
@@ -29,3 +32,4 @@ public:
     void static visit(SearchType &e);
 };
 
+#endif  // DYNAMICSRHTABLE_H

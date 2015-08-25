@@ -5,4 +5,12 @@
 #include<stack>
 #include<queue>
 
+class BiThrTree
+{
+private:
+
+public:
+    BiThrTree();
+    ~BiThrTree();
+};
 #endif

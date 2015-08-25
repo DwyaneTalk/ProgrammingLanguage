@@ -24,7 +24,7 @@ typedef     char    TreeElemType;
 typedef     char    VexType;
 typedef     int     ArcType;
 typedef     int     SearchType;
-
+typedef     int     BTreeType;
 enum LR {
     LEFT = 0,
     RIGHT = 1

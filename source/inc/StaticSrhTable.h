@@ -1,3 +1,5 @@
+#ifndef STATICSRHTABLE_H
+#define STATICSRHTABLE_H
 #include "Util.h"
 #include "BinaryTree.h"
 #include<algorithm>
@@ -41,3 +43,5 @@ public:
     void traverse(void(*visit) (SearchType &e));
     void static visit(SearchType &e);
 };
+
+#endif  //STATICSRHTABLE_H
