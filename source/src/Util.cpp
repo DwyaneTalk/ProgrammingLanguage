@@ -51,6 +51,6 @@ void memShift(void *left, void *right, LR lr, UInt32 size) {
             memcpy(base, base - delta, delta);
             base -= delta;
         }
-        memcpy(right, left, base + delta - right);
+        memcpy(right, left, base + delta - (UInt8*)right);
     }
 }

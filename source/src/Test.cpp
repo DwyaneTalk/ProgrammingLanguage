@@ -504,3 +504,19 @@ void Test::testBMinusTree() {
     Location* loc = new Location(node, idx, res);
     bminus_tree.deleteKey(loc);
 }
+
+void Test::testTrieTree() {
+    char* str[16];
+    str[0] = "CAI";
+    str[1] = "CAO";
+    str[2] = "CHA";
+    str[3] = "CHANG";
+    str[4] = "CHAO";
+    str[5] = "CHEN";
+    str[6] = "CHE";
+    trie_tree.searchTrie("");
+    for (UInt32 i = 0; i < 7; ++i) {
+        trie_tree.searchTrie(str[i]);
+    }
+    int i = 0;
+}

@@ -12,6 +12,7 @@
 #include "StaticSrhTable.h"
 #include "DynamicSrhTable.h"
 #include "BMinusTree.h"
+#include "TrieTree.h"
 
 class Test{
 private:
@@ -26,6 +27,7 @@ private:
     StaticSrhTable sta_srh_table;
     DynamicSrhTable dyn_srh_table;
     BMinusTree  bminus_tree;
+    TrieTree    trie_tree;
 public:
     void testSqList();
     void testLinkList();
@@ -40,6 +42,7 @@ public:
     void testStaSrhTable();
     void testDynSrhTable();
     void testBMinusTree();
+    void testTrieTree();
 };
 
 #endif

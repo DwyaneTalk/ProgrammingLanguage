@@ -28,7 +28,9 @@ int main() {
 
     //test.testDynSrhTable();
 
-    test.testBMinusTree();
+    //test.testBMinusTree();
+
+    test.testTrieTree();
     system("pause");
     return 0;
 }

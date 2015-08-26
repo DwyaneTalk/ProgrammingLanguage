@@ -25,6 +25,8 @@ typedef     char    VexType;
 typedef     int     ArcType;
 typedef     int     SearchType;
 typedef     int     BTreeType;
+typedef     char    TrieType;
+
 enum LR {
     LEFT = 0,
     RIGHT = 1
@@ -57,6 +59,11 @@ enum Balance {
     RH = 1        //右高
 };
 
+enum TrieNodeType {
+    BRANCH  = 0,    //  分支结点
+    LEAF    = 1     //  叶子结点
+};
+
 //附加信息可以用来扩展图的功能
 typedef struct VexInfo {   //顶点的附加信息
 
@@ -66,6 +73,9 @@ typedef struct ArcInfo {    //弧的附加信息
 
 } ArcInfo;
 
+typedef struct Record{
+    //附加信息
+} Record;
 /*
 	define the MACRO
 */
