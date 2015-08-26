@@ -6,15 +6,15 @@ BMinusTree::BMinusTree() {
 }
 
 BMinusTree::~BMinusTree() {
-    stack<BTreeNode*> node_stack;
+    queue<BTreeNode*> node_queue;
     BTreeNode *node;
-    if (root)   node_stack.push(root);
-    while (!node_stack.empty()) {
-        node = node_stack.top();
-        node_stack.pop();
+    if (root)   node_queue.push(root);
+    while (!node_queue.empty()) {
+        node = node_queue.front();
+        node_queue.pop();
         for (UInt32 i = 0; i <= node->key_num; ++i) {
             if (node->child[i])
-                node_stack.push(node->child[i]);
+                node_queue.push(node->child[i]);
         }
         for (UInt32 i = 1; i <= node->key_num; ++i) {
             if (node->key[i]) {
@@ -156,14 +156,14 @@ void BMinusTree::deleteKey(Location* loc) {
         UInt32 idx = loc->idx;
         Key* key = node->key[idx];
         BTreeNode* child = node->child[idx];
-        if (key)
-            delete key->info;
-        delete key;
         while (child) {
-            node->key[idx] = child->key[1];
+            idx = 0;
             node = child;
-            idx = 1;
             child = node->child[idx];
+        }
+        if (!idx) {
+            loc->node->key[loc->idx] = node->key[1];
+            idx = 1;
         }
         if (node->key_num >= (m + 1) / 2) {
             memShift(node->key + idx, node->key + idx + 1, LEFT, sizeof(Key*)* (node->key_num - idx));
@@ -172,24 +172,90 @@ void BMinusTree::deleteKey(Location* loc) {
             node->child[node->key_num] = NULL;
             --(node->key_num);
         } else {
-            bool finished = false;
-            if (idx > 1) {  //有左兄弟
-                if (node->parent->child[idx - 1]->key_num >= (m + 1) / 2) {
-                    finished = true;
-                }
-            } else if (idx < node->key_num) {   //有右兄弟
-                if (node->parent->child[idx + 1]->key_num >= (m + 1) / 2) {
-                    finished = true;
-
-                }
-            }
-            if (!finished) {
-                if (idx > 1) {
-
+            if (node == root) {
+                if (node->key_num == 1) {
+                    delete node;
+                    root = NULL;
                 } else {
-
+                    memShift(node->key + idx, node->key + idx + 1, LEFT, sizeof(Key*)* (node->key_num - idx));
+                    memShift(node->child + idx, node->child + idx + 1, LEFT, sizeof(BTreeNode*)* (node->key_num - idx));
+                    node->key[node->key_num] = NULL;
+                    node->child[node->key_num] = NULL;
+                    --(node->key_num);
+                }
+            } else {
+                UInt32 cur_idx = searchInNode(node->parent, node->key[1]->value);
+                if (cur_idx > 0 && node->parent->child[cur_idx - 1]->key_num >= (m + 1) / 2) {  //有左兄弟
+                    memShift(node->key + 1, node->key + 2, RIGHT, sizeof(Key*)* (idx - 1));
+                    node->key[1] = node->parent->key[cur_idx];
+                    node->parent->key[cur_idx] = node->parent->child[cur_idx - 1]->key[node->parent->child[cur_idx - 1]->key_num];
+                    node->parent->child[cur_idx - 1]->key[node->parent->child[cur_idx - 1]->key_num] = NULL;
+                    --(node->parent->child[cur_idx - 1]->key_num);
+                } else if (cur_idx < node->parent->key_num && node->parent->child[cur_idx + 1]->key_num >= (m + 1) / 2) {   //有右兄弟
+                    memShift(node->key + idx, node->key + idx + 1, LEFT, sizeof(Key*)* (node->key_num - idx));
+                    node->key[node->key_num] = node->parent->key[cur_idx + 1];
+                    node->parent->key[cur_idx + 1] = node->parent->child[cur_idx + 1]->key[1];
+                    memShift(node->parent->child[cur_idx + 1]->key + 1, node->parent->child[cur_idx + 1]->key + 2, LEFT, sizeof(Key*)* (node->parent->child[cur_idx + 1]->key_num - 1));
+                    node->parent->child[cur_idx + 1]->key[node->parent->child[cur_idx + 1]->key_num] = NULL;
+                    --(node->parent->child[cur_idx + 1]->key_num);
+                } else {
+                    //todo
+                    BTreeNode *parent, *n_child;
+                    do {
+                        memShift(node->key + idx, node->key + idx + 1, LEFT, sizeof(Key*)* (node->key_num - idx));
+                        memShift(node->child + idx, node->child + idx + 1, LEFT, sizeof(BTreeNode*)* (node->key_num - idx));
+                        node->key[node->key_num] = NULL;
+                        node->child[node->key_num] = NULL;
+                        --(node->key_num);
+                        if (node == root) {
+                            root = node->child[0];
+                            delete node;
+                            node = NULL;
+                            break;
+                        } else {
+                            parent = node->parent;
+                            if (cur_idx > 0) {
+                                n_child = parent->child[cur_idx - 1];
+                                n_child->key[++(n_child->key_num)] = parent->key[cur_idx];
+                                n_child->child[n_child->key_num] = node->child[0];
+                                for (UInt32 i = 1; i <= node->key_num; ++i) {
+                                    n_child->key[++(n_child->key_num)] = node->key[i];
+                                    n_child->child[n_child->key_num] = node->child[i];
+                                }
+                                idx = cur_idx;
+                                cur_idx = searchInNode(node->parent, node->parent->key[idx]->value);
+                                delete node;
+                                node = n_child->parent;
+                            } else if (cur_idx < parent->key_num) {
+                                n_child = parent->child[cur_idx + 1];
+                                node->key[++(node->key_num)] = parent->key[cur_idx + 1];
+                                node->child[node->key_num] = n_child->child[0];
+                                for (UInt32 i = 1; i <= n_child->key_num; ++i) {
+                                    node->key[++(node->key_num)] = n_child->key[i];
+                                    node->child[node->key_num] = n_child->child[i];
+                                }
+                                idx = cur_idx + 1;
+                                cur_idx = searchInNode(node->parent, node->parent->key[idx]->value);
+                                delete n_child;
+                                node = node->parent;
+                            } else {
+                                ferr << "出错，不合理的删除位置，树结构出错" << endl;
+                                exit(ERROR);
+                            }
+                        }
+                     } while (node->key_num < (m + 1) / 2);
+                    if (node) {
+                        memShift(node->key + idx, node->key + idx + 1, LEFT, sizeof(Key*)* (node->key_num - idx));
+                        memShift(node->child + idx, node->child + idx + 1, LEFT, sizeof(BTreeNode*)* (node->key_num - idx));
+                        node->key[node->key_num] = NULL;
+                        node->child[node->key_num] = NULL;
+                        --(node->key_num);
+                    }
                 }
             }
         }
+        if (key)
+            delete key->info;
+        delete key;
     }
 }

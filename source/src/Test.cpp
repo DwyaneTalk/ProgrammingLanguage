@@ -496,10 +496,10 @@ void Test::testBMinusTree() {
     UInt32 idx;
     BTreeNode *node;
     bool res;
-    for (UInt32 i = 0; i < 11; ++i) {
+    for (UInt32 i = 0; i < 10; ++i) {
         res = bminus_tree.searchKey(data[i], node, idx);
     }
-    BTreeType del_value = 45;
+    BTreeType del_value = 90;
     res = bminus_tree.searchKey(del_value, node, idx);
     Location* loc = new Location(node, idx, res);
     bminus_tree.deleteKey(loc);
