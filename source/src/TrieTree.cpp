@@ -129,3 +129,26 @@ void TrieTree::insertTrie(TrieNode* node, TrieType* tmp_key, TrieType* key) {
         new_node->lf.info = NULL;
     }
 }
+
+void TrieTree::deleteTrie(TrieNode* node, TrieType* key) {
+    UInt32 index = charToInt(*(key + node->level));
+    TrieNode* del_node = node->bh.ptr[index];
+    if (del_node->lf.info)  delete del_node->lf.info;
+    delete del_node->lf.info;
+    delete del_node;
+    node->bh.ptr[index] = NULL;
+    --(node->bh.num);
+    if (node->bh.num ==1) {
+        UInt32 i;
+        for (i = 0; i < 27; ++i) {
+            if (node->bh.ptr[i])    break;
+        }
+        for (index = 0; index < 27; ++index) {
+            if (node->parent->bh.ptr[index] == node)    break;
+        }
+        node->parent->bh.ptr[index] = node->bh.ptr[i];
+        node->bh.ptr[i]->level = node->parent->level + 1;
+        node->bh.ptr[i]->parent = node->parent;
+        delete node;
+    }
+}

@@ -42,7 +42,7 @@ public:
     ~TrieTree();
     TrieNode* searchTrie(TrieType* key);
     void insertTrie(TrieNode* node, TrieType* tmp_key, TrieType* key);
-    void deleteTrie();
+    void deleteTrie(TrieNode* node, TrieType* key);
 };
 
 #endif  //TRIETREE_H
