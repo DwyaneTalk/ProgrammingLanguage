@@ -518,5 +518,12 @@ void Test::testTrieTree() {
     for (UInt32 i = 0; i < 7; ++i) {
         trie_tree.searchTrie(str[i]);
     }
+    TrieNode* node;
+    node = trie_tree.searchTrie(str[6]);
+    if (node->kind == LEAF)
+        trie_tree.deleteTrie(node->parent, str[6]);
+    node = trie_tree.searchTrie(str[5]);
+    if (node->kind == LEAF)
+        trie_tree.deleteTrie(node->parent, str[5]);
     int i = 0;
 }

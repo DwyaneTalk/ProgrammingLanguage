@@ -60,7 +60,7 @@ TrieNode* TrieTree::searchTrie(TrieType* key) {
         node = node->bh.ptr[index];
     }
     if (node) {
-        if (!strcmp(node->lf.key + node->level - 1, tmp_key)) {
+        if (!strcmp(node->lf.key + node->level - 2, tmp_key - 1)) {
             return node;
         } else {
             insertTrie(parent, tmp_key - 1, key);
@@ -131,10 +131,10 @@ void TrieTree::insertTrie(TrieNode* node, TrieType* tmp_key, TrieType* key) {
 }
 
 void TrieTree::deleteTrie(TrieNode* node, TrieType* key) {
-    UInt32 index = charToInt(*(key + node->level));
+    UInt32 index = charToInt(*(key + node->level - 1));
     TrieNode* del_node = node->bh.ptr[index];
     if (del_node->lf.info)  delete del_node->lf.info;
-    delete del_node->lf.info;
+    if (del_node->lf.key) delete del_node->lf.key;
     delete del_node;
     node->bh.ptr[index] = NULL;
     --(node->bh.num);
@@ -143,12 +143,14 @@ void TrieTree::deleteTrie(TrieNode* node, TrieType* key) {
         for (i = 0; i < 27; ++i) {
             if (node->bh.ptr[i])    break;
         }
-        for (index = 0; index < 27; ++index) {
-            if (node->parent->bh.ptr[index] == node)    break;
+        if (node->bh.ptr[i]->kind == LEAF) {
+            for (index = 0; index < 27; ++index) {
+                if (node->parent->bh.ptr[index] == node)    break;
+            }
+            node->parent->bh.ptr[index] = node->bh.ptr[i];
+            node->bh.ptr[i]->level = node->parent->level + 1;
+            node->bh.ptr[i]->parent = node->parent;
+            delete node;
         }
-        node->parent->bh.ptr[index] = node->bh.ptr[i];
-        node->bh.ptr[i]->level = node->parent->level + 1;
-        node->bh.ptr[i]->parent = node->parent;
-        delete node;
     }
 }
