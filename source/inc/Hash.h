@@ -68,11 +68,11 @@ private:
     UInt32  count;  //当前记录数
 
     UInt32 (*hash_fun)(HashKeyType key);
-    UInt32 (*coll_fun)(UInt32 value, UInt32 count);
+    UInt32 (*coll_fun)(Int32 index, UInt32 count);
 public:
     Hash(HashFun hash_type = LMOD, CollFun coll_type = LINE);
     ~Hash();
-    Bool searchKey(HashKeyType key, UInt32 &index, UInt32 &count);
+    Bool searchKey(HashKeyType key, Int32 &index, UInt32 &count);
     Bool insertKey(HashKeyType key, Record* info);
     Bool deleteKey(HashKeyType key);
 };
@@ -81,6 +81,6 @@ UInt32 lmodHashFun(HashKeyType key);
 UInt32 sqrtHashFun(HashKeyType key);
 UInt32 foldHashFun(HashKeyType key);
 
-UInt32 lineCollFun(UInt32 index, UInt32 count);
-UInt32 doubCollFun(UInt32 index, UInt32 count);
+UInt32 lineCollFun(Int32 index, UInt32 count);
+UInt32 doubCollFun(Int32 index, UInt32 count);
 #endif  //HASH_H

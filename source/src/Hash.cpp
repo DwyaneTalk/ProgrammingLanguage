@@ -43,14 +43,14 @@ Hash::~Hash() {
     delete elem;
 }
 
-Bool Hash::searchKey(HashKeyType key, UInt32 &index, UInt32 &count) {
-    UInt32 value = index = hash_fun(key);
+Bool Hash::searchKey(HashKeyType key, Int32 &index, UInt32 &count) {
+    Int32 value = index = hash_fun(key);
     count = 0;
     if (coll_type == LINK) {
-        if (elem[index].key_list->getIndex(key) >= 0)    return true;
+        if (elem[index].key_list && elem[index].key_list->getIndex(key) >= 0)    return true;
         else    return false;
     } else {
-        while (elem[index].status == USD && elem[index].key != key) {
+        while (elem[index].status == USE && elem[index].key != key) {
             if (count >= size) {
                 index = -1;
                 return false;
@@ -58,19 +58,20 @@ Bool Hash::searchKey(HashKeyType key, UInt32 &index, UInt32 &count) {
                 index = coll_fun(value, ++count);
             }
         }
-        if (elem[index].status == EMP)  return true;
+        if (elem[index].status == USE)  return true;
         else    return false;
     }
 }
 
 Bool Hash::insertKey(HashKeyType key, Record* info) {
-    UInt32 count, index;
+    UInt32 count;
+    Int32  index;
     if (searchKey(key, index, count)) {
-        cout << "该关键字已存在哈希表中" << endl;
+        //cout << "该关键字已存在哈希表中" << endl;
         return true;
     } else {
         if (index < 0) {
-            cout << "哈希表空间已无法插入该关键字" << endl;
+            //cout << "哈希表空间已无法插入该关键字" << endl;
             return false;
         } else {
             if (coll_type == LINK) {
@@ -78,30 +79,40 @@ Bool Hash::insertKey(HashKeyType key, Record* info) {
                     elem[index].key_list = new LinkList;
                 elem[index].key_list->insertHeadElem(key);
             } else {
-                elem[index].status = USD;
+                UInt32 new_idx = index, new_cnt = 0;
+                while (elem[index].status == USE) {
+                    index = coll_fun(new_idx, ++new_cnt);
+                }
+                elem[index].status = USE;
                 elem[index].key = key;
                 elem[index].info = info;
             }
+            ++(this->count);
             return true;
         }
     }
 }
 
 Bool Hash::deleteKey(HashKeyType key) {
-    UInt32 count, index;
+    UInt32 count;
+    Int32  index;
     if (searchKey(key, index, count)) {
         if (coll_type == LINK) {
             UInt32 loc;
-            if (!elem[index].key_list || (loc = elem[index].key_list->getIndex(key))) {
+            if (!elem[index].key_list || (loc = elem[index].key_list->getIndex(key) < 0)) {
                 ferr << "哈希表内部结构出错" << endl;
                 exit(ERROR);
             }
             elem[index].key_list->deleteElem(loc);
         } else {
             elem[index].status = USD;
+            if (elem[index].info)   
+                delete elem[index].info;
         }
+        --(this->count);
+        return true;
     } else {
-        cout << "该关键字不在哈希表中" << endl;
+        //cout << "该关键字不在哈希表中" << endl;
         return false;
     }
 }
@@ -112,18 +123,18 @@ UInt32 lmodHashFun(HashKeyType key) {
 
 UInt32 sqrtHashFun(HashKeyType key) {
     UInt32 sqrt = key * key;
-    return ((sqrt >> 1) % HASHSIZE + (sqrt >> 5) % HASHSIZE) % HASHSIZE;
+    return ((sqrt / 10) % HASHSIZE + (sqrt / 100000) % HASHSIZE) % HASHSIZE;
 }
 
 UInt32 foldHashFun(HashKeyType key) {
-    return ((key >> 2) + 10 * (key % 10) + (key >> 1) % 10) % HASHSIZE;
+    return ((key / 100) + 10 * (key % 10) + (key / 10) % 10) % HASHSIZE;
 }
 
-UInt32 lineCollFun(UInt32 index, UInt32 count) {
+UInt32 lineCollFun(Int32 index, UInt32 count) {
     return (index + count) % HASHSIZE;
 }
 
-UInt32 doubCollFun(UInt32 index, UInt32 count) {
+UInt32 doubCollFun(Int32 index, UInt32 count) {
     return (index + ((count + 1) / 2 * (count + 1) / 2) * ((-1) ^ (count - 1))) % HASHSIZE;
 }
 

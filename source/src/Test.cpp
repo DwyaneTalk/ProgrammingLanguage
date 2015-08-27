@@ -549,5 +549,165 @@ void Test::testTrieTree() {
 
 void Test::testHash() {
     cout << "测试哈希表开始……" << endl;
-    Hash        hash(LMOD, LINE);
+    Hash        hash00(LMOD, LINE);
+    Hash        hash11(SQRT, DOUB);
+    Hash        hash22(FOLD, LINK);
+
+    /* 功能测试
+    UInt32 index, count;
+    HashKeyType key = 10;
+    Bool status;
+    for (UInt32 i = 0; i < 50; ++i) {
+    key = rand() % 10000;
+    hash00.insertKey(key, NULL);
+    key = rand() % 10000;
+    hash00.deleteKey(key);
+    }
+
+    for (UInt32 i = 0; i < 50; ++i) {
+    key = rand() % 10000;
+    hash11.insertKey(key, NULL);
+    key = rand() % 10000;
+    hash00.deleteKey(key);
+    }
+
+    for (UInt32 i = 0; i < 50; ++i) {
+    key = rand() % 10000;
+    hash22.insertKey(key, NULL);
+    key = rand() % 10000;
+    hash00.deleteKey(key);
+    }
+    */
+
+    /*性能测试*/
+    Hash        hash01(LMOD, DOUB);
+    Hash        hash10(SQRT, LINE);
+    Hash        hash20(FOLD, LINE);
+    Hash        hash21(FOLD, DOUB);
+
+    Int32  index;
+    UInt32 count = 0, sum_cnt = 0;
+    HashKeyType key;
+    for (UInt32 i = 0; i < 5; ++i) {
+        for (UInt32 j = 0; j < 50; ++j) {
+            key = rand() % 10000;
+            hash00.insertKey(key, NULL);
+        }
+
+        for (UInt32 j = 0; j < 1000; ++j) {
+            key = rand() % 10000;
+            hash00.searchKey(key, index, count);
+            sum_cnt += count;
+        }
+
+        for (UInt32 j = 0; j < 80; ++j) {
+            key = rand() % 10000;
+            hash00.deleteKey(key);
+        }
+    }
+    cout << "哈希表00，冲突次数：" << sum_cnt << endl;
+    sum_cnt = 0;
+    for (UInt32 i = 0; i < 5; ++i) {
+        for (UInt32 j = 0; j < 50; ++j) {
+            key = rand() % 10000;
+            hash01.insertKey(key, NULL);
+        }
+
+        for (UInt32 j = 0; j < 1000; ++j) {
+            key = rand() % 10000;
+            hash01.searchKey(key, index, count);
+            sum_cnt += count;
+        }
+
+        for (UInt32 j = 0; j < 80; ++j) {
+            key = rand() % 10000;
+            hash01.deleteKey(key);
+        }
+    }
+    cout << "哈希表01，冲突次数：" << sum_cnt << endl;
+    sum_cnt = 0;
+    for (UInt32 i = 0; i < 5; ++i) {
+        for (UInt32 j = 0; j < 50; ++j) {
+            key = rand() % 10000;
+            hash10.insertKey(key, NULL);
+        }
+
+        for (UInt32 j = 0; j < 1000; ++j) {
+            key = rand() % 10000;
+            hash10.searchKey(key, index, count);
+            sum_cnt += count;
+        }
+
+        for (UInt32 j = 0; j < 80; ++j) {
+            key = rand() % 10000;
+            hash10.deleteKey(key);
+        }
+    }
+    cout << "哈希表10，冲突次数：" << sum_cnt << endl;
+    sum_cnt = 0;
+    for (UInt32 i = 0; i < 5; ++i) {
+        for (UInt32 j = 0; j < 50; ++j) {
+            key = rand() % 10000;
+            hash11.insertKey(key, NULL);
+        }
+
+        for (UInt32 j = 0; j < 1000; ++j) {
+            key = rand() % 10000;
+            hash11.searchKey(key, index, count);
+            sum_cnt += count;
+        }
+
+        for (UInt32 j = 0; j < 80; ++j) {
+            key = rand() % 10000;
+            hash11.deleteKey(key);
+        }
+    }
+    cout << "哈希表11，冲突次数：" << sum_cnt << endl;
+    sum_cnt = 0;
+    for (UInt32 i = 0; i < 5; ++i) {
+        for (UInt32 j = 0; j < 50; ++j) {
+            key = rand() % 10000;
+            hash20.insertKey(key, NULL);
+        }
+
+        for (UInt32 j = 0; j < 1000; ++j) {
+            key = rand() % 10000;
+            hash20.searchKey(key, index, count);
+            sum_cnt += count;
+        }
+
+        for (UInt32 j = 0; j < 80; ++j) {
+            key = rand() % 10000;
+            hash20.deleteKey(key);
+        }
+    }
+    cout << "哈希表20，冲突次数：" << sum_cnt << endl;
+    sum_cnt = 0;
+    for (UInt32 i = 0; i < 5; ++i) {
+        for (UInt32 j = 0; j < 50; ++j) {
+            key = rand() % 10000;
+            hash21.insertKey(key, NULL);
+        }
+
+        for (UInt32 j = 0; j < 1000; ++j) {
+            key = rand() % 10000;
+            hash21.searchKey(key, index, count);
+            sum_cnt += count;
+        }
+
+        for (UInt32 j = 0; j < 80; ++j) {
+            key = rand() % 10000;
+            hash21.deleteKey(key);
+        }
+    }
+    cout << "哈希表21，冲突次数：" << sum_cnt << endl;
+    /*测试结果
+    测试哈希表开始……
+    哈希表00，冲突次数：397955
+    哈希表01，冲突次数：328386
+    哈希表10，冲突次数：347223
+    哈希表11，冲突次数：370230
+    哈希表20，冲突次数：397307
+    哈希表21，冲突次数：367661
+    */
 }
