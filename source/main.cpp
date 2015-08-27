@@ -30,7 +30,9 @@ int main() {
 
     //test.testBMinusTree();
 
-    test.testTrieTree();
+    //test.testTrieTree();
+
+    test.testHash();
     system("pause");
     return 0;
 }

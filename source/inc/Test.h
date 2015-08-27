@@ -13,21 +13,10 @@
 #include "DynamicSrhTable.h"
 #include "BMinusTree.h"
 #include "TrieTree.h"
+#include "Hash.h"
 
 class Test{
 private:
-    SqList      sqList;
-    LinkList    linkList;
-    Stack       stack;
-    Queue       queue;
-    BinaryTree  biTree;
-    Tree        tree;
-    DGraph      d_graph;
-    UDGraph     ud_graph;
-    StaticSrhTable sta_srh_table;
-    DynamicSrhTable dyn_srh_table;
-    BMinusTree  bminus_tree;
-    TrieTree    trie_tree;
 public:
     void testSqList();
     void testLinkList();
@@ -43,6 +32,7 @@ public:
     void testDynSrhTable();
     void testBMinusTree();
     void testTrieTree();
+    void testHash();
 };
 
 #endif

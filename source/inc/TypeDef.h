@@ -26,19 +26,20 @@ typedef     int     ArcType;
 typedef     int     SearchType;
 typedef     int     BTreeType;
 typedef     char    TrieType;
+typedef     int     HashKeyType;
 
 enum LR {
     LEFT = 0,
     RIGHT = 1
 };
-
+//图
 enum GType {
     DG  = 0,    //有向无权图
     DN  = 1,    //有向带权图(网)
     UDG = 2,    //无向无权图
     UDN = 3     //无向带权图
 };
-
+//静态查找
 enum StaFindType {
     SEQ = 0,    //顺序查找
     BIN = 1,    //折半查找
@@ -47,22 +48,44 @@ enum StaFindType {
     STR = 4,    //静态树查找
     IDX = 5    //索引查找
 };
-
+//动态查找
 enum DynFindType {
     BST = 0,    //二叉排序树
     BBT = 1,    //平衡二叉树
 };
 
+//平衡树
 enum Balance {
     LH = -1,         //左高
     EH = 0,         //等高
     RH = 1        //右高
 };
 
+//键树、Trie树、数字查找树
 enum TrieNodeType {
     BRANCH  = 0,    //  分支结点
     LEAF    = 1     //  叶子结点
 };
+
+//哈希表
+enum HashFun {
+    LMOD = 0,     //线性取模
+    SQRT = 1,    //平方取中
+    FOLD = 2    //折叠法
+};
+
+enum CollFun {
+    LINE = 0,   //线性再散列
+    DOUB = 1,   //二次再散列
+    LINK = 2    //链地址法
+};
+
+enum HashStatus {
+    EMP = 0,    //为空，没有存储过数据
+    USE = 1,    //当前存储着数据
+    USD = 2,    //之前存储数据，后被删除
+};
+
 
 //附加信息可以用来扩展图的功能
 typedef struct VexInfo {   //顶点的附加信息

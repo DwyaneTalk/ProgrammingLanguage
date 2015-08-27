@@ -4,6 +4,7 @@
 
 void Test::testSqList() {
     cout << "顺序表测试开始……" << endl;
+    SqList      sqList;
     SqListElemType list[] = { 1, 2, 3, 4 };
     int size = sizeof(list) / sizeof(int);
     for (int i = 0; i < size; ++i)
@@ -22,6 +23,7 @@ void Test::testSqList() {
 
 void Test::testLinkList() {
     cout << "链表测试开始……" << endl;
+    LinkList    linkList;
     LinkListElemType list[] = { 1, 2, 3 };
     int size = sizeof(list) / sizeof(LinkListElemType);
     for (int i = 0; i < size; ++i)
@@ -61,6 +63,7 @@ void Test::testLinkList() {
 
 void  Test::testStack() {
     cout << "栈测试开始……" << endl;
+    Stack       stack;
     StackElemType list[3] = { 1, 2, 3 };
     int size = sizeof(list) / sizeof(StackElemType);
     stack.push(1);
@@ -79,6 +82,8 @@ void  Test::testStack() {
 
 void Test::testQueue() {
     cout << "队列测试开始……" << endl;
+    Queue       queue;
+    Stack       stack;
     QueueElemType list[3] = { 1, 2, 3 };
     int size = sizeof(list) / sizeof(QueueElemType);
     queue.enQueue(1);
@@ -96,6 +101,7 @@ void Test::testQueue() {
 
 void Test::testBinaryTree() {
     cout << "二叉树测试开始……" << endl;
+    BinaryTree  biTree;
     BiTreeElemType pre_data[MAXELEMNUM], in_data[MAXELEMNUM], post_data[MAXELEMNUM], elem_data[MAXELEMNUM];
     cout << "二叉树创建并显示……" << endl;
     biTree.createBibaryTree(biTree.getRootPoint(), NULL);
@@ -170,6 +176,7 @@ void Test::testBinaryTree() {
 
 void Test::testTree() {
     cout << "树的测试开始……" << endl;
+    Tree        tree;
     tree.createTree();
     tree.show();
     //tree.init();
@@ -212,6 +219,7 @@ void Test::testTree() {
 
 void Test::testDGraph() {
     cout << "有向图测试开始：" << endl;
+    DGraph      d_graph;
     d_graph.createGraph();
     d_graph.show();
     d_graph.init();
@@ -265,6 +273,7 @@ void Test::testDGraph() {
 
 void Test::testUDGraph() {
     cout << "无向图测试开始：" << endl;
+    UDGraph     ud_graph;
     ud_graph.createGraph();
     ud_graph.show();
     ud_graph.init();
@@ -307,6 +316,7 @@ void Test::testUDGraph() {
 
 void Test::testDGraphApp() {
     cout << "有向图应用测试开始：" << endl;
+    DGraph      d_graph;
     d_graph.createGraph();
     d_graph.show();
     d_graph.weaklyConnectedCompnent();
@@ -356,6 +366,7 @@ void Test::testDGraphApp() {
 
 void Test::testUDGraphApp() {
     cout << "无向图应用测试开始：" << endl;
+    UDGraph     ud_graph;
     ud_graph.createGraph();
     ud_graph.show();
     cout << "深度遍历结果：";
@@ -381,6 +392,8 @@ void Test::testUDGraphApp() {
 }
 
 void Test::testStaSrhTable() {
+    cout << "静态查找表测试开始……" << endl;
+    StaticSrhTable sta_srh_table;
     sta_srh_table.traverse(StaticSrhTable::visit);
     SearchType key = 13;
     Int32 key_idx;
@@ -471,6 +484,8 @@ void Test::testStaSrhTable() {
 }
 
 void Test::testDynSrhTable() {
+    cout << "动态查找表测试开始……" << endl;
+    DynamicSrhTable dyn_srh_table;
     SearchType data[70] = { 13, 24, 37, 90, 53, 12, 12, 11, 10, 9 };
     UInt32 size = sizeof(data) / sizeof(SearchType);
     cout << "开始测试二叉排序树:" << endl;
@@ -491,7 +506,9 @@ void Test::testDynSrhTable() {
 }
 
 void Test::testBMinusTree() {
-    BTreeType data[] = {45, 24, 53, 90, 3, 12, 37, 50, 61, 70, 100, 30, 26, 85, 7};
+    cout << "测试B-树开始……" << endl;
+    BMinusTree  bminus_tree;
+    BTreeType data[] = { 45, 24, 53, 90, 3, 12, 37, 50, 61, 70, 100, 30, 26, 85, 7 };
     UInt32 size = sizeof(data) / sizeof(BTreeType);
     UInt32 idx;
     BTreeNode *node;
@@ -506,6 +523,8 @@ void Test::testBMinusTree() {
 }
 
 void Test::testTrieTree() {
+    cout << "测试键树开始……" << endl;
+    TrieTree    trie_tree;
     char* str[16];
     str[0] = "CAI";
     str[1] = "CAO";
@@ -526,4 +545,9 @@ void Test::testTrieTree() {
     if (node->kind == LEAF)
         trie_tree.deleteTrie(node->parent, str[5]);
     int i = 0;
+}
+
+void Test::testHash() {
+    cout << "测试哈希表开始……" << endl;
+    Hash        hash(LMOD, LINE);
 }
