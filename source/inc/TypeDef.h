@@ -27,6 +27,8 @@ typedef     int     SearchType;
 typedef     int     BTreeType;
 typedef     char    TrieType;
 typedef     int     HashKeyType;
+typedef     int     SortKeyType;
+typedef     int     HeapKeyType;
 
 enum LR {
     LEFT = 0,

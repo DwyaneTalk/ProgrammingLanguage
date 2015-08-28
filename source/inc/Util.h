@@ -26,4 +26,5 @@ void* renew(void* base, int count, int inc, int size);
 UInt32 getMin(UInt32 *array, UInt32 nums, UInt32 *index);
 
 void memShift(void *left, void *right, LR lr, UInt32 size);
+
 #endif 
