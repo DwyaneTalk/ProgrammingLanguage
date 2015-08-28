@@ -32,7 +32,11 @@ int main() {
 
     //test.testTrieTree();
 
-    test.testHash();
+    //test.testHash();
+
+    //test.testHeap();
+
+    test.testSort();
     system("pause");
     return 0;
 }

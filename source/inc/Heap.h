@@ -18,7 +18,8 @@ public:
     void      initData(SortElem* data, UInt32 num);
     void      heapAdjust(Int32(*compare)(SortElem* data_a, SortElem* data_b));
     void      heapInsert(SortElem* elem, Int32(*compare)(SortElem* data_a, SortElem* data_b));
-    void      heapSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_a, SortElem* data_b));
+    void      heapSort(Int32(*compare)(SortElem* data_a, SortElem* data_b));
+    void      createSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_a, SortElem* data_b));
 };
 
 

@@ -22,7 +22,7 @@ void Heap::heapDownAdjust(UInt32 top, UInt32 num, Int32(*compare)(SortElem* data
     SortElem tmp_data(data[top].key, data[top].info);
     UInt32 left = top * 2;
     while (left <= num) {
-        if (compare(data + left, data + left + 1) > 0) {
+        if (left == num || compare(data + left, data + left + 1) > 0) {
             if (compare(&tmp_data, data + left) >= 0) {
                 Sort::copy(data + top, &tmp_data);
                 return;
@@ -42,6 +42,7 @@ void Heap::heapDownAdjust(UInt32 top, UInt32 num, Int32(*compare)(SortElem* data
             }
         }
     }
+    Sort::copy(data + top, &tmp_data);
 }
 
 
@@ -67,14 +68,18 @@ void Heap::heapAdjust(Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
     }
 }
 
-void Heap::heapSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
-    initData(data, num);
+void Heap::heapSort( Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
     SortElem tmp_data, *tmp_ptr = &tmp_data;
-    heapAdjust(compare);
     for (UInt32 j = num; j > 1;) {
         Sort::exchange(data + 1, data + j, tmp_ptr);
         heapDownAdjust(1, --j, compare);
     }
+}
+
+void Heap::createSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
+    initData(data, num);
+    heapAdjust(compare);
+    heapSort(compare);
 }
 
 void Heap::heapInsert(SortElem* elem, Int32(*compare)(SortElem* data_a, SortElem* data_b)) {

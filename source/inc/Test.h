@@ -1,6 +1,8 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include<time.h>
+
 #include "SqList.h"
 #include "LinkList.h"
 #include "Stack.h"
@@ -14,6 +16,8 @@
 #include "BMinusTree.h"
 #include "TrieTree.h"
 #include "Hash.h"
+#include "Heap.h"
+#include "Sort.h"
 
 class Test{
 private:
@@ -33,6 +37,8 @@ public:
     void testBMinusTree();
     void testTrieTree();
     void testHash();
+    void testHeap();
+    void testSort();
 };
 
 #endif

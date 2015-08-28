@@ -711,3 +711,213 @@ void Test::testHash() {
     哈希表21，冲突次数：367661
     */
 }
+
+void Test::testHeap() {
+    cout << "堆的测试开始：" << endl;
+    SortElem data[9], *data_ptr;
+    Heap heap;
+    UInt32 num = 8;
+    data[1].key = 49;
+    data[2].key = 38;
+    data[3].key = 65;
+    data[4].key = 97;
+    data[5].key = 76;
+    data[6].key = 13;
+    data[7].key = 27;
+    data[8].key = 49;
+    //heap.createSort(data, num, compare_asc);
+    heap.initData(data, 8);
+    for (UInt32 i = 1; i <= 8; ++i)
+        heap.heapInsert(data + i, compare_asc);
+    heap.heapSort(compare_asc);
+    data_ptr = heap.getData(num);
+    for (UInt32 i = 1; i <= num; ++i)
+        cout << data_ptr[i].key << " ";
+    cout << endl;
+}
+
+void Test::testSort() {
+    //cout << "排序功能测试开始：" << endl;
+    //Sort sort;
+    //UInt32 num = 100;
+    //SortElem* data = new SortElem[num + 1];
+
+    //cout << "直接插入排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.insertSort(data, num, compare_asc);
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    //cout << "直接选择排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.selectSort(data, num, compare_asc);
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    //cout << "冒泡排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.bubbleSort(data, num, compare_asc);
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    //cout << "希尔排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.shellSort(data, num, compare_asc);
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.quickSort(data, num, compare_asc);
+    //cout << "快速排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.mergeSort(data, num, compare_asc);
+    //cout << "合并排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    //for (UInt32 i = 1; i <= num; ++i) {
+    //    data[i].key = rand() % 100;
+    //    data[i].info = NULL;
+    //}
+    //sort.heapSort(data, num, compare_asc);
+    //cout << "堆排序：" << endl;
+    //for (UInt32 i = 1; i <= num; ++i)
+    //    cout << " " << data[i].key;
+    //cout << endl;
+
+    cout << "7种排序的性能测试：" << endl;
+    Sort sort;
+    clock_t start_t;
+    UInt32 num = 10000;
+    UInt32 loop = 10;
+    UInt32 time = 0;
+    SortElem* data = new SortElem[num + 1];
+
+    cout << "插入排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.insertSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+
+    cout << "选择排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.selectSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+
+    cout << "冒泡排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.bubbleSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+
+    cout << "希尔排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.shellSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+
+    cout << "快速排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.quickSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+
+    cout << "合并排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.mergeSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+
+    cout << "堆排序用时：";
+    time = 0;
+    for (UInt32 i = 0; i < loop; ++i) {
+        srand(time_t());
+        for (UInt32 j = 1; j <= num; ++j) {
+            data[j].key = rand();
+        }
+        start_t = clock();
+        sort.heapSort(data, num, compare_asc);
+        time += clock() - start_t;
+    }
+    cout << time << endl;
+    /*测试结果如下：
+        7种排序的性能测试：
+        插入排序用时：11610
+        选择排序用时：12083
+        冒泡排序用时：34878
+        希尔排序用时：140
+        快速排序用时：80
+        合并排序用时：80
+        堆排序用时：110
+    */
+}

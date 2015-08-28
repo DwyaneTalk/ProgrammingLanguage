@@ -135,6 +135,7 @@ UInt32 lineCollFun(Int32 index, UInt32 count) {
 }
 
 UInt32 doubCollFun(Int32 index, UInt32 count) {
-    return (index + ((count + 1) / 2 * (count + 1) / 2) * ((-1) ^ (count - 1))) % HASHSIZE;
+    Int8 sign = (count % 2) ? 1 : (-1);
+    return (index + ((count + 1) / 2 * (count + 1) / 2) * sign) % HASHSIZE;
 }
 

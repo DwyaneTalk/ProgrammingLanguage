@@ -1,4 +1,5 @@
 #include "../inc/Sort.h"
+#include "../inc/Heap.h"
 
 Sort::Sort() {
     num = 0;
@@ -58,11 +59,12 @@ UInt32 Sort::selectMin(SortElem* data, UInt32 num, Int32(*compare)(SortElem* dat
 void Sort::shellInsert(SortElem* data, UInt32 num, UInt32 inc, Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
     for (UInt32 i = inc + 1; i <= num; ++i) {
         copy(data, data + i);
-        UInt32 j = i - inc;
+        Int32 j = i - inc;
         for (; j > 0 && compare(data, data + j) < 0; j -= inc) {
             copy(data + j + inc, data + j);
         }
-        copy(data + j + inc, data);
+        if (j + inc != i)
+            copy(data + j + inc, data);
     }
 }
 
@@ -107,7 +109,8 @@ void Sort::insertSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data
         for (j = i - 1; j >= 1 && compare(data, data + j) < 0; --j) {
             copy(data + j + 1, data + j);
         }
-        copy(data + j + 1, data);
+        if (j + 1 != i)
+            copy(data + j + 1, data);
     }
 }
 
@@ -133,8 +136,10 @@ void Sort::bubbleSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data
 
 void Sort::shellSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
     UInt32 shell_para = UInt32(log10(num + 1) / log10(2));
+    UInt32 inc;
     for (UInt32 k = 1; k <= shell_para; ++k) {
-        shellInsert(data, num, 2 ^ (shell_para - k + 1) - 1, compare);
+        inc = (UInt32)pow(2.0, double(shell_para - k + 1)) - 1;
+        shellInsert(data, num, inc, compare);
     }
 }
 
@@ -155,7 +160,9 @@ void Sort::mergeSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_
 }
 
 void Sort::heapSort(SortElem* data, UInt32 num, Int32(*compare)(SortElem* data_a, SortElem* data_b)) {
-
+    Heap heap;
+    heap.createSort(data, num, compare);
+    data = heap.getData(num);
 }
 
 
