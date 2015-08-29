@@ -3,6 +3,23 @@
 
 #include "Util.h"
 
+/*说明：
+算法      平均时间    最坏时间    辅助存储    稳定性
+直接插入  O(n^2)      O(n^2)      O(1)        稳定
+简单选择  O(n^2)      O(n^2)      O(1)        稳定
+冒泡      O(n^2)      O(n^2)      O(1)        稳定
+希尔      O(n^m)      O(n^2)      O(1)        不稳定
+快排      O(nlog(n))  O(n^2)      O(log(n))   不稳定
+归并      O(nlog(n))  O(nlog(n))  O(n)        稳定
+堆        O(nlog(n))  O(nlog(n))  O(1)        不稳定
+
+说明：
+    1、希尔排序中1<m<2，m的值取决于希尔排序中的增量选择
+    2、当排序规模非常大的时候，测试各种算法时间性能如下：
+        快排 > 归并 ~= 堆 > 希尔 >直接插入 ~= 简单选择 >冒泡
+        ~=：表示约等于
+*/
+
 typedef struct SortElem{
     SortKeyType key;
     Record*     info;
