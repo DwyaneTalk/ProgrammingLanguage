@@ -4,7 +4,6 @@ function edgeDetection()
     clc;
     
     im_gray = rgb2gray(imread('lena.jpg'));
-    im_gray = imread('person.jpg');
     figure(2);
     subplot(2, 3, 1);
     imshow(im_gray);
