@@ -1,12 +1,12 @@
 clear;
 clc;
-addpath(genpath(pdw));
+addpath(genpath(pwd));
 im_gray = imread('lena_gray.jpg');
 if(ndims(im_gray) == 3)
     im_gray = rgb2gray(im_gray);
 end
 %% 数学形态学
-    figure(3);
+%     figure(3);
 
 %% 图像表示
 %   亮度直方图：统计图像在特定亮度级像素的数目，表示每个亮度级在图像中占的比例；
