@@ -6,8 +6,62 @@ if(ndims(im_gray) == 3)
     im_gray = rgb2gray(im_gray);
 end
 %% 数学形态学
-%     figure(3);
-
+    figure(2);
+    im = im_gray;
+    template = ones(3);
+    im_erosion = morphologyErosion(im, 'IM_GRAY', template);
+    subplot(2, 3, 1);
+    imshow(im);
+    title('原始图像');
+    subplot(2, 3, 2);
+    imshow(im_erosion);
+    title('腐蚀图像');
+    im_dilation = morphologyDilation(im, 'IM_GRAY', template);
+    subplot(2, 3, 3);
+    imshow(im_dilation);
+    title('膨胀图像');
+    subplot(2,3, 4);
+    imshow(im_dilation - im_erosion);
+    title('差值图像');
+    subplot(2, 3,5);
+    im_open = morphologyOpenOperation(im, 'IM_GRAY', template, template);
+    imshow(im_open);
+    title('开算子结果');
+    subplot(2, 3,6);
+    im_close = morphologyCloseOperation(im, 'IM_GRAY', template, template);
+    imshow(im_close);
+    title('闭算子操作');
+%     im = threshold(im);
+%     template1 = ones(3) * 255;
+%     im_erosion = binaryErosion(im, template1);
+%     template2 = zeros(3, 3);
+%     im_dilation = binaryDilation(im, template2);
+%     im_open = binaruOpenOperation(im, template2, template1);
+%     im_close = binaryCloseOperation(im, template1, template2);
+%     subplot(2,3,1);
+%     imshow(im);
+%     title('原始图像');
+%     subplot(2,3,2);
+%     imshow(im_erosion);
+%     title('腐蚀图像');
+%     subplot(2,3,3);
+%     imshow(im_dilation);
+%     title('膨胀图像');
+%     subplot(2,3,4);
+%     imshow(im_dilation - im_erosion);
+%     title('膨胀腐蚀差');
+%     subplot(2,3,5);
+%     imshow(im_dilation - im);
+%     title('膨胀原图差');
+%     subplot(2,3,6);
+%     imshow(im - im_erosion);
+%     title('原图腐蚀差');
+%     subplot(2, 3, 5);
+%     imshow(im_open);
+%     title('开运算结果');
+%     subplot(2, 3, 6);
+%     imshow(im_close);
+%     title('闭运算结果');
 %% 图像表示
 %   亮度直方图：统计图像在特定亮度级像素的数目，表示每个亮度级在图像中占的比例；
 %   图像对比度：通过图像亮度范围来衡量像素亮度值的分散情况；
