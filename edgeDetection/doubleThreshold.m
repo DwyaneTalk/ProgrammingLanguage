@@ -24,7 +24,7 @@ function im_edge = doubleThreshold(edge, th_max, th_min)
         for i = 1 : 8
             pos_xi = pos_x + list(1, i);
             pos_yi = pos_y + list(2, i);
-            if pos_xi >0 && pos_yi >0 && edge(pos_xi, pos_yi) > th_min && im_edge(pos_xi, pos_yi)  ~= 255
+            if pos_xi >0 && pos_yi >0 && pos_xi <= row && pos_yi <= col && edge(pos_xi, pos_yi) > th_min && im_edge(pos_xi, pos_yi)  ~= 255
                 im_edge(pos_xi, pos_yi) = 255;
                 seed_x(rear) = pos_xi;
                 seed_y(rear) = pos_yi;

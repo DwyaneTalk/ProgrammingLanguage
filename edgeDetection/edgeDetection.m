@@ -30,7 +30,9 @@ function [im_out] = sobelDetection(varargin)
     tmp_sobel = fspecial('sobel');
     edge_x = imfilter(im_gauss, tmp_sobel, 'replicate');
     edge_y = imfilter(im_gauss, tmp_sobel', 'replicate');
-    im_out = uint8(sqrt(edge_x .^2 + edge_y .^ 2));
+    edge = sqrt(edge_x .^2 + edge_y .^ 2);
+    max_value = max(edge(:));
+    im_out = uint8(edge * 255 / max_value);
 end
 
 function [im_out] = cannyDetection(varargin)
@@ -73,7 +75,9 @@ function [im_out] = logDetection(varargin)
     tmp_log = [ 0, -1,  0;
                -1,  4, -1;
                 0, -1,  0];
-    im_out = uint8(imfilter(im_gauss, tmp_log, 'replicate'));
+    edge = abs(imfilter(im_gauss, tmp_log, 'replicate'));
+    max_value = max(edge(:));
+    im_out = uint8(edge * 255 / max_value);
 end
 
 function [im_out] = mhDetection(varargin)
@@ -95,7 +99,9 @@ function [im_out] = mhDetection(varargin)
             tmp_mh(i,j)= ((x2y2 - 2 * sigma2) * exp(-x2y2/(2 * sigma2))) / (sigma2 * sigma2); 
         end
     end
-    im_out = imfilter(im_in, tmp_mh, 'replicate');
+    edge = imfilter(im_in, tmp_mh, 'replicate');
+    max_value = max(edge(:));
+    im_out = uint8(edge * 255 / max_value);
 end
 
 

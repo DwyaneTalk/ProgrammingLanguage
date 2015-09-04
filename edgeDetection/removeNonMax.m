@@ -42,6 +42,4 @@ function neg_edge = removeNonMax(edge, edge_x, edge_y)
             end
         end 
     end
- %   max_value = max(neg_edge(:));
- %   neg_edge = neg_edge * 255 / max_value;
 end
