@@ -1,7 +1,5 @@
 /*   DwyaneTalk@gmail.com
 *   by lutao
-*   Leetcode102  : Binary Tree Level Order Traversal
-*                : https://leetcode.com/problems/binary-tree-level-order-traversal/
 */
 typedef struct {
     TreeNode* *data;
