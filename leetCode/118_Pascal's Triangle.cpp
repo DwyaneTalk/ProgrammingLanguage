@@ -1,6 +1,6 @@
 /*   DwyaneTalk@gmail.com
 *   by lutao
-*   Leetcode117  : Pascal's Triangle
+*   Leetcode118  : Pascal's Triangle
 *                : https://leetcode.com/problems/pascals-triangle/
 */
 
