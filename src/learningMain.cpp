@@ -1,6 +1,7 @@
 #include <iostream>
 #include "include.h"
 #include "learningChapter2.h"
+#include "learningChapter3.h"
 using namespace std;
 
 int main() {
@@ -11,7 +12,10 @@ int main() {
 	//result = Sample2_4("all_souls_000019.jpg");
 	//result = Sample2_5("all_souls_000019.jpg");
 	//result = Sample2_9();
-	result = Sample2_10("sports.avi", "sports2.aiv");
+	//result = Sample2_10("sports.avi", "sports2.aiv");
+
+    //result = Sample3_0();
+    result = Sample3_1to3();
 	printf("CV_STATTUS CODE: %d\n", result);
 	system("pause");
 	return 0;

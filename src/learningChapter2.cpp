@@ -1,9 +1,8 @@
-#include "include.h"
 #include "highgui.h"
 #include "cv.h"
 #include "learningChapter2.h"
 
-//show a image 
+/************ show a image ************/
 CV_STATUS Sample2_1(const char* fileName) {
 	IplImage* iplImage = cvLoadImage(fileName);
 	if(!iplImage)	return CV_ERR_FILE;
@@ -15,7 +14,7 @@ CV_STATUS Sample2_1(const char* fileName) {
 	return CV_ERR_OK;
 }
 
-//display a video
+/************ display a video ************/
 CV_STATUS Sample2_2(const char* fileName) {
 	CvCapture* capture = cvCreateFileCapture(fileName);
 	if(!capture)	return CV_ERR_FILE;
@@ -31,7 +30,7 @@ CV_STATUS Sample2_2(const char* fileName) {
 	return CV_ERR_OK;
 }
 
-//video display control
+/************ video display control ************/
 CvCapture*	capture	= NULL;
 void onTrackBarSlide(int pos) {
 	cvSetCaptureProperty(capture, CV_CAP_PROP_POS_FRAMES, pos);
@@ -54,7 +53,7 @@ CV_STATUS Sample2_3(const char* fileName) {
 	return CV_ERR_OK;
 }
 
-//smooth image with 3x3 gaussian kernel
+/************ smooth image with 3x3 gaussian kernel ************/
 CV_STATUS Sample2_4(const char* fileName) {
 	IplImage* iplImage = cvLoadImage(fileName);
 	if(!iplImage)	return CV_ERR_FILE;
@@ -72,7 +71,7 @@ CV_STATUS Sample2_4(const char* fileName) {
 	return CV_ERR_OK;
 }
 
-//PyrDown and Canny
+/************ PyrDown and Canny ************/
 IplImage* doPyrDown(IplImage* iplImageIn, double factor) {
 	if(!iplImageIn)	return NULL;
 	IplImage* iplImageOut = cvCreateImage(cvSize(int(iplImageIn->width * factor), int(iplImageIn->height * factor)), iplImageIn->depth, iplImageIn->nChannels);
@@ -113,7 +112,7 @@ CV_STATUS Sample2_5(const char* fileName) {
 	return CV_ERR_OK;
 }
 
-//display video from camara
+/************ display video from camara ************/
 CV_STATUS Sample2_9(int idx) {
 	CvCapture* capture = cvCreateCameraCapture(idx);
 	if(!capture)	return CV_ERR_CAM;
@@ -129,6 +128,7 @@ CV_STATUS Sample2_9(int idx) {
 	return CV_ERR_OK;
 }
 
+/************ read video in file, down sample and restore in file ************/
 CV_STATUS Sample2_10(const char* srcName, const char* dstName) {
 	CvCapture* capture = cvCreateFileCapture(srcName);
 	if(!capture)	return CV_ERR_FILE;
@@ -136,7 +136,7 @@ CV_STATUS Sample2_10(const char* srcName, const char* dstName) {
 	int width  = (int)cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH);
 	int height = (int)cvGetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT);
 	CvSize size = cvSize(width >> 1, height >> 1);
-	CvVideoWriter* writer = cvCreateVideoWriter(dstName, CV_FOURCC('M', 'J', 'P', 'G') , fps, size);
+	CvVideoWriter* writer = cvCreateVideoWriter(dstName, CV_FOURCC('M', 'J', 'P', 'G'), fps, size);
 	if(!writer)	return CV_ERR_FILE;
 	cvNamedWindow("Sample2_10");
 

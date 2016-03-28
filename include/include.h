@@ -1,3 +1,4 @@
+#pragma once
 
 typedef enum CV_ERR_CODES{
 	CV_ERR_OK		=	0,
