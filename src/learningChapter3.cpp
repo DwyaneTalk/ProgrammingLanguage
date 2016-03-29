@@ -52,6 +52,23 @@ CV_STATUS Sample3_0 () {
 //  union {int rows; int height;};
 //  union {int cols; int width;};
 //} CvMat;
+//typedef struct IplImage {
+//  int     nSize;                  //sizeof(IplImage)
+//  int     ID;                     //version(=0)
+//  int     nChannels;              //number of channels, 3 for RGB image
+//  int     depth;                  //Pixel depth in bits, generally 8
+//  int     dataOrder;              //IPL_DATA_ORDER_PIEXL(RGBRGBRGB) and IPL_DATA_ORDER_PLANE(ont support in opencv)
+//  int     origin;                 //IPL_ORIGIN_TL(origion point in the top-left) and IPL_ORIGIN_BL(origion point in the bottom-left)
+//  int     align;                  //alignment for a line row(4 or 8 supported)
+//  int     width;                  //image width
+//  int     height;                 //image height
+//  struct _IplROI* roi;            //region of intrest(if set, all operation ot image only in this region)
+//  int     imageSize;              //height * imageStep
+//  char*   imageData;              //data
+//  int     imageStep;              //aligned line buffer size
+//  ¡­¡­                              //other data
+//};
+/************ CvMat create¡¢init and release ************/
 CV_STATUS Sample3_1to3() {
     int     cols = 10, rows = 20;
     int     type = CV_8UC1;
@@ -59,10 +76,14 @@ CV_STATUS Sample3_1to3() {
     // create CvMat (CvMatHeader and CvMatData)
     CvMat   mat0    = cvMat(rows, cols, type, pointer);             //allocate mat header and init data to pointer
     CvMat*  mat1    = cvCreateMat(rows, cols, type);                //allocate mat header and data
+    if(!mat1)       return CV_ERR_NULL;
     CvMat*  mat2    = cvCreateMatHeader(rows, cols, type);          //allocate mat header and init data to NULL
+    if(!mat2)       return CV_ERR_NULL;
                       cvCreateData(mat2);                           //allocate mat data for mat2
     CvMat*  mat3    = cvCloneMat(mat1);                             //clone a mat from mat1, then mat1->data and mat3->data point to the same space
+    if(!mat3)       return CV_ERR_NULL;
     CvMat*  mat     = cvInitMatHeader(mat1, rows + 1, cols + 1, type);  //re-init mat1 header and init data to pointer, then mat1 and mat point to the same space
+    if(!mat || !mat1)   return CV_ERR_NULL;
     cvReleaseMat(&mat2);                                            //free mat header and data, theh mat2 is NULL
     cvReleaseMat(&mat3);
     printf("CvMat Init-> rows : %d, cols : %d, type : %d, step : %d\n", mat->rows, mat->cols, mat->type, mat->step);
@@ -73,7 +94,55 @@ CV_STATUS Sample3_1to3() {
     int dimSize[2];
     int dimNums = cvGetDims(mat, dimSize);      //get mat dimensions in dimNums and size of each dimensions in dimSize
     printf("CvMat Size-> rows : %d, cols : %d, type : %d, numDims : %d, DimSize0 : %d, DimSize1 : %d\n", size.height, size.width, type, dimNums, dimSize[0], dimSize[1]);
+    return CV_ERR_OK;
+}
+/************ CvMat read and write ************/
+CV_STATUS Sample3_4to9() {
+    int cols = 5, rows = 5;
+    int type = CV_32SC1;
+    CvMat*  mat =   cvCreateMat(rows, cols, type);
+    if(!mat)    return CV_ERR_NULL;
+    int*    elemPtr =   (int*)CV_MAT_ELEM_PTR(*mat, 2, 3);      //Macro for get the elem val, only for 1 or 2 dimension Mat
+    if(!elemPtr)    return CV_ERR_NULL;
+    *elemPtr    = 10;        
+    int     elemVal =   CV_MAT_ELEM(*mat, int, 2, 3);           //Macro for get the elem ptr, only for 1 or 2 dimension Mat
+    printf("set elemVal for 1 or 2 dimension Mat-> %d\n", elemVal);
 
-    // CvMat read and write
+    int dims = 3, dimSize[3] = {2, 3, 4};                       
+    CvMatND* matND  =   cvCreateMatND(dims, dimSize, type);         //create multi-dimension Mat with dimension size in dimSize
+    int* elemNDPtr  =   (int*)cvPtr3D(matND, 1, 2, 3);              //get the elem ptr for multi(3) dimension mat
+    if(!elemNDPtr)  return CV_ERR_NULL;
+    *elemNDPtr  =   20;
+    int elemNDVal   =   (int)cvGetReal3D(matND, 1, 2, 3);           //get the elem val(double) for multi(3) dimension mat
+    CvScalar scalar =   cvGet3D(matND, 1, 2, 3);                    //get the elem val(Scalar) for multi(3) dimension mat
+    printf("set elemVal for multi-dimension Mat-> %d\n", elemNDVal);
+    printf("set elemVal for multi-dimension Mat-> scalar0 : %d, scalar1 : %d, scalar2 : %d, scalar3 : %d\n", (int)scalar.val[0], (int)scalar.val[1], (int)scalar.val[2], (int)scalar.val[3]);
+    cvSet3D(matND, 1, 2, 3, cvScalar(1.0, 2.0, 3.0, 4.0));          //set the elem val(double) for multi(3) dimension mat
+    printf("set elemVal for multi-dimension Mat-> %d\n", (int)cvGetReal3D(matND, 1, 2 ,3));
+    cvSetReal3D(matND, 1, 2, 3, 5.0);                               //set the elem val(Scalar) for multi(3) dimension mat
+    printf("set elemVal for multi-dimension Mat-> %d\n", (int)cvGetReal3D(matND, 1, 2, 3));
+
+    for(int irow = 0; irow < mat->rows; ++irow) {
+        int* pointer = (int*)(mat->data.ptr + mat->step * irow);
+        for(int icol = 0; icol < mat->cols; ++icol) {
+            *pointer++ = irow * mat->cols + icol;
+        }
+    }
+    for(int irow = 0; irow < mat->rows; ++irow) {
+        const int* pointer = (const int*)(mat->data.ptr + mat->step * irow);
+        printf("rows%d->", irow);
+        for(int icol = 0; icol < mat->cols; ++icol) {
+            printf("%3d", *pointer++);
+        }
+        printf("\n");
+    }
+    cvReleaseMat(&mat);
+    cvReleaseMatND(&matND);
+
+    return CV_ERR_OK;
+}
+/************ IplImage create ************/
+CV_STATUS Sample3_10to13() {
+    IplImage* image = new IplImage
     return CV_ERR_OK;
 }
