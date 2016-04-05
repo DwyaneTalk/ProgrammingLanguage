@@ -141,8 +141,52 @@ CV_STATUS Sample3_4to9() {
 
     return CV_ERR_OK;
 }
-/************ IplImage create ************/
+/************ IplImage create and ROI ************/
+IplImage* RGB2Gray(IplImage* iplImageIn) {
+    IplImage* iplImageNew = cvCreateImage(cvGetSize(iplImageIn), iplImageIn->depth, 1); //create image with allocating data memory
+    for(int irow = 0; irow < iplImageIn->height; ++irow) {
+        unsigned char* srcPtr = (unsigned char*)iplImageIn->imageData + irow * iplImageIn->widthStep;
+        unsigned char* dstPtr = (unsigned char*)iplImageNew->imageData + irow * iplImageNew->widthStep;
+        for(int icol = 0; icol < iplImageIn->widthStep; icol += iplImageIn->nChannels) {    //widthstep may be not width * nchannels
+            unsigned char val = srcPtr[icol] * G_WEIGHT + srcPtr[icol + 1] * B_WEIGHT + srcPtr[icol + 2] * R_WEIGHT;
+            dstPtr[icol / iplImageIn->nChannels] = val;
+        }
+    }
+    return iplImageNew;
+}
+
+void ROIAddS(IplImage* iplImageIn, CvScalar scalar, CvRect rect) {
+    IplImage* iplImageSub = cvCreateImageHeader(cvSize(rect.width, rect.height), iplImageIn->depth, iplImageIn->nChannels);//create image header without allocating memory
+    iplImageSub->dataOrder = iplImageIn->dataOrder;
+    iplImageSub->origin = iplImageIn->origin;
+    iplImageSub->widthStep = iplImageIn->widthStep;
+    iplImageSub->imageData = iplImageIn->imageData + iplImageIn->widthStep * rect.y + rect.x * iplImageIn->nChannels;
+    cvAddS(iplImageSub, scalar, iplImageSub);
+    cvReleaseImageHeader(&iplImageSub);
+}
+
 CV_STATUS Sample3_10to13() {
-    IplImage* image = new IplImage
+    IplImage* iplImage = cvLoadImage("koala.jpg"), *iplImageNew = NULL;     //load image
+    if(!iplImage)   return CV_ERR_NULL;
+    if(!strcmp(iplImage->colorModel, "RGB")) iplImageNew = RGB2Gray(iplImage);  //determine the RGB image
+    if(!iplImageNew)    return CV_ERR_NULL;
+    cvNamedWindow("show image");
+    CvRect rect = cvRect(iplImage->width / 4, iplImage->height / 4, iplImage->width / 2, iplImage->height / 2);
+    cvSetImageROI(iplImage, rect);                  //set ROI
+    cvAddS(iplImage, cvScalar(50), iplImage);       //all operation will be applied in the roi 
+    cvShowImage("show image", iplImage);
+    cvWaitKey(0);
+    cvResetImageROI(iplImage);
+    cvShowImage("show image", iplImage);
+    cvWaitKey(0);
+    cvShowImage("show image", iplImageNew);
+    cvWaitKey(0);
+    ROIAddS(iplImageNew, cvScalar(50), rect);
+    cvShowImage("show image", iplImageNew);
+    cvWaitKey(0);
+    cvDestroyWindow("show image");
+    cvReleaseImage(&iplImageNew);
+    cvReleaseImage(&iplImage);
     return CV_ERR_OK;
 }
+

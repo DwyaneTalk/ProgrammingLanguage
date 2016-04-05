@@ -10,5 +10,5 @@ CV_STATUS Sample3_0 ();
 CV_STATUS Sample3_1to3();
 /************ CvMat read and write ************/
 CV_STATUS Sample3_4to9();
-/************ IplImage create ************/
+/************ IplImage create and ROI ************/
 CV_STATUS Sample3_10to13();
