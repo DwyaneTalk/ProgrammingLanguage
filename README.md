@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # algorithms
 algorithms solution backup
 
@@ -6,3 +7,10 @@ if you read my solutions, i am waiting for your any better ideas for any problem
 
 
 forgive me for my ugly coding style and incomprehensible chinese comments!
+=======
+## dataStructure
+basic dataStructure realization backup
+
+### referrence
+realize the basic data structure once again, referring book <数据结构(C语言版)，严蔚敏/吴伟民>
+>>>>>>> data/master
