@@ -6,7 +6,7 @@
 CV_STATUS Sample2_1(const char* fileName) {
 	IplImage* iplImage = cvLoadImage(fileName);
 	if(!iplImage)	return CV_ERR_FILE;
-	cvNamedWindow("Sameple2_1");
+	cvNamedWindow("Sample2_1");
 	cvShowImage("Sample2_1", iplImage);
 	cvWaitKey(0);
 	cvDestroyWindow("Sample2_1");
