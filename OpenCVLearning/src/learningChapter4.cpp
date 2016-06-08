@@ -97,3 +97,26 @@ CV_STATUS Sample4_1() {
     cvReleaseImage(&params.img);
     return CV_ERR_OK;
 }
+
+/*******************implement button using slider*******/
+void trackBarCallBack(int cur_pos) {}
+CV_STATUS Sample4_2() {
+    IplImage* colorLenaImg = cvLoadImage("lena_color.jpg", 1);
+    if(!colorLenaImg)   return CV_ERR_NULL;
+    IplImage* grayLenaImg = cvLoadImage("lena_gray.jpg");
+    if(!grayLenaImg)   return CV_ERR_NULL;
+    int cur_pos = 0;
+    cvNamedWindow("button");
+
+    cvCreateTrackbar("slider", "button", &cur_pos, 1, trackBarCallBack);
+    while(1) {
+        if(cvWaitKey(10) == 27) break;
+        if(cur_pos)     cvShowImage("button", colorLenaImg);
+        else            cvShowImage("button", grayLenaImg);
+    }
+
+    cvDestroyWindow("button");
+    cvReleaseImage(&colorLenaImg);
+    cvReleaseImage(&grayLenaImg);
+    return CV_ERR_OK;
+}

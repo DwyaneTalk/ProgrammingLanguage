@@ -26,7 +26,8 @@ int main() {
 
 #pragma region Chapter4
     //result = Sample4_0("lena_color.jpg");
-    result = Sample4_1();
+    //result = Sample4_1();
+    result = Sample4_2();
 #pragma endregion Chapter4
 	printf("CV_STATTUS CODE: %d\n", result);
 	system("pause");
