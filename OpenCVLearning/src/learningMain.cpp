@@ -3,6 +3,7 @@
 #include "learningChapter2.h"
 #include "learningChapter3.h"
 #include "learningChapter4.h"
+#include "learningChapter5.h"
 using namespace std;
 
 int main() {
@@ -27,8 +28,15 @@ int main() {
 #pragma region Chapter4
     //result = Sample4_0("lena_color.jpg");
     //result = Sample4_1();
-    result = Sample4_2();
+    //result = Sample4_2();
 #pragma endregion Chapter4
+
+#pragma region Chapter5
+	//result = Sample5_smooth("lena_color.jpg");
+	//result = Sample5_morphology("lena_color.jpg");
+	//result = Sample5_floodFill("lena_color.jpg");
+	result = Sample5_pyramid("lena_color.jpg");
+#pragma endregion Chapter5
 	printf("CV_STATTUS CODE: %d\n", result);
 	system("pause");
 	return 0;
