@@ -1,7 +1,3 @@
-bin/*
-obj/*
-work/*
-
 # Compiled Object files
 *.slo
 *.lo
