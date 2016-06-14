@@ -64,22 +64,19 @@ void Sample10_Complex() {
 }
 
 void Sample10_String() {
-	//Ch10::String str1;
-	//Ch10::String str2("hello world");
-	//Ch10::String str3(str2);
-	//Ch10::String str4 = str2 + str3;
-	//str1 = str4;
-	//Ch10::String str5 = str2 + '!';
-	//Ch10::String str6 = ' ' + str2;
-	//cin >> str1 >> str2;
-	//cout << str1 << str2;
-	//bool ans1 = str1 == str2;
-	//bool ans2 = str1 >  str2;
-	//bool ans3 = str1 <  str2;
+	Ch10::String str1;
+	Ch10::String str2("hello world");
+	Ch10::String str3(str1);
+	Ch10::String str4(str2);
+	Ch10::String str5 = str3 + str4;
+	str1 = str2;
+	bool ans1 = str1 == str2;
+	bool ans2 = str1 >  str2;
+	bool ans3 = str1 <  str2;
 }
 
 int main() {
-	Sample10_Complex();
+	Sample10_String();
 	system("pause");
 	return 0;
 }

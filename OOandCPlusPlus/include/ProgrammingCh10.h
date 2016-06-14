@@ -32,33 +32,64 @@ namespace Ch10
 	{
 	public:
 		String(char* p = NULL){
+			cout << "constructor function called" << endl;
 			if(p == NULL)	{
-				size = 0;
 				bufSize = 0;
 				ptr = NULL;
+				size = 0;
 			} else {
+				bufSize = strlen(p);
+				ptr = new char[bufSize + 1];
 				size = strlen(p);
-				bufSize = newBuffer(size);
 				memcpy(ptr, p, sizeof(char) * size);
 				*(ptr + size) = '\0';
 			}
 		}
-		String(const String& str);
+		String(const String& str) {
+			cout << "copy constructor function called" << endl;
+			if(str.size == 0) {
+				bufSize = 0;
+				ptr = NULL;
+				size = 0;
+			} else {
+				bufSize = str.size;
+				ptr = new char[bufSize + 1];
+				size = str.size;
+				memcpy(ptr, str.ptr, sizeof(char) * size);
+				*(ptr + size) = '\0';
+			}
+
+		}
+		~String() {
+			cout << "destructor function called" << endl;
+			if(ptr)	delete[] ptr;
+			ptr = NULL;
+			size = 0;
+			bufSize = 0;
+		}
 		String& operator =(const String& str);
 		friend String operator +(const String& str1, const String& str2);
-		friend String operator +(const String& str, char ch);
-		friend String operator +(char ch, const String& str);
 		friend bool operator == (const String& str1, const String& str2);
 		friend bool operator <  (const String& str1, const String& str2);
 		friend bool operator >  (const String& str1, const String& str2);
-		friend ostream& operator <<(ostream& out, String& str);
-		friend istream& operator >>(istream& out, String& str);
 	private:
-		int newBuffer(int size);
+		int newBuffer(int size) {
+			if(bufSize >= size)	return bufSize;
+			int newSize = bufSize + (size - bufSize - 1) / NEWSIZE * NEWSIZE + NEWSIZE;
+			if(this->size) {
+				char* newPtr = new char[newSize + 1];
+				memcpy(newPtr, ptr, sizeof(char) * this->size);
+				delete[] ptr;
+				ptr = newPtr;
+			} else {
+				ptr = new char[newSize + 1];
+			}
+			return newSize;
+		}
 		char* ptr;
 		int size;
 		int bufSize;
-		const static int newSize = 10;
+		const static int NEWSIZE = 10;
 	};
 }
 

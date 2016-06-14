@@ -82,4 +82,56 @@ namespace Ch10
 		in >> complex.real >> complex.imag;
 		return in;
 	}
+
+
+	String& String:: operator =(const String& str) {
+		cout << "friend operator = called" <<endl;
+		if(this != &str) {
+			bufSize = newBuffer(str.size);
+			size = str.size;
+			memcpy(ptr, str.ptr, sizeof(char) * size);
+			*(ptr + size) = '\0';
+		}
+		return *this;
+	}
+
+	String operator +(const String& str1, const String& str2) {
+		cout << "friend operator + called" <<endl;
+		String str(str1);
+		str.bufSize = str.newBuffer(str1.size + str2.size);
+		str.size = str1.size + str2.size;
+		memcpy(str.ptr + str1.size, str2.ptr, sizeof(char)* str2.size);
+		*(str.ptr + str.size) = '\0';
+		return str;
+	}
+
+	bool operator ==(const String& str1, const String& str2) {
+		cout << "friend operator == called" <<endl;
+		if(str1.size != str2.size)	return false;
+		char *ptr1 = str1.ptr, *ptr2 = str2.ptr;
+		while(*ptr1 != '\0') {
+			if(*ptr1++ != *ptr2++)	return false;
+		}
+		return true;
+	}
+
+	bool operator  >(const String& str1, const String& str2) {
+		cout << "friend operator > called" <<endl;
+		char *ptr1 = str1.ptr, *ptr2 = str2.ptr;
+		while(*ptr1 != '\0' && *ptr2 != '\0') {
+			if(*ptr1 > *ptr2)	return true;
+			if(*ptr1++ < *ptr2++)	return false;
+		}
+		return *ptr1 != '\0';
+	}
+
+	bool operator  <(const String& str1, const String& str2) {
+		cout << "friend operator < called" <<endl;
+		char *ptr1 = str1.ptr, *ptr2 = str2.ptr;
+		while(*ptr1 != '\0' && *ptr2 != '\0') {
+			if(*ptr1 < *ptr2)	return true;
+			if(*ptr1++ > *ptr2++)	return false;
+		}
+		return *ptr2 != '\0';
+	}
 }
