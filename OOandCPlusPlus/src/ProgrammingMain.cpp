@@ -54,7 +54,28 @@ void Sample10_Complex() {
 	com1 = com4;
 	Ch10::Complex com5 = com2 + 10.0f;
 	Ch10::Complex com6 = 10.0f + com2;
+	Ch10::Complex com7 = com2 * com3;
+	cin >> com1 >> com2;
+	cout << com1 << com2;
+	com2 = com1++;
+	com2 = com1--;
+	com2 = ++com1; 
+	com2 = --com1;
+}
 
+void Sample10_String() {
+	//Ch10::String str1;
+	//Ch10::String str2("hello world");
+	//Ch10::String str3(str2);
+	//Ch10::String str4 = str2 + str3;
+	//str1 = str4;
+	//Ch10::String str5 = str2 + '!';
+	//Ch10::String str6 = ' ' + str2;
+	//cin >> str1 >> str2;
+	//cout << str1 << str2;
+	//bool ans1 = str1 == str2;
+	//bool ans2 = str1 >  str2;
+	//bool ans3 = str1 <  str2;
 }
 
 int main() {

@@ -8,6 +8,9 @@ namespace Ch10
 		Complex(float r = 0.0f, float i = 0.0f): real(r), imag(i){
 			cout << "constructor function called" << endl;
 		}
+		~Complex(){
+			cout << "destructor function called" << endl;
+		}
 		Complex(const Complex& other);
 		Complex& operator =(const Complex& other);
 		Complex operator ++();
@@ -18,8 +21,8 @@ namespace Ch10
 		friend Complex operator +(const Complex& add1, const float real2);
 		friend Complex operator +(const float real1, const Complex& add2);
 		friend Complex operator *(const Complex& mul1, const Complex& mul2);
-		friend ostream& operator <<(const ostream& out, const Complex& complex);
-		friend istream& operator >>(const istream& in, const Complex& complex);
+		friend ostream& operator <<(ostream& out, Complex& complex);
+		friend istream& operator >>(istream& in,  Complex& complex);
 	private:
 		float real;
 		float imag;
@@ -40,12 +43,22 @@ namespace Ch10
 				*(ptr + size) = '\0';
 			}
 		}
+		String(const String& str);
+		String& operator =(const String& str);
+		friend String operator +(const String& str1, const String& str2);
+		friend String operator +(const String& str, char ch);
+		friend String operator +(char ch, const String& str);
+		friend bool operator == (const String& str1, const String& str2);
+		friend bool operator <  (const String& str1, const String& str2);
+		friend bool operator >  (const String& str1, const String& str2);
+		friend ostream& operator <<(ostream& out, String& str);
+		friend istream& operator >>(istream& out, String& str);
 	private:
 		int newBuffer(int size);
 		char* ptr;
 		int size;
 		int bufSize;
-		const int newSize = 10;
+		const static int newSize = 10;
 	};
 }
 

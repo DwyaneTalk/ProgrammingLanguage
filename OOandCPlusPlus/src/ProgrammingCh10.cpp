@@ -4,14 +4,18 @@ namespace Ch10
 {
 	Complex::Complex(const Complex& other) {
 		cout << "copy constructor function called" << endl;
-		real = other.real;
-		imag = other.imag;
+		if(this != &other) {
+			real = other.real;
+			imag = other.imag;
+		}
 	}
 
 	Complex& Complex::operator = (const Complex& other) {
 		cout << "overload operator= called" << endl;
-		real = other.real;
-		imag = other.imag;
+		if(this != &other) {
+			real = other.real;
+			imag = other.imag;
+		}
 		return *this;
 	}
 
@@ -31,6 +35,7 @@ namespace Ch10
 	Complex Complex::operator --() {
 		cout << "member front operator++ called" << endl;
 		real -= 1.0f;
+		return *this;
 	}
 
 	Complex Complex::operator --(int) {
@@ -66,13 +71,13 @@ namespace Ch10
 		return complex;
 	}
 
-	ostream& operator <<(const ostream& out, const Complex& complex) {
+	ostream& operator <<(ostream& out, Complex& complex) {
 		cout << "friend operator << called" <<endl;
 		out << "real: " << complex.real << " imag: " << complex.imag << endl;
 		return out;
 	}
 
-	istream& operator >>(const istream& in,  const Complex& complex) {
+	istream& operator >>(istream& in,  Complex& complex) {
 		cout << "friend operator >> called" <<endl;
 		in >> complex.real >> complex.imag;
 		return in;
