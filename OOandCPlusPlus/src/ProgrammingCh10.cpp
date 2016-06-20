@@ -10,6 +10,10 @@ namespace Ch10
 		}
 	}
 
+	Complex::operator double() {
+		return real;
+	}
+
 	Complex& Complex::operator = (const Complex& other) {
 		cout << "overload operator= called" << endl;
 		if(this != &other) {

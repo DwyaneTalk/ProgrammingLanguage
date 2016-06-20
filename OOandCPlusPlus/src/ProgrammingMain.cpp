@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ProgrammingCh9.h"
 #include "ProgrammingCh10.h"
+#include "ProgrammingCh11.h"
 using namespace std;
 
 void Sample9_1() {
@@ -46,7 +47,7 @@ void Sample9_14() {
 	cout <<"For char comparison, min :"<< cmChar.min() << " max :" << cmChar.max() << endl;
 }
 
-void Sample10_Complex() {
+void  Sample10_Complex() {
 	Ch10::Complex com1;
 	Ch10::Complex com2(10.0f, 10.0f);
 	Ch10::Complex com3(com2);
@@ -55,6 +56,7 @@ void Sample10_Complex() {
 	Ch10::Complex com5 = com2 + 10.0f;
 	Ch10::Complex com6 = 10.0f + com2;
 	Ch10::Complex com7 = com2 * com3;
+	Ch10::Complex com8 = double(com5) + double(com6);
 	cin >> com1 >> com2;
 	cout << com1 << com2;
 	com2 = com1++;
@@ -75,8 +77,43 @@ void Sample10_String() {
 	bool ans3 = str1 <  str2;
 }
 
+void Sample11_basicInherit() {
+	Ch11_base::Person	father(45, "father", 'm');
+	Ch11_base::School	peking("peking university");
+	Ch11_base::Student	myself(20, "myself", 'm', "peking university", 1000, father);
+	Ch11_base::Teacher	iamteaher(30, "teacher", 'm', "CS", "professor");
+	father.show();
+	peking.show();
+	myself.show();
+	iamteaher.show();
+}
+void Sample11_virtualInherit() {
+	Ch11_virtual::Person	person(20, 'm', "myself");
+	Ch11_virtual::Student	student(20, 'm', "myself", 90);
+	Ch11_virtual::Teacher	teacher(20, 'm', "myself", "professor");
+	Ch11_virtual::Graduate	gratuade(20, 'm', "myself", 90, "professor", 500);
+	person.show();
+	student.show();
+	teacher.show();
+	gratuade.show();
+}
+void Sample11_convert() {
+	Ch11_base::Student	student(20, "student", 'm', "peking", 1000);
+	Ch11_base::Person	person1	= Ch11_base::Person(20, "person", 'm');
+	Ch11_base::Person	person2 = student;
+	Ch11_base::Person&	person3 = student;
+	Ch11_base::Person*	person4 = &student;
+	Ch11_base::Student*	student2 = (Ch11_base::Student*) person4;
+	student.show();
+	person1.show();
+	person2.show();
+	person3.show();
+	person4->show();
+	student2->show();
+}
+
 int main() {
-	Sample10_String();
+	Sample11_convert();
 	system("pause");
 	return 0;
 }

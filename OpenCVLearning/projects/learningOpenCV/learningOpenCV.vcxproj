@@ -152,6 +152,7 @@
     <ClCompile Include="..\..\src\learningChapter3.cpp" />
     <ClCompile Include="..\..\src\learningChapter4.cpp" />
     <ClCompile Include="..\..\src\learningChapter5.cpp" />
+    <ClCompile Include="..\..\src\learningChapter6.cpp" />
     <ClCompile Include="..\..\src\learningMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,7 @@
     <ClInclude Include="..\..\include\learningChapter3.h" />
     <ClInclude Include="..\..\include\learningChapter4.h" />
     <ClInclude Include="..\..\include\learningChapter5.h" />
+    <ClInclude Include="..\..\include\learningChapter6.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

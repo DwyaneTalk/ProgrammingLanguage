@@ -12,6 +12,7 @@ namespace Ch10
 			cout << "destructor function called" << endl;
 		}
 		Complex(const Complex& other);
+		operator double();
 		Complex& operator =(const Complex& other);
 		Complex operator ++();
 		Complex operator ++(int);

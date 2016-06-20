@@ -114,10 +114,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\ProgrammingCh10.cpp" />
+    <ClCompile Include="..\..\src\ProgrammingCh11.cpp" />
     <ClCompile Include="..\..\src\ProgrammingCh9.cpp" />
     <ClCompile Include="..\..\src\ProgrammingMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\ProgrammingCh11.h" />
     <ClInclude Include="..\..\include\ProgrammingCh10.h" />
     <ClInclude Include="..\..\include\ProgrammingCh9.h" />
   </ItemGroup>
