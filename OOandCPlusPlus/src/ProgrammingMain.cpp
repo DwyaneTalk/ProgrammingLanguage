@@ -2,6 +2,7 @@
 #include "ProgrammingCh9.h"
 #include "ProgrammingCh10.h"
 #include "ProgrammingCh11.h"
+#include "ProgrammingCh12.h"
 using namespace std;
 
 void Sample9_1() {
@@ -112,8 +113,38 @@ void Sample11_convert() {
 	student2->show();
 }
 
+void Sample12_virtualFun() {
+	Ch12::Student	student(20, 'm', "student");
+	Ch12::Graduate	graduate(20, 'm', "graduate", 500);
+	cout << student << graduate;
+	Ch12::Student& student1 = student;
+	Ch12::Student& student2 = graduate;
+	Ch12::Student* studentPtr1 = &student;
+	Ch12::Student* studentPtr2 = &graduate;
+	student1.show();
+	student2.show();
+	studentPtr1->show();
+	studentPtr2->show();
+}
+void Sample12_abstractClass() {
+	Ch12::Point		point(0, 5.0f, 5.0f);
+	Ch12::Circle	circle(1, 5.0f, 5.0f, 3.0f);
+	Ch12::Cylinder	cylinder(2, 5.0f, 5.0f, 3.0f, 4.0f);
+	Ch12::Shape*	shapePtr = NULL;
+
+	shapePtr = &point;
+	shapePtr->showName();
+	cout << "area = " << shapePtr->area() << ", volume = " << shapePtr->volume() << endl;
+	shapePtr = &circle;
+	shapePtr->showName();
+	cout << "area = " << shapePtr->area() << ", volume = " << shapePtr->volume() << endl;
+	shapePtr = &cylinder;
+	shapePtr->showName();
+	cout << "area = " << shapePtr->area() << ", volume = " << shapePtr->volume() << endl;
+}
+
 int main() {
-	Sample11_convert();
+	Sample12_abstractClass();
 	system("pause");
 	return 0;
 }

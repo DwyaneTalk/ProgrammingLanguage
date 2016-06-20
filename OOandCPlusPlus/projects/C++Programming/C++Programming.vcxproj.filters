@@ -27,6 +27,9 @@
     <ClCompile Include="..\..\src\ProgrammingCh11.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\ProgrammingCh12.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\ProgrammingCh9.h">
@@ -36,6 +39,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ProgrammingCh11.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ProgrammingCh12.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
