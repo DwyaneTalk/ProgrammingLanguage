@@ -8,6 +8,7 @@ backup for basic coding skill learning
 * **imageProcessing**： realization for basic digital image processing；
 * **OpenCVLearning**： backup for leaning OpenCV;
 * **OOandCPlusPlus**： object oriented programming and c++ language
+* **PythonCookbook**: sample code during learning python
 
 ### DwyaneTalk
 ```      

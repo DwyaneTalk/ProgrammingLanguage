@@ -1,0 +1,5 @@
+This is a text for Python Cookbook
+This is used in Chapter1_3
+This is used to test yeild and with *** as *** in Python
+
+DwyaneTalk
