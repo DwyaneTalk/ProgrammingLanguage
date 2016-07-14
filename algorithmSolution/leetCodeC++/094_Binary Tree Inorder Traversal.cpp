@@ -32,8 +32,27 @@ public:
 	}
 
 	vector<int> inorderTraversal(TreeNode* root) {
-		vector<int> ans;
+/*		vector<int> ans;
 		if(root)	inorderTraversal(root, ans);
 		return ans;
+*/
+		stack<TreeNode*> nodeStack;
+		vector<int> traversalAns;
+		if(root) {
+			TreeNode* currNode = root->left;
+			nodeStack.push(root);
+			while(!nodeStack.empty() || currNode) {
+				if(currNode) {
+					nodeStack.push(currNode);
+					currNode = currNode->left;
+				} else {
+					currNode = nodeStack.top();
+					nodeStack.pop();
+					traversalAns.push_back(currNode->val);
+					currNode = currNode->right;
+				}
+			}
+		}
+		return traversalAns;
 	}
 };
