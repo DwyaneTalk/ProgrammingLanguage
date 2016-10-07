@@ -1,14 +1,10 @@
 # basicSkillsLearning
-
-backup for basic coding skill learning
+backup for basic programming languages learning
 
 ### including:
-* **algorithmSolution**：solution for algorithm problems；    
-* **dataStructure**：realization or practice for basic dataStructure；
-* **imageProcessing**： realization for basic digital image processing；
-* **OpenCVLearning**： backup for leaning OpenCV;
-* **OOandCPlusPlus**： object oriented programming and c++ language
-* **PythonCookbook**: sample code during learning python
+- **OpenCVLearning**： backup for leaning OpenCV;
+- **OOandCPlusPlus**： object oriented programming and c++ language
+- **PythonCookbook**:  sample code during learning python
 
 ### DwyaneTalk
 ```      
