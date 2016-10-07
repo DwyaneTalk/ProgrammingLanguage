@@ -44,6 +44,7 @@ if __name__ == '__main__':
 		name = '_layz_' + func.__name__
 		@property
 		def lz(self):
+			print(name)
 			if hasattr(self, name):
 				return getattr(self, name)
 			else:
